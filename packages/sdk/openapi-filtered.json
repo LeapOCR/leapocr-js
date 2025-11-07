@@ -1,0 +1,2460 @@
+{
+  "components": {
+    "schemas": {
+      "analytics.CreditsOverview": {
+        "properties": {
+          "adjusted": {
+            "type": "integer"
+          },
+          "balance": {
+            "type": "integer"
+          },
+          "consumed": {
+            "type": "integer"
+          },
+          "granted": {
+            "type": "integer"
+          },
+          "net": {
+            "type": "integer"
+          },
+          "refunded": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "analytics.CreditsTimeseriesPoint": {
+        "properties": {
+          "adjusted": {
+            "type": "integer"
+          },
+          "bucket": {
+            "type": "string"
+          },
+          "consumed": {
+            "type": "integer"
+          },
+          "granted": {
+            "type": "integer"
+          },
+          "net_change": {
+            "type": "integer"
+          },
+          "refunded": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "analytics.CreditsUsageResponse": {
+        "properties": {
+          "model_breakdown": {
+            "items": {
+              "$ref": "#/components/schemas/analytics.ModelUsageStat"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "range": {
+            "$ref": "#/components/schemas/analytics.Range"
+          },
+          "snapshot": {
+            "$ref": "#/components/schemas/analytics.CreditsOverview"
+          },
+          "timeseries": {
+            "items": {
+              "$ref": "#/components/schemas/analytics.CreditsTimeseriesPoint"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "analytics.JobOverview": {
+        "properties": {
+          "active_jobs": {
+            "type": "integer"
+          },
+          "avg_active_seconds": {
+            "type": "number"
+          },
+          "avg_completion_seconds": {
+            "type": "number"
+          },
+          "cancelled_jobs": {
+            "type": "integer"
+          },
+          "completed_jobs": {
+            "type": "integer"
+          },
+          "credits_consumed": {
+            "type": "integer"
+          },
+          "failed_jobs": {
+            "type": "integer"
+          },
+          "processed_pages": {
+            "type": "integer"
+          },
+          "success_rate": {
+            "type": "number"
+          },
+          "throughput_jobs_per_second": {
+            "type": "number"
+          },
+          "total_jobs": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "analytics.JobTimeseriesPoint": {
+        "properties": {
+          "active_jobs": {
+            "type": "integer"
+          },
+          "avg_completion_seconds": {
+            "type": "number"
+          },
+          "bucket": {
+            "type": "string"
+          },
+          "completed_jobs": {
+            "type": "integer"
+          },
+          "credits_consumed": {
+            "type": "integer"
+          },
+          "failed_jobs": {
+            "type": "integer"
+          },
+          "processed_pages": {
+            "type": "integer"
+          },
+          "total_jobs": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "analytics.ModelUsageStat": {
+        "properties": {
+          "credits_consumed": {
+            "type": "integer"
+          },
+          "jobs_processed": {
+            "type": "integer"
+          },
+          "model": {
+            "type": "string"
+          },
+          "transactions": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "analytics.OverviewResponse": {
+        "properties": {
+          "credits": {
+            "$ref": "#/components/schemas/analytics.CreditsOverview"
+          },
+          "jobs": {
+            "$ref": "#/components/schemas/analytics.JobOverview"
+          },
+          "pages": {
+            "$ref": "#/components/schemas/analytics.PageOverview"
+          },
+          "range": {
+            "$ref": "#/components/schemas/analytics.Range"
+          },
+          "webhooks": {
+            "$ref": "#/components/schemas/analytics.WebhookSummary"
+          }
+        },
+        "type": "object"
+      },
+      "analytics.PageOverview": {
+        "properties": {
+          "completed_pages": {
+            "type": "integer"
+          },
+          "empty_pages": {
+            "type": "integer"
+          },
+          "failed_pages": {
+            "type": "integer"
+          },
+          "hard_failure_pages": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          },
+          "total_tokens": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "analytics.PageTimeseriesPoint": {
+        "properties": {
+          "bucket": {
+            "type": "string"
+          },
+          "completed_pages": {
+            "type": "integer"
+          },
+          "empty_pages": {
+            "type": "integer"
+          },
+          "failed_pages": {
+            "type": "integer"
+          },
+          "hard_failure_pages": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          },
+          "total_tokens": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "analytics.Range": {
+        "properties": {
+          "bucket": {
+            "type": "string"
+          },
+          "end": {
+            "type": "string"
+          },
+          "requested_range": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string"
+          },
+          "team_id": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "analytics.TemplateStat": {
+        "properties": {
+          "credits_consumed": {
+            "type": "integer"
+          },
+          "id": {
+            "type": "string"
+          },
+          "job_count": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "total_pages": {
+            "type": "integer"
+          },
+          "usage_count": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "analytics.TopTemplatesResponse": {
+        "properties": {
+          "range": {
+            "$ref": "#/components/schemas/analytics.Range"
+          },
+          "templates": {
+            "items": {
+              "$ref": "#/components/schemas/analytics.TemplateStat"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "analytics.WebhookSummary": {
+        "properties": {
+          "avg_processing_seconds": {
+            "type": "number"
+          },
+          "failed_events": {
+            "type": "integer"
+          },
+          "pending_events": {
+            "type": "integer"
+          },
+          "processed_events": {
+            "type": "integer"
+          },
+          "success_rate": {
+            "type": "number"
+          },
+          "total_events": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "auth.AuthResponse": {
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "user": {}
+        },
+        "type": "object"
+      },
+      "credits.ActiveMeterResponse": {
+        "properties": {
+          "balance": {
+            "example": 111111,
+            "type": "number"
+          },
+          "consumed_units": {
+            "example": 0,
+            "type": "number"
+          },
+          "credited_units": {
+            "example": 111111,
+            "type": "number"
+          },
+          "id": {
+            "example": "089ca13b-ea12-48a2-89de-eebea2d43ef5",
+            "type": "string"
+          },
+          "meter_id": {
+            "example": "9c3cd7d2-2f1e-4a32-910d-17b55fe4a6f2",
+            "type": "string"
+          },
+          "meter_name": {
+            "example": "OCR Credits",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "credits.ActiveSubscriptionResponse": {
+        "properties": {
+          "discount_id": {
+            "type": "string"
+          },
+          "ends_at": {
+            "example": "2025-11-06T17:24:23.883522Z",
+            "type": "string"
+          },
+          "id": {
+            "example": "8ce40958-f3a0-4b5d-98b6-aa283ebf91e7",
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {},
+            "type": "object"
+          },
+          "meters": {
+            "items": {},
+            "type": "array",
+            "uniqueItems": false
+          },
+          "price_id": {
+            "example": "4fd5d081-732c-4f7e-bfbf-54c1e17ea622",
+            "type": "string"
+          },
+          "product_id": {
+            "example": "e1ae6cb1-547b-4c0e-a530-92a2e5b09d77",
+            "type": "string"
+          },
+          "product_name": {
+            "example": "Growth Plan",
+            "type": "string"
+          },
+          "started_at": {
+            "example": "2025-10-06T17:24:23.883522Z",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "credits.CatalogBenefit": {
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "units": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "credits.CatalogPrice": {
+        "properties": {
+          "amount": {
+            "type": "integer"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "formatted": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "credits.CatalogProduct": {
+        "properties": {
+          "benefits": {
+            "items": {
+              "$ref": "#/components/schemas/credits.CatalogBenefit"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "billing_interval": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "$ref": "#/components/schemas/credits.CatalogPrice"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "credits.CreditBalanceResponse": {
+        "properties": {
+          "active_meters": {
+            "items": {
+              "$ref": "#/components/schemas/credits.ActiveMeterResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "active_subscriptions": {
+            "items": {
+              "$ref": "#/components/schemas/credits.ActiveSubscriptionResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "credits_consumed": {
+            "example": 125,
+            "type": "integer"
+          },
+          "credits_granted": {
+            "example": 500,
+            "type": "integer"
+          },
+          "credits_remaining": {
+            "example": 375,
+            "type": "integer"
+          },
+          "granted_benefits": {
+            "items": {
+              "$ref": "#/components/schemas/credits.GrantedBenefitResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "plan_name": {
+            "example": "Free",
+            "type": "string"
+          },
+          "team_id": {
+            "example": "550e8400-e29b-41d4-a716-446655440000",
+            "type": "string"
+          },
+          "trial_active": {
+            "example": true,
+            "type": "boolean"
+          },
+          "trial_credits_granted": {
+            "example": 500,
+            "type": "integer"
+          },
+          "trial_credits_remaining": {
+            "example": 250,
+            "type": "integer"
+          },
+          "trial_days_remaining": {
+            "example": 14,
+            "type": "integer"
+          },
+          "trial_ends_at": {
+            "example": "2025-03-03T13:37:00Z",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "credits.CreditTransactionOrganizationResponse": {
+        "properties": {
+          "amount": {
+            "example": 50,
+            "type": "integer"
+          },
+          "balance_after": {
+            "example": 950,
+            "type": "integer"
+          },
+          "created_at": {
+            "example": "2024-01-15T10:30:00Z",
+            "type": "string"
+          },
+          "description": {
+            "example": "OCR processing for document.pdf",
+            "type": "string"
+          },
+          "expires_at": {
+            "example": "2024-12-31T23:59:59Z",
+            "type": "string"
+          },
+          "id": {
+            "example": "550e8400-e29b-41d4-a716-446655440000",
+            "type": "string"
+          },
+          "idempotency_key": {
+            "example": "job_550e8400-e29b-41d4-a716-446655440000_consumed",
+            "type": "string"
+          },
+          "job_id": {
+            "example": "550e8400-e29b-41d4-a716-446655440000",
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object"
+          },
+          "organization_id": {
+            "example": "550e8400-e29b-41d4-a716-446655440000",
+            "type": "string"
+          },
+          "transaction_type": {
+            "enum": [
+              "credit",
+              "consumed",
+              "refunded",
+              "adjustment",
+              "expiration"
+            ],
+            "example": "consumed",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "credits.CreditTransactionProjectResponse": {
+        "properties": {
+          "amount": {
+            "example": 50,
+            "type": "integer"
+          },
+          "balance_after": {
+            "example": 950,
+            "type": "integer"
+          },
+          "created_at": {
+            "example": "2024-01-15T10:30:00Z",
+            "type": "string"
+          },
+          "description": {
+            "example": "OCR processing for document.pdf",
+            "type": "string"
+          },
+          "expires_at": {
+            "example": "2024-12-31T23:59:59Z",
+            "type": "string"
+          },
+          "id": {
+            "example": "550e8400-e29b-41d4-a716-446655440000",
+            "type": "string"
+          },
+          "idempotency_key": {
+            "example": "job_550e8400-e29b-41d4-a716-446655440000_consumed",
+            "type": "string"
+          },
+          "job_id": {
+            "example": "550e8400-e29b-41d4-a716-446655440000",
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object"
+          },
+          "project_id": {
+            "example": "550e8400-e29b-41d4-a716-446655440000",
+            "type": "string"
+          },
+          "transaction_type": {
+            "enum": [
+              "credit",
+              "consumed",
+              "refunded",
+              "adjustment",
+              "expiration"
+            ],
+            "example": "consumed",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "credits.CreditTransactionsResponse-credits_CreditTransactionOrganizationResponse": {
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/credits.PaginationInfo"
+          },
+          "transactions": {
+            "items": {
+              "$ref": "#/components/schemas/credits.CreditTransactionOrganizationResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "credits.CreditTransactionsResponse-credits_CreditTransactionProjectResponse": {
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/credits.PaginationInfo"
+          },
+          "transactions": {
+            "items": {
+              "$ref": "#/components/schemas/credits.CreditTransactionProjectResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "credits.GrantedBenefitResponse": {
+        "properties": {
+          "benefit_id": {
+            "example": "a5d7da4a-5c80-4c51-a6bc-d7118b03f27e",
+            "type": "string"
+          },
+          "benefit_metadata": {
+            "additionalProperties": {},
+            "type": "object"
+          },
+          "benefit_type": {
+            "example": "meter_credit",
+            "type": "string"
+          },
+          "granted_at": {
+            "example": "2025-10-06T17:24:25.620964Z",
+            "type": "string"
+          },
+          "id": {
+            "example": "2e2b4669-dcfc-44dd-9845-6f306f978abf",
+            "type": "string"
+          },
+          "properties": {
+            "additionalProperties": {},
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "credits.PaginationInfo": {
+        "properties": {
+          "limit": {
+            "example": 20,
+            "type": "integer"
+          },
+          "page": {
+            "example": 1,
+            "type": "integer"
+          },
+          "total": {
+            "example": 150,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "credits.ProductCatalog": {
+        "properties": {
+          "credit_packs": {
+            "items": {
+              "$ref": "#/components/schemas/credits.CatalogProduct"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "subscriptions": {
+            "items": {
+              "$ref": "#/components/schemas/credits.CatalogProduct"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "health.HealthCheck": {
+        "properties": {
+          "details": {
+            "description": "Additional health check details",
+            "type": "object"
+          },
+          "message": {
+            "example": "Database connection successful",
+            "type": "string"
+          },
+          "response_time": {
+            "example": "5ms",
+            "type": "string"
+          },
+          "status": {
+            "example": "healthy",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "health.HealthStatus": {
+        "properties": {
+          "checks": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/health.HealthCheck"
+            },
+            "type": "object"
+          },
+          "status": {
+            "example": "healthy",
+            "type": "string"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/health.HealthSummary"
+          },
+          "timestamp": {
+            "example": "2023-12-25T10:30:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "version": {
+            "example": "1.0.0",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "health.HealthSummary": {
+        "properties": {
+          "degraded": {
+            "example": 1,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "down": {
+            "example": 0,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "healthy": {
+            "example": 2,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "total": {
+            "example": 3,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.JobListItem": {
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "completed_at": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "credits_used": {
+            "type": "integer"
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "processed_pages": {
+            "type": "integer"
+          },
+          "processing_time": {
+            "type": "number"
+          },
+          "result_format": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "template_id": {
+            "type": "string"
+          },
+          "template_name": {
+            "type": "string"
+          },
+          "total_pages": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.JobManagementResponse": {
+        "properties": {
+          "action": {
+            "example": "retry",
+            "type": "string"
+          },
+          "job": {
+            "$ref": "#/components/schemas/jobs.JobResponse"
+          },
+          "message": {
+            "example": "Job retry initiated successfully",
+            "type": "string"
+          },
+          "success": {
+            "example": true,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.JobResponse": {
+        "properties": {
+          "completed_at": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "credits_used": {
+            "type": "integer"
+          },
+          "error_message": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "type": "integer"
+          },
+          "id": {
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {},
+            "type": "object"
+          },
+          "processed_pages": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "team_id": {
+            "type": "string"
+          },
+          "template_id": {
+            "type": "string"
+          },
+          "template_name": {
+            "type": "string"
+          },
+          "total_pages": {
+            "type": "integer"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.JobStatusResponse": {
+        "properties": {
+          "estimated_stuck": {
+            "example": false,
+            "type": "boolean"
+          },
+          "is_restartable": {
+            "example": true,
+            "type": "boolean"
+          },
+          "is_retryable": {
+            "example": true,
+            "type": "boolean"
+          },
+          "job": {
+            "$ref": "#/components/schemas/jobs.JobResponse"
+          },
+          "last_activity": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "workflow_status": {
+            "$ref": "#/components/schemas/jobs.WorkflowStatusInfo"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.JobsListResponse": {
+        "properties": {
+          "jobs": {
+            "items": {
+              "$ref": "#/components/schemas/jobs.JobListItem"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/jobs.PaginationInfo"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.PaginationInfo": {
+        "properties": {
+          "limit": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.RestartJobRequest": {
+        "properties": {
+          "force": {
+            "description": "Force restart even for completed jobs",
+            "example": false,
+            "type": "boolean"
+          },
+          "preserve_progress": {
+            "description": "Keep existing progress when restarting",
+            "example": false,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.RetryJobRequest": {
+        "properties": {
+          "force": {
+            "description": "Force retry even if job appears active",
+            "example": false,
+            "type": "boolean"
+          },
+          "reset_pages": {
+            "description": "Reset page processing status",
+            "example": false,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.WorkflowJobStatusInfo": {
+        "properties": {
+          "job_id": {
+            "type": "string"
+          },
+          "progress": {
+            "$ref": "#/components/schemas/jobs.WorkflowProgressInfo"
+          },
+          "status": {
+            "example": "page_processing",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.WorkflowProgressInfo": {
+        "properties": {
+          "job_id": {
+            "type": "string"
+          },
+          "message": {
+            "example": "Processing page 5 of 10",
+            "type": "string"
+          },
+          "percentage": {
+            "example": 50,
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "stage": {
+            "example": "page_processing",
+            "type": "string"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "jobs.WorkflowStatusInfo": {
+        "properties": {
+          "close_time": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "job_status": {
+            "$ref": "#/components/schemas/jobs.WorkflowJobStatusInfo"
+          },
+          "progress": {
+            "$ref": "#/components/schemas/jobs.WorkflowProgressInfo"
+          },
+          "run_id": {
+            "example": "abc123-def456-ghi789",
+            "type": "string"
+          },
+          "start_time": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "RUNNING",
+              "COMPLETED",
+              "FAILED",
+              "CANCELED",
+              "TERMINATED",
+              "CONTINUED_AS_NEW",
+              "TIMED_OUT"
+            ],
+            "example": "RUNNING",
+            "type": "string"
+          },
+          "workflow_id": {
+            "example": "ocr-job-123e4567-e89b-12d3-a456-426614174000",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.JobStatus": {
+        "type": "string",
+        "x-enum-varnames": [
+          "JobStatusPending",
+          "JobStatusProcessing",
+          "JobStatusCompleted",
+          "JobStatusPartiallyDone",
+          "JobStatusFailed"
+        ]
+      },
+      "models.OCRResultResponse": {
+        "properties": {
+          "completed_at": {
+            "type": "string"
+          },
+          "credits_used": {
+            "type": "integer"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "job_id": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "pages": {
+            "items": {
+              "$ref": "#/components/schemas/models.PageResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/models.PaginationResponse"
+          },
+          "processed_pages": {
+            "type": "integer"
+          },
+          "processing_time_seconds": {
+            "type": "number"
+          },
+          "result_format": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/models.JobStatus"
+          },
+          "total_pages": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "models.OCRStatusResponse": {
+        "properties": {
+          "completed_at": {
+            "type": "string"
+          },
+          "error_message": {
+            "type": "string"
+          },
+          "job_id": {
+            "type": "string"
+          },
+          "processed_pages": {
+            "type": "integer"
+          },
+          "result_format": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "x-enum-varnames": [
+              "JobStatusPending",
+              "JobStatusProcessing",
+              "JobStatusCompleted",
+              "JobStatusPartiallyDone",
+              "JobStatusFailed"
+            ]
+          },
+          "total_pages": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "models.PageMetadata": {
+        "properties": {
+          "extra": {
+            "description": "Additional page metadata",
+            "type": "object"
+          },
+          "processing_ms": {
+            "type": "integer"
+          },
+          "retry_count": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "models.PageResponse": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/models.PageMetadata"
+          },
+          "page_number": {
+            "type": "integer"
+          },
+          "processed_at": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.PaginationResponse": {
+        "properties": {
+          "limit": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "models_list.ModelResponse": {
+        "properties": {
+          "credits_per_page": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "models_list.ModelsListResponse": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/models_list.ModelResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "response.ErrorCode": {
+        "type": "string",
+        "x-enum-varnames": [
+          "ErrCodeValidation",
+          "ErrCodeNotFound",
+          "ErrCodeUnauthorized",
+          "ErrCodeForbidden",
+          "ErrCodeInternal",
+          "ErrCodeBadRequest",
+          "ErrCodeConflict",
+          "ErrCodeTooManyReqs",
+          "ErrLessCredits"
+        ]
+      },
+      "response.ErrorMessage": {
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "response.ErrorResponse": {
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/response.ErrorCode"
+          },
+          "details": {},
+          "error": {
+            "$ref": "#/components/schemas/response.ErrorMessage"
+          }
+        },
+        "type": "object"
+      },
+      "sqlc.ResultFormatEnum": {
+        "example": "structured",
+        "type": "string",
+        "x-enum-varnames": [
+          "ResultFormatEnumMarkdown",
+          "ResultFormatEnumStructured",
+          "ResultFormatEnumPerPageStructured"
+        ]
+      },
+      "status.Response": {
+        "properties": {
+          "created_at": {
+            "description": "When the job was created",
+            "type": "string"
+          },
+          "error_message": {
+            "description": "Error message if job failed\nexample: Failed to process page 5",
+            "type": "string"
+          },
+          "file_name": {
+            "description": "The name of the file being processed\nexample: quarterly_financial_report_q4.pdf",
+            "type": "string"
+          },
+          "id": {
+            "description": "The unique identifier of the job\nexample: 123e4567-e89b-12d3-a456-426614174000",
+            "type": "string"
+          },
+          "processed_pages": {
+            "description": "Number of pages processed so far\nexample: 24",
+            "type": "integer"
+          },
+          "processing_time": {
+            "description": "Total processing time in seconds\nexample: 156",
+            "type": "integer"
+          },
+          "result_format": {
+            "description": "The result format type of the job\nexample: structured",
+            "type": "string"
+          },
+          "status": {
+            "description": "The current status of the job\nexample: completed",
+            "type": "string",
+            "x-enum-varnames": [
+              "JobStatusPending",
+              "JobStatusProcessing",
+              "JobStatusCompleted",
+              "JobStatusPartiallyDone",
+              "JobStatusFailed"
+            ]
+          },
+          "total_pages": {
+            "description": "Total number of pages in the document\nexample: 24",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "templates.CreateTemplateRequest": {
+        "properties": {
+          "color": {
+            "example": "#FF5733",
+            "type": "string"
+          },
+          "description": {
+            "example": "Template for processing invoice documents",
+            "maxLength": 1000,
+            "type": "string"
+          },
+          "enabled": {
+            "example": true,
+            "type": "boolean"
+          },
+          "favorite": {
+            "example": true,
+            "type": "boolean"
+          },
+          "format": {
+            "$ref": "#/components/schemas/sqlc.ResultFormatEnum"
+          },
+          "instructions": {
+            "example": "Extract key financial information from invoices",
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "name": {
+            "example": "Invoice Template",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "schema": {
+            "description": "JSON schema definition",
+            "type": "object"
+          },
+          "tags": {
+            "example": [
+              "financial",
+              "invoice",
+              "processing"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "team_id": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "string",
+            "type": "string"
+          }
+        },
+        "required": [
+          "format",
+          "name",
+          "team_id"
+        ],
+        "type": "object"
+      },
+      "templates.ListTemplatesResponse": {
+        "properties": {
+          "limit": {
+            "example": 10,
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "page": {
+            "example": 1,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "templates": {
+            "items": {
+              "$ref": "#/components/schemas/templates.TemplateResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "total": {
+            "example": 25,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "total_pages": {
+            "example": 3,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "templates.TemplateResponse": {
+        "properties": {
+          "checksum": {
+            "example": "abc123def456",
+            "type": "string"
+          },
+          "color": {
+            "example": "#FF5733",
+            "type": "string"
+          },
+          "created_at": {
+            "example": "2023-12-25T10:30:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "example": "Template for processing invoice documents",
+            "type": "string"
+          },
+          "enabled": {
+            "example": true,
+            "type": "boolean"
+          },
+          "favorite": {
+            "example": true,
+            "type": "boolean"
+          },
+          "format": {
+            "example": "structured",
+            "type": "string",
+            "x-enum-varnames": [
+              "ResultFormatEnumMarkdown",
+              "ResultFormatEnumStructured",
+              "ResultFormatEnumPerPageStructured"
+            ]
+          },
+          "id": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid",
+            "type": "string"
+          },
+          "instructions": {
+            "example": "Extract key financial information from invoices",
+            "type": "string"
+          },
+          "last_used": {
+            "example": "2023-12-25T10:30:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "name": {
+            "example": "Invoice Template",
+            "type": "string"
+          },
+          "schema": {
+            "description": "JSON schema definition",
+            "type": "object"
+          },
+          "tags": {
+            "example": [
+              "financial",
+              "invoice",
+              "processing"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "team_id": {
+            "example": "123e4567-e89b-12d3-a456-426614174002",
+            "format": "uuid",
+            "type": "string"
+          },
+          "updated_at": {
+            "example": "2023-12-25T10:30:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "usage_count": {
+            "example": 5,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "user_id": {
+            "example": "123e4567-e89b-12d3-a456-426614174001",
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "templates.TemplateStatsResponse": {
+        "properties": {
+          "average_usage_per_template": {
+            "example": 6,
+            "type": "number"
+          },
+          "favorite_templates": {
+            "example": 5,
+            "type": "integer"
+          },
+          "markdown_templates": {
+            "example": 10,
+            "type": "integer"
+          },
+          "max_usage": {
+            "example": 25,
+            "type": "integer"
+          },
+          "min_usage": {
+            "example": 0,
+            "type": "integer"
+          },
+          "per_page_structured_templates": {
+            "example": 3,
+            "type": "integer"
+          },
+          "structured_templates": {
+            "example": 12,
+            "type": "integer"
+          },
+          "total_templates": {
+            "example": 25,
+            "type": "integer"
+          },
+          "total_usage": {
+            "example": 150,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "templates.UpdateTemplateRequest": {
+        "properties": {
+          "color": {
+            "example": "#FF5733",
+            "type": "string"
+          },
+          "description": {
+            "example": "Updated template for processing invoice documents",
+            "maxLength": 1000,
+            "type": "string"
+          },
+          "enabled": {
+            "example": true,
+            "type": "boolean"
+          },
+          "favorite": {
+            "example": true,
+            "type": "boolean"
+          },
+          "format": {
+            "example": "structured",
+            "type": "string",
+            "x-enum-varnames": [
+              "ResultFormatEnumMarkdown",
+              "ResultFormatEnumStructured",
+              "ResultFormatEnumPerPageStructured"
+            ]
+          },
+          "instructions": {
+            "example": "Extract key financial information from invoices",
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "name": {
+            "example": "Updated Invoice Template",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "schema": {
+            "description": "JSON schema definition",
+            "type": "object"
+          },
+          "tags": {
+            "example": [
+              "financial",
+              "invoice",
+              "processing"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "required": [
+          "format",
+          "name"
+        ],
+        "type": "object"
+      },
+      "upload.CompletedPart": {
+        "properties": {
+          "etag": {
+            "example": "\"9bb58f26192e4ba00f01e2e7b136bbd8\"",
+            "minLength": 1,
+            "type": "string"
+          },
+          "part_number": {
+            "example": 1,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "etag",
+          "part_number"
+        ],
+        "type": "object"
+      },
+      "upload.DirectUploadCompleteRequest": {
+        "properties": {
+          "parts": {
+            "items": {
+              "$ref": "#/components/schemas/upload.CompletedPart"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "required": [
+          "parts"
+        ],
+        "type": "object"
+      },
+      "upload.DirectUploadCompleteResponse": {
+        "properties": {
+          "created_at": {
+            "example": "2023-12-25T10:30:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "job_id": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid",
+            "type": "string"
+          },
+          "message": {
+            "example": "Upload completed successfully, processing started",
+            "type": "string"
+          },
+          "status": {
+            "example": "pending",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "upload.DirectUploadResponse": {
+        "properties": {
+          "chunk_size": {
+            "example": 5242880,
+            "type": "integer"
+          },
+          "complete_url": {
+            "example": "/api/v1/ocr/uploads/123e4567-e89b-12d3-a456-426614174000/complete",
+            "type": "string"
+          },
+          "expires_at": {
+            "example": "2023-12-25T10:45:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "job_id": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid",
+            "type": "string"
+          },
+          "parts": {
+            "items": {
+              "$ref": "#/components/schemas/upload.MultipartPart"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "total_chunks": {
+            "example": 1,
+            "type": "integer"
+          },
+          "upload_id": {
+            "example": "550e8400-e29b-41d4-a716-446655440000",
+            "type": "string"
+          },
+          "upload_type": {
+            "example": "multipart",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "upload.InitiateDirectUploadRequest": {
+        "properties": {
+          "content_type": {
+            "example": "application/pdf",
+            "type": "string"
+          },
+          "file_name": {
+            "example": "document.pdf",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "file_size": {
+            "example": 1048576,
+            "maximum": 104857600,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "format": {
+            "description": "Option 2: Direct specification (will create template on-the-fly)",
+            "enum": [
+              "markdown",
+              "structured",
+              "per_page_structured"
+            ],
+            "example": "markdown",
+            "type": "string"
+          },
+          "instructions": {
+            "example": "Extract key information",
+            "maxLength": 100,
+            "type": "string"
+          },
+          "model": {
+            "example": "standard-v1",
+            "type": "string"
+          },
+          "schema": {
+            "additionalProperties": {},
+            "type": "object"
+          },
+          "template_id": {
+            "description": "Option 1: Use existing template",
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "content_type",
+          "file_name"
+        ],
+        "type": "object"
+      },
+      "upload.MultipartPart": {
+        "properties": {
+          "end_byte": {
+            "example": 5242879,
+            "type": "integer"
+          },
+          "part_number": {
+            "example": 1,
+            "type": "integer"
+          },
+          "start_byte": {
+            "example": 0,
+            "type": "integer"
+          },
+          "upload_url": {
+            "example": "https://r2.example.com/bucket/file.pdf?partNumber=1&uploadId=abc123",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "upload.RemoteURLUploadRequest": {
+        "properties": {
+          "file_name": {
+            "example": "document.pdf",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "format": {
+            "description": "Option 2: Direct specification (will create template on-the-fly)",
+            "enum": [
+              "markdown",
+              "structured",
+              "per_page_structured"
+            ],
+            "example": "markdown",
+            "type": "string"
+          },
+          "instructions": {
+            "example": "Extract key information",
+            "maxLength": 100,
+            "type": "string"
+          },
+          "model": {
+            "example": "standard-v1",
+            "type": "string"
+          },
+          "schema": {
+            "additionalProperties": {},
+            "type": "object"
+          },
+          "template_id": {
+            "description": "Option 1: Use existing template",
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid",
+            "type": "string"
+          },
+          "url": {
+            "example": "https://example.com/document.pdf",
+            "maxLength": 2000,
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "type": "object"
+      },
+      "upload.RemoteURLUploadResponse": {
+        "properties": {
+          "created_at": {
+            "example": "2023-12-25T10:30:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "job_id": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "format": "uuid",
+            "type": "string"
+          },
+          "source_url": {
+            "example": "https://example.com/document.pdf",
+            "type": "string"
+          },
+          "status": {
+            "example": "pending",
+            "type": "string",
+            "x-enum-varnames": [
+              "JobStatusPending",
+              "JobStatusProcessing",
+              "JobStatusCompleted",
+              "JobStatusPartiallyDone",
+              "JobStatusFailed"
+            ]
+          }
+        },
+        "type": "object"
+      },
+      "webhooks.R2UploadNotification": {
+        "properties": {
+          "object_key": {
+            "example": "uploads/document.pdf",
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "size": {
+            "example": 1024,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "timestamp": {
+            "example": "2024-01-01T00:00:00Z",
+            "type": "string"
+          }
+        },
+        "required": [
+          "object_key",
+          "size",
+          "timestamp"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "": {
+        "description": "Provide your LeapOCR API key via the `X-API-KEY` header. Example: X-API-KEY: YOUR_API_KEY",
+        "in": "header",
+        "name": "X-API-KEY",
+        "type": "apiKey"
+      },
+      "bearerauth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "support@leapocr.com",
+      "name": "LeapOCR Support",
+      "url": "http://leapocr.com/support"
+    },
+    "description": "Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>",
+    "license": {
+      "name": "LeapOCR License",
+      "url": "http://leapocr.com/license"
+    },
+    "termsOfService": "http://leapocr.com/terms/",
+    "title": "LeapOCR API",
+    "version": "v1"
+  },
+  "externalDocs": {
+    "description": "OpenAPI Specification",
+    "url": "https://swagger.io/resources/open-api/"
+  },
+  "paths": {
+    "/ocr/result/{job_id}": {
+      "get": {
+        "description": "Retrieve OCR processing results for a completed job with extracted text and structured data. Returns job status if processing is still in progress. Supports pagination",
+        "operationId": "getJobResult",
+        "parameters": [
+          {
+            "description": "OCR job ID",
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Page number for result pagination",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Number of items per page",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 100,
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.OCRResultResponse"
+                }
+              }
+            },
+            "description": "OCR processing completed, results available"
+          },
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.OCRStatusResponse"
+                }
+              }
+            },
+            "description": "OCR processing in progress, status returned"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request - invalid job ID or parameters"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden - job belongs to different user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found - job does not exist"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "summary": "Get OCR job result",
+        "tags": [
+          "OCR",
+          "SDK"
+        ]
+      }
+    },
+    "/ocr/status/{job_id}": {
+      "get": {
+        "description": "Retrieve current processing status and progress information for an OCR job. Shows completion status, progress percentage, and any error details",
+        "operationId": "getJobStatus",
+        "parameters": [
+          {
+            "description": "OCR job ID",
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/status.Response"
+                }
+              }
+            },
+            "description": "Job status retrieved successfully"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request - invalid job ID format"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized - authentication required"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden - job belongs to different user"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found - job does not exist"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "summary": "Get OCR job status",
+        "tags": [
+          "OCR",
+          "SDK"
+        ]
+      }
+    },
+    "/ocr/uploads/direct": {
+      "post": {
+        "description": "Create a job and generate presigned URLs for direct file upload to S3. Uses multipart upload for all files (1 part for small files, multiple parts for large files ≥50MB).\n**Output Types:**\n- `structured`: Structured data extraction. Requires one of: category_id (with schema & instructions)\n- `markdown`: Page-by-page OCR. All configuration fields are optional\n- `per_page_structured`: Per-page structured extraction (future or hybrid mode)\n**Note:** Only one of category_id, schema, or instruction can be provided per request",
+        "operationId": "directUpload",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/upload.InitiateDirectUploadRequest"
+              }
+            }
+          },
+          "description": "Upload initiation request",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/upload.DirectUploadResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "402": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Insufficient credits"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Direct upload",
+        "tags": [
+          "OCR",
+          "Upload",
+          "SDK"
+        ]
+      }
+    },
+    "/ocr/uploads/url": {
+      "post": {
+        "description": "Create a job and start processing from a remote URL. Supported format: PDF (.pdf) only.\n**Output Types:**\n- `structured`: Structured data extraction. Requires one of: category_id (with schema & instructions)\n- `markdown`: Page-by-page OCR. All configuration fields are optional\n- `per_page_structured`: Per-page structured extraction (future or hybrid mode)\n**Note:** Only one of category_id, schema, or instruction can be provided per request",
+        "operationId": "uploadFromRemoteURL",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/upload.RemoteURLUploadRequest"
+              }
+            }
+          },
+          "description": "Remote URL upload request",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/upload.RemoteURLUploadResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "402": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Insufficient credits"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Remote URL upload",
+        "tags": [
+          "OCR",
+          "Upload",
+          "SDK"
+        ]
+      }
+    },
+    "/ocr/uploads/{job_id}/complete": {
+      "post": {
+        "description": "Complete a direct upload by providing all uploaded part ETags",
+        "operationId": "completeDirectUpload",
+        "parameters": [
+          {
+            "description": "Job ID",
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/upload.DirectUploadCompleteRequest"
+              }
+            }
+          },
+          "description": "Completion request with part ETags",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/upload.DirectUploadCompleteResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response.ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Complete direct upload",
+        "tags": [
+          "OCR",
+          "Upload",
+          "SDK"
+        ]
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "tags": [
+    {
+      "description": "Authentication and authorization endpoints",
+      "name": "Authentication"
+    },
+    {
+      "description": "Core OCR processing endpoints for document text extraction",
+      "name": "OCR"
+    },
+    {
+      "description": "Job management and monitoring endpoints",
+      "name": "Jobs"
+    },
+    {
+      "description": "Template management for structured data extraction",
+      "name": "Templates"
+    },
+    {
+      "description": "Usage analytics and reporting endpoints",
+      "name": "Analytics"
+    },
+    {
+      "description": "Credit management and billing endpoints",
+      "name": "Credits"
+    },
+    {
+      "description": "Webhook management and event handling",
+      "name": "Webhooks"
+    },
+    {
+      "description": "System health and status endpoints",
+      "name": "Health"
+    }
+  ],
+  "servers": [
+    {
+      "url": "api.leapocr.com/api/v1"
+    },
+    {
+      "description": "Local development server",
+      "url": "http://localhost:8080/api/v1"
+    },
+    {
+      "description": "Production server",
+      "url": "https://api.leapocr.com/api/v1"
+    }
+  ]
+}
