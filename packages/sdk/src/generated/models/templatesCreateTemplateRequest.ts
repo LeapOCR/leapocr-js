@@ -5,8 +5,8 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { SqlcResultFormatEnum } from './sqlcResultFormatEnum';
-import type { TemplatesCreateTemplateRequestSchema } from './templatesCreateTemplateRequestSchema';
+import type { SqlcResultFormatEnum } from "./sqlcResultFormatEnum";
+import type { TemplatesCreateTemplateRequestSchema } from "./templatesCreateTemplateRequestSchema";
 
 export interface TemplatesCreateTemplateRequest {
   color?: string;

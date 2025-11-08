@@ -5,7 +5,7 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { HealthHealthCheckDetails } from './healthHealthCheckDetails';
+import type { HealthHealthCheckDetails } from "./healthHealthCheckDetails";
 
 export interface HealthHealthCheck {
   /** Additional health check details */

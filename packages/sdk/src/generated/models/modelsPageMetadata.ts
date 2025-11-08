@@ -5,7 +5,7 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { ModelsPageMetadataExtra } from './modelsPageMetadataExtra';
+import type { ModelsPageMetadataExtra } from "./modelsPageMetadataExtra";
 
 export interface ModelsPageMetadata {
   /** Additional page metadata */

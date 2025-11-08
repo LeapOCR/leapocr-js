@@ -6,13 +6,13 @@
  * OpenAPI spec version: v1
  */
 
-export type GetAnalyticsJobsTimeseriesBucket = typeof GetAnalyticsJobsTimeseriesBucket[keyof typeof GetAnalyticsJobsTimeseriesBucket];
-
+export type GetAnalyticsJobsTimeseriesBucket =
+  (typeof GetAnalyticsJobsTimeseriesBucket)[keyof typeof GetAnalyticsJobsTimeseriesBucket];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetAnalyticsJobsTimeseriesBucket = {
-  hour: 'hour',
-  day: 'day',
-  week: 'week',
-  month: 'month',
+  hour: "hour",
+  day: "day",
+  week: "week",
+  month: "month",
 } as const;

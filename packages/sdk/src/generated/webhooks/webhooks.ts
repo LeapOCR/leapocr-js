@@ -8,45 +8,62 @@
 import type {
   HandlePolarWebhookBody,
   PostWebhooksR2UploadNotification200,
-  WebhooksR2UploadNotification
-} from '.././models';
+  WebhooksR2UploadNotification,
+} from ".././models";
 
-import { customInstance } from '../../lib/custom-instance';
-import type { BodyType } from '../../lib/custom-instance';
-
+import { customInstance } from "../../lib/custom-instance";
+import type { BodyType } from "../../lib/custom-instance";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-  export const getWebhooks = () => {
-/**
- * Process webhook events from Polar billing system with signature verification
- * @summary Handle Polar webhooks
- */
-const handlePolarWebhook = (
-    handlePolarWebhookBody: BodyType<HandlePolarWebhookBody>,
- options?: SecondParameter<typeof customInstance<string>>,) => {
-      return customInstance<string>(
-      {url: `/webhooks/polar`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: handlePolarWebhookBody
-    },
-      options);
-    }
+export const getWebhooks = () => {
   /**
- * Receive notification from Cloudflare R2 when file upload is complete
- * @summary Handle R2 upload notification
- */
-const postWebhooksR2UploadNotification = (
+   * Process webhook events from Polar billing system with signature verification
+   * @summary Handle Polar webhooks
+   */
+  const handlePolarWebhook = (
+    handlePolarWebhookBody: BodyType<HandlePolarWebhookBody>,
+    options?: SecondParameter<typeof customInstance<string>>,
+  ) => {
+    return customInstance<string>(
+      {
+        url: `/webhooks/polar`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: handlePolarWebhookBody,
+      },
+      options,
+    );
+  };
+  /**
+   * Receive notification from Cloudflare R2 when file upload is complete
+   * @summary Handle R2 upload notification
+   */
+  const postWebhooksR2UploadNotification = (
     webhooksR2UploadNotification: BodyType<WebhooksR2UploadNotification>,
- options?: SecondParameter<typeof customInstance<PostWebhooksR2UploadNotification200>>,) => {
-      return customInstance<PostWebhooksR2UploadNotification200>(
-      {url: `/webhooks/r2-upload-notification`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: webhooksR2UploadNotification
-    },
-      options);
-    }
-  return {handlePolarWebhook,postWebhooksR2UploadNotification}};
-export type HandlePolarWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['handlePolarWebhook']>>>
-export type PostWebhooksR2UploadNotificationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['postWebhooksR2UploadNotification']>>>
+    options?: SecondParameter<
+      typeof customInstance<PostWebhooksR2UploadNotification200>
+    >,
+  ) => {
+    return customInstance<PostWebhooksR2UploadNotification200>(
+      {
+        url: `/webhooks/r2-upload-notification`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: webhooksR2UploadNotification,
+      },
+      options,
+    );
+  };
+  return { handlePolarWebhook, postWebhooksR2UploadNotification };
+};
+export type HandlePolarWebhookResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["handlePolarWebhook"]>>
+>;
+export type PostWebhooksR2UploadNotificationResult = NonNullable<
+  Awaited<
+    ReturnType<
+      ReturnType<typeof getWebhooks>["postWebhooksR2UploadNotification"]
+    >
+  >
+>;

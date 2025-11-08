@@ -6,13 +6,13 @@
  * OpenAPI spec version: v1
  */
 
-export type GetAnalyticsJobsTimeseriesGranularity = typeof GetAnalyticsJobsTimeseriesGranularity[keyof typeof GetAnalyticsJobsTimeseriesGranularity];
-
+export type GetAnalyticsJobsTimeseriesGranularity =
+  (typeof GetAnalyticsJobsTimeseriesGranularity)[keyof typeof GetAnalyticsJobsTimeseriesGranularity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetAnalyticsJobsTimeseriesGranularity = {
-  hour: 'hour',
-  day: 'day',
-  week: 'week',
-  month: 'month',
+  hour: "hour",
+  day: "day",
+  week: "week",
+  month: "month",
 } as const;

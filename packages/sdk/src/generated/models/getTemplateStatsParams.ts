@@ -7,8 +7,8 @@
  */
 
 export type GetTemplateStatsParams = {
-/**
- * Team ID to get template statistics for
- */
-team_id: string;
+  /**
+   * Team ID to get template statistics for
+   */
+  team_id: string;
 };

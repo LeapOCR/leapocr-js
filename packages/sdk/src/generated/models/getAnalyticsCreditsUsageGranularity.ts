@@ -6,13 +6,13 @@
  * OpenAPI spec version: v1
  */
 
-export type GetAnalyticsCreditsUsageGranularity = typeof GetAnalyticsCreditsUsageGranularity[keyof typeof GetAnalyticsCreditsUsageGranularity];
-
+export type GetAnalyticsCreditsUsageGranularity =
+  (typeof GetAnalyticsCreditsUsageGranularity)[keyof typeof GetAnalyticsCreditsUsageGranularity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetAnalyticsCreditsUsageGranularity = {
-  hour: 'hour',
-  day: 'day',
-  week: 'week',
-  month: 'month',
+  hour: "hour",
+  day: "day",
+  week: "week",
+  month: "month",
 } as const;

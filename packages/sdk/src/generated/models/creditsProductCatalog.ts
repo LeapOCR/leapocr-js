@@ -5,7 +5,7 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { CreditsCatalogProduct } from './creditsCatalogProduct';
+import type { CreditsCatalogProduct } from "./creditsCatalogProduct";
 
 export interface CreditsProductCatalog {
   credit_packs?: CreditsCatalogProduct[];

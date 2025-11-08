@@ -5,8 +5,8 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { CreditsCreditTransactionOrganizationResponseMetadata } from './creditsCreditTransactionOrganizationResponseMetadata';
-import type { CreditsCreditTransactionOrganizationResponseTransactionType } from './creditsCreditTransactionOrganizationResponseTransactionType';
+import type { CreditsCreditTransactionOrganizationResponseMetadata } from "./creditsCreditTransactionOrganizationResponseMetadata";
+import type { CreditsCreditTransactionOrganizationResponseTransactionType } from "./creditsCreditTransactionOrganizationResponseTransactionType";
 
 export interface CreditsCreditTransactionOrganizationResponse {
   amount?: number;

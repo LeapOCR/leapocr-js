@@ -5,27 +5,27 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { GetAnalyticsTemplatesTopRange } from './getAnalyticsTemplatesTopRange';
+import type { GetAnalyticsTemplatesTopRange } from "./getAnalyticsTemplatesTopRange";
 
 export type GetAnalyticsTemplatesTopParams = {
-/**
- * Time range preset
- */
-range?: GetAnalyticsTemplatesTopRange;
-/**
- * Start date (RFC3339 or YYYY-MM-DD format)
- */
-start?: string;
-/**
- * End date (RFC3339 or YYYY-MM-DD format)
- */
-end?: string;
-/**
- * Maximum number of templates to return (default: 10, max: 100)
- */
-limit?: number;
-/**
- * Filter by team ID
- */
-team_id?: string;
+  /**
+   * Time range preset
+   */
+  range?: GetAnalyticsTemplatesTopRange;
+  /**
+   * Start date (RFC3339 or YYYY-MM-DD format)
+   */
+  start?: string;
+  /**
+   * End date (RFC3339 or YYYY-MM-DD format)
+   */
+  end?: string;
+  /**
+   * Maximum number of templates to return (default: 10, max: 100)
+   */
+  limit?: number;
+  /**
+   * Filter by team ID
+   */
+  team_id?: string;
 };

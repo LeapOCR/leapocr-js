@@ -5,7 +5,7 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { UploadCompletedPart } from './uploadCompletedPart';
+import type { UploadCompletedPart } from "./uploadCompletedPart";
 
 export interface UploadDirectUploadCompleteRequest {
   /** @minItems 1 */

@@ -16,55 +16,58 @@ import type {
   UploadDirectUploadResponse,
   UploadInitiateDirectUploadRequest,
   UploadRemoteURLUploadRequest,
-  UploadRemoteURLUploadResponse
-} from '.././models';
+  UploadRemoteURLUploadResponse,
+} from ".././models";
 
-import { customInstance } from '../../lib/custom-instance';
-import type { BodyType } from '../../lib/custom-instance';
-
+import { customInstance } from "../../lib/custom-instance";
+import type { BodyType } from "../../lib/custom-instance";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-  export const getOcr = () => {
-/**
- * Retrieve a list of all enabled OCR models with their configurations, pricing, and capabilities
- * @summary List available OCR models
- */
-const listOCRModels = (
-    
- options?: SecondParameter<typeof customInstance<ModelsListModelsListResponse>>,) => {
-      return customInstance<ModelsListModelsListResponse>(
-      {url: `/ocr/models`, method: 'GET'
-    },
-      options);
-    }
+export const getOcr = () => {
   /**
- * Retrieve OCR processing results for a completed job with extracted text and structured data. Returns job status if processing is still in progress. Supports pagination
- * @summary Get OCR job result
- */
-const getJobResult = (
+   * Retrieve a list of all enabled OCR models with their configurations, pricing, and capabilities
+   * @summary List available OCR models
+   */
+  const listOCRModels = (
+    options?: SecondParameter<
+      typeof customInstance<ModelsListModelsListResponse>
+    >,
+  ) => {
+    return customInstance<ModelsListModelsListResponse>(
+      { url: `/ocr/models`, method: "GET" },
+      options,
+    );
+  };
+  /**
+   * Retrieve OCR processing results for a completed job with extracted text and structured data. Returns job status if processing is still in progress. Supports pagination
+   * @summary Get OCR job result
+   */
+  const getJobResult = (
     jobId: string,
     params?: GetJobResultParams,
- options?: SecondParameter<typeof customInstance<ModelsOCRResultResponse | ModelsOCRStatusResponse>>,) => {
-      return customInstance<ModelsOCRResultResponse | ModelsOCRStatusResponse>(
-      {url: `/ocr/result/${jobId}`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<ModelsOCRResultResponse | ModelsOCRStatusResponse>
+    >,
+  ) => {
+    return customInstance<ModelsOCRResultResponse | ModelsOCRStatusResponse>(
+      { url: `/ocr/result/${jobId}`, method: "GET", params },
+      options,
+    );
+  };
   /**
- * Retrieve current processing status and progress information for an OCR job. Shows completion status, progress percentage, and any error details
- * @summary Get OCR job status
- */
-const getJobStatus = (
+   * Retrieve current processing status and progress information for an OCR job. Shows completion status, progress percentage, and any error details
+   * @summary Get OCR job status
+   */
+  const getJobStatus = (
     jobId: string,
- options?: SecondParameter<typeof customInstance<StatusResponse>>,) => {
-      return customInstance<StatusResponse>(
-      {url: `/ocr/status/${jobId}`, method: 'GET'
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<StatusResponse>>,
+  ) => {
+    return customInstance<StatusResponse>(
+      { url: `/ocr/status/${jobId}`, method: "GET" },
+      options,
+    );
+  };
   /**
  * Create a job and generate presigned URLs for direct file upload to S3. Uses multipart upload for all files (1 part for small files, multiple parts for large files ≥50MB).
 **Output Types:**
@@ -74,16 +77,22 @@ const getJobStatus = (
 **Note:** Only one of category_id, schema, or instruction can be provided per request
  * @summary Direct upload
  */
-const directUpload = (
+  const directUpload = (
     uploadInitiateDirectUploadRequest: BodyType<UploadInitiateDirectUploadRequest>,
- options?: SecondParameter<typeof customInstance<UploadDirectUploadResponse>>,) => {
-      return customInstance<UploadDirectUploadResponse>(
-      {url: `/ocr/uploads/direct`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: uploadInitiateDirectUploadRequest
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<UploadDirectUploadResponse>
+    >,
+  ) => {
+    return customInstance<UploadDirectUploadResponse>(
+      {
+        url: `/ocr/uploads/direct`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: uploadInitiateDirectUploadRequest,
+      },
+      options,
+    );
+  };
   /**
  * Create a job and start processing from a remote URL. Supported format: PDF (.pdf) only.
 **Output Types:**
@@ -93,35 +102,67 @@ const directUpload = (
 **Note:** Only one of category_id, schema, or instruction can be provided per request
  * @summary Remote URL upload
  */
-const uploadFromRemoteURL = (
+  const uploadFromRemoteURL = (
     uploadRemoteURLUploadRequest: BodyType<UploadRemoteURLUploadRequest>,
- options?: SecondParameter<typeof customInstance<UploadRemoteURLUploadResponse>>,) => {
-      return customInstance<UploadRemoteURLUploadResponse>(
-      {url: `/ocr/uploads/url`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: uploadRemoteURLUploadRequest
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<UploadRemoteURLUploadResponse>
+    >,
+  ) => {
+    return customInstance<UploadRemoteURLUploadResponse>(
+      {
+        url: `/ocr/uploads/url`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: uploadRemoteURLUploadRequest,
+      },
+      options,
+    );
+  };
   /**
- * Complete a direct upload by providing all uploaded part ETags
- * @summary Complete direct upload
- */
-const completeDirectUpload = (
+   * Complete a direct upload by providing all uploaded part ETags
+   * @summary Complete direct upload
+   */
+  const completeDirectUpload = (
     jobId: string,
     uploadDirectUploadCompleteRequest: BodyType<UploadDirectUploadCompleteRequest>,
- options?: SecondParameter<typeof customInstance<UploadDirectUploadCompleteResponse>>,) => {
-      return customInstance<UploadDirectUploadCompleteResponse>(
-      {url: `/ocr/uploads/${jobId}/complete`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: uploadDirectUploadCompleteRequest
-    },
-      options);
-    }
-  return {listOCRModels,getJobResult,getJobStatus,directUpload,uploadFromRemoteURL,completeDirectUpload}};
-export type ListOCRModelsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['listOCRModels']>>>
-export type GetJobResultResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['getJobResult']>>>
-export type GetJobStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['getJobStatus']>>>
-export type DirectUploadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['directUpload']>>>
-export type UploadFromRemoteURLResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['uploadFromRemoteURL']>>>
-export type CompleteDirectUploadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['completeDirectUpload']>>>
+    options?: SecondParameter<
+      typeof customInstance<UploadDirectUploadCompleteResponse>
+    >,
+  ) => {
+    return customInstance<UploadDirectUploadCompleteResponse>(
+      {
+        url: `/ocr/uploads/${jobId}/complete`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: uploadDirectUploadCompleteRequest,
+      },
+      options,
+    );
+  };
+  return {
+    listOCRModels,
+    getJobResult,
+    getJobStatus,
+    directUpload,
+    uploadFromRemoteURL,
+    completeDirectUpload,
+  };
+};
+export type ListOCRModelsResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getOcr>["listOCRModels"]>>
+>;
+export type GetJobResultResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getOcr>["getJobResult"]>>
+>;
+export type GetJobStatusResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getOcr>["getJobStatus"]>>
+>;
+export type DirectUploadResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getOcr>["directUpload"]>>
+>;
+export type UploadFromRemoteURLResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getOcr>["uploadFromRemoteURL"]>>
+>;
+export type CompleteDirectUploadResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getOcr>["completeDirectUpload"]>>
+>;

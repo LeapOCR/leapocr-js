@@ -11,70 +11,100 @@ import type {
   CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse,
   CreditsProductCatalog,
   GetCreditTransactionsByOrganizationIDParams,
-  GetCreditTransactionsByTeamIDParams
-} from '.././models';
+  GetCreditTransactionsByTeamIDParams,
+} from ".././models";
 
-import { customInstance } from '../../lib/custom-instance';
-
+import { customInstance } from "../../lib/custom-instance";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-  export const getCredits = () => {
-/**
- * Retrieve current credit balance, consumption, trial status, active subscriptions, granted benefits, and active meters for the authenticated user's organization from the JWT token.
- * @summary Get organization credits balance
- */
-const getOrganizationCreditsBalance = (
-    
- options?: SecondParameter<typeof customInstance<CreditsCreditBalanceResponse>>,) => {
-      return customInstance<CreditsCreditBalanceResponse>(
-      {url: `/credits/organizations/balance`, method: 'GET'
-    },
-      options);
-    }
+export const getCredits = () => {
   /**
- * Retrieve paginated list of credit transactions for the authenticated user's organization
- * @summary Get credit transactions by organization ID
- */
-const getCreditTransactionsByOrganizationID = (
+   * Retrieve current credit balance, consumption, trial status, active subscriptions, granted benefits, and active meters for the authenticated user's organization from the JWT token.
+   * @summary Get organization credits balance
+   */
+  const getOrganizationCreditsBalance = (
+    options?: SecondParameter<
+      typeof customInstance<CreditsCreditBalanceResponse>
+    >,
+  ) => {
+    return customInstance<CreditsCreditBalanceResponse>(
+      { url: `/credits/organizations/balance`, method: "GET" },
+      options,
+    );
+  };
+  /**
+   * Retrieve paginated list of credit transactions for the authenticated user's organization
+   * @summary Get credit transactions by organization ID
+   */
+  const getCreditTransactionsByOrganizationID = (
     organizationId: string,
     params?: GetCreditTransactionsByOrganizationIDParams,
- options?: SecondParameter<typeof customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionOrganizationResponse>>,) => {
-      return customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionOrganizationResponse>(
-      {url: `/credits/organizations/${organizationId}/transactions`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionOrganizationResponse>
+    >,
+  ) => {
+    return customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionOrganizationResponse>(
+      {
+        url: `/credits/organizations/${organizationId}/transactions`,
+        method: "GET",
+        params,
+      },
+      options,
+    );
+  };
   /**
- * Retrieve list of all available products from Polar with caching
- * @summary Get Polar products catalog
- */
-const getPolarProductsCatalog = (
-    
- options?: SecondParameter<typeof customInstance<CreditsProductCatalog>>,) => {
-      return customInstance<CreditsProductCatalog>(
-      {url: `/credits/polar/products/catalog`, method: 'GET'
-    },
-      options);
-    }
+   * Retrieve list of all available products from Polar with caching
+   * @summary Get Polar products catalog
+   */
+  const getPolarProductsCatalog = (
+    options?: SecondParameter<typeof customInstance<CreditsProductCatalog>>,
+  ) => {
+    return customInstance<CreditsProductCatalog>(
+      { url: `/credits/polar/products/catalog`, method: "GET" },
+      options,
+    );
+  };
   /**
- * Retrieve paginated list of credit transactions for the authenticated user's team
- * @summary Get credit transactions by team ID
- */
-const getCreditTransactionsByTeamID = (
+   * Retrieve paginated list of credit transactions for the authenticated user's team
+   * @summary Get credit transactions by team ID
+   */
+  const getCreditTransactionsByTeamID = (
     teamId: string,
     params?: GetCreditTransactionsByTeamIDParams,
- options?: SecondParameter<typeof customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse>>,) => {
-      return customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse>(
-      {url: `/credits/teams/${teamId}/transactions`, method: 'GET',
-        params
-    },
-      options);
-    }
-  return {getOrganizationCreditsBalance,getCreditTransactionsByOrganizationID,getPolarProductsCatalog,getCreditTransactionsByTeamID}};
-export type GetOrganizationCreditsBalanceResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['getOrganizationCreditsBalance']>>>
-export type GetCreditTransactionsByOrganizationIDResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['getCreditTransactionsByOrganizationID']>>>
-export type GetPolarProductsCatalogResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['getPolarProductsCatalog']>>>
-export type GetCreditTransactionsByTeamIDResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['getCreditTransactionsByTeamID']>>>
+    options?: SecondParameter<
+      typeof customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse>
+    >,
+  ) => {
+    return customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse>(
+      { url: `/credits/teams/${teamId}/transactions`, method: "GET", params },
+      options,
+    );
+  };
+  return {
+    getOrganizationCreditsBalance,
+    getCreditTransactionsByOrganizationID,
+    getPolarProductsCatalog,
+    getCreditTransactionsByTeamID,
+  };
+};
+export type GetOrganizationCreditsBalanceResult = NonNullable<
+  Awaited<
+    ReturnType<ReturnType<typeof getCredits>["getOrganizationCreditsBalance"]>
+  >
+>;
+export type GetCreditTransactionsByOrganizationIDResult = NonNullable<
+  Awaited<
+    ReturnType<
+      ReturnType<typeof getCredits>["getCreditTransactionsByOrganizationID"]
+    >
+  >
+>;
+export type GetPolarProductsCatalogResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getCredits>["getPolarProductsCatalog"]>>
+>;
+export type GetCreditTransactionsByTeamIDResult = NonNullable<
+  Awaited<
+    ReturnType<ReturnType<typeof getCredits>["getCreditTransactionsByTeamID"]>
+  >
+>;

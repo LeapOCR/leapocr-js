@@ -5,23 +5,23 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { GetAnalyticsOverviewRange } from './getAnalyticsOverviewRange';
+import type { GetAnalyticsOverviewRange } from "./getAnalyticsOverviewRange";
 
 export type GetAnalyticsOverviewParams = {
-/**
- * Time range preset
- */
-range?: GetAnalyticsOverviewRange;
-/**
- * Start date (RFC3339 or YYYY-MM-DD format)
- */
-start?: string;
-/**
- * End date (RFC3339 or YYYY-MM-DD format)
- */
-end?: string;
-/**
- * Filter by team ID
- */
-team_id?: string;
+  /**
+   * Time range preset
+   */
+  range?: GetAnalyticsOverviewRange;
+  /**
+   * Start date (RFC3339 or YYYY-MM-DD format)
+   */
+  start?: string;
+  /**
+   * End date (RFC3339 or YYYY-MM-DD format)
+   */
+  end?: string;
+  /**
+   * Filter by team ID
+   */
+  team_id?: string;
 };

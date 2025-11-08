@@ -6,4 +6,6 @@
  * OpenAPI spec version: v1
  */
 
-export type CreditsCreditTransactionProjectResponseMetadata = { [key: string]: unknown };
+export type CreditsCreditTransactionProjectResponseMetadata = {
+  [key: string]: unknown;
+};

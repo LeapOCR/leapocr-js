@@ -5,28 +5,27 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type {
-  HealthHealthStatus
-} from '.././models';
+import type { HealthHealthStatus } from ".././models";
 
-import { customInstance } from '../../lib/custom-instance';
-
+import { customInstance } from "../../lib/custom-instance";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-  export const getHealth = () => {
-/**
- * Retrieve comprehensive system health information including database connectivity, Gemini API service status, and application performance metrics. Performs active health checks on critical system components and returns detailed status information with response times for monitoring and diagnostics purposes.
- * @summary Get system health status
- */
-const getHealthStatus = (
-    
- options?: SecondParameter<typeof customInstance<HealthHealthStatus>>,) => {
-      return customInstance<HealthHealthStatus>(
-      {url: `/health`, method: 'GET'
-    },
-      options);
-    }
-  return {getHealthStatus}};
-export type GetHealthStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getHealth>['getHealthStatus']>>>
+export const getHealth = () => {
+  /**
+   * Retrieve comprehensive system health information including database connectivity, Gemini API service status, and application performance metrics. Performs active health checks on critical system components and returns detailed status information with response times for monitoring and diagnostics purposes.
+   * @summary Get system health status
+   */
+  const getHealthStatus = (
+    options?: SecondParameter<typeof customInstance<HealthHealthStatus>>,
+  ) => {
+    return customInstance<HealthHealthStatus>(
+      { url: `/health`, method: "GET" },
+      options,
+    );
+  };
+  return { getHealthStatus };
+};
+export type GetHealthStatusResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getHealth>["getHealthStatus"]>>
+>;

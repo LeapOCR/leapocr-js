@@ -5,7 +5,7 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { UploadMultipartPart } from './uploadMultipartPart';
+import type { UploadMultipartPart } from "./uploadMultipartPart";
 
 export interface UploadDirectUploadResponse {
   chunk_size?: number;

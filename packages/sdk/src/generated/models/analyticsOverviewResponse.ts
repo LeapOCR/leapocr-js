@@ -5,11 +5,11 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { AnalyticsCreditsOverview } from './analyticsCreditsOverview';
-import type { AnalyticsJobOverview } from './analyticsJobOverview';
-import type { AnalyticsPageOverview } from './analyticsPageOverview';
-import type { AnalyticsRange } from './analyticsRange';
-import type { AnalyticsWebhookSummary } from './analyticsWebhookSummary';
+import type { AnalyticsCreditsOverview } from "./analyticsCreditsOverview";
+import type { AnalyticsJobOverview } from "./analyticsJobOverview";
+import type { AnalyticsPageOverview } from "./analyticsPageOverview";
+import type { AnalyticsRange } from "./analyticsRange";
+import type { AnalyticsWebhookSummary } from "./analyticsWebhookSummary";
 
 export interface AnalyticsOverviewResponse {
   credits?: AnalyticsCreditsOverview;

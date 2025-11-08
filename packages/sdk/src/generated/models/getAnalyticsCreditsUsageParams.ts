@@ -5,33 +5,33 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { GetAnalyticsCreditsUsageRange } from './getAnalyticsCreditsUsageRange';
-import type { GetAnalyticsCreditsUsageBucket } from './getAnalyticsCreditsUsageBucket';
-import type { GetAnalyticsCreditsUsageGranularity } from './getAnalyticsCreditsUsageGranularity';
+import type { GetAnalyticsCreditsUsageRange } from "./getAnalyticsCreditsUsageRange";
+import type { GetAnalyticsCreditsUsageBucket } from "./getAnalyticsCreditsUsageBucket";
+import type { GetAnalyticsCreditsUsageGranularity } from "./getAnalyticsCreditsUsageGranularity";
 
 export type GetAnalyticsCreditsUsageParams = {
-/**
- * Time range preset
- */
-range?: GetAnalyticsCreditsUsageRange;
-/**
- * Start date (RFC3339 or YYYY-MM-DD format)
- */
-start?: string;
-/**
- * End date (RFC3339 or YYYY-MM-DD format)
- */
-end?: string;
-/**
- * Time bucket granularity
- */
-bucket?: GetAnalyticsCreditsUsageBucket;
-/**
- * Alias for bucket parameter
- */
-granularity?: GetAnalyticsCreditsUsageGranularity;
-/**
- * Filter by team ID
- */
-team_id?: string;
+  /**
+   * Time range preset
+   */
+  range?: GetAnalyticsCreditsUsageRange;
+  /**
+   * Start date (RFC3339 or YYYY-MM-DD format)
+   */
+  start?: string;
+  /**
+   * End date (RFC3339 or YYYY-MM-DD format)
+   */
+  end?: string;
+  /**
+   * Time bucket granularity
+   */
+  bucket?: GetAnalyticsCreditsUsageBucket;
+  /**
+   * Alias for bucket parameter
+   */
+  granularity?: GetAnalyticsCreditsUsageGranularity;
+  /**
+   * Filter by team ID
+   */
+  team_id?: string;
 };

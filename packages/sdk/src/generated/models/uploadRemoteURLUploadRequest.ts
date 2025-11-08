@@ -5,8 +5,8 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { UploadRemoteURLUploadRequestFormat } from './uploadRemoteURLUploadRequestFormat';
-import type { UploadRemoteURLUploadRequestSchema } from './uploadRemoteURLUploadRequestSchema';
+import type { UploadRemoteURLUploadRequestFormat } from "./uploadRemoteURLUploadRequestFormat";
+import type { UploadRemoteURLUploadRequestSchema } from "./uploadRemoteURLUploadRequestSchema";
 
 export interface UploadRemoteURLUploadRequest {
   /**

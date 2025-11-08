@@ -6,4 +6,6 @@
  * OpenAPI spec version: v1
  */
 
-export type CreditsGrantedBenefitResponseBenefitMetadata = {[key: string]: unknown};
+export type CreditsGrantedBenefitResponseBenefitMetadata = {
+  [key: string]: unknown;
+};

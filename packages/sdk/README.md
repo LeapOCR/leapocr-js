@@ -29,21 +29,25 @@ yarn add @leapocr/sdk
 ## Quick Start
 
 ```typescript
-import { LeapOCR } from '@leapocr/sdk';
+import { LeapOCR } from "@leapocr/sdk";
 
 // Initialize client
-const client = new LeapOCR('your-api-key');
+const client = new LeapOCR("your-api-key");
 
 // Process a document (upload + poll until complete)
-const result = await client.ocr.processFile('./document.pdf', {
-  model: 'standard-v1',
-}, {
-  onProgress: (status) => {
-    console.log(`Progress: ${status.progress}%`);
+const result = await client.ocr.processFile(
+  "./document.pdf",
+  {
+    model: "standard-v1",
   },
-});
+  {
+    onProgress: (status) => {
+      console.log(`Progress: ${status.progress}%`);
+    },
+  },
+);
 
-console.log('Extracted text:', result.pages[0].text);
+console.log("Extracted text:", result.pages[0].text);
 ```
 
 ## Authentication
@@ -51,7 +55,7 @@ console.log('Extracted text:', result.pages[0].text);
 Get your API key from the [LeapOCR Dashboard](https://leapocr.com/dashboard).
 
 ```typescript
-const client = new LeapOCR('your-api-key');
+const client = new LeapOCR("your-api-key");
 
 // Or with environment variable
 const client = new LeapOCR(process.env.LEAPOCR_API_KEY);
@@ -63,7 +67,7 @@ const client = new LeapOCR(process.env.LEAPOCR_API_KEY);
 
 ```typescript
 // Upload and wait for completion
-const result = await client.ocr.processFile('./document.pdf');
+const result = await client.ocr.processFile("./document.pdf");
 console.log(result.pages[0].text);
 ```
 
@@ -71,25 +75,25 @@ console.log(result.pages[0].text);
 
 ```typescript
 const result = await client.ocr.processFile(
-  './document.pdf',
-  { model: 'standard-v1' },
+  "./document.pdf",
+  { model: "standard-v1" },
   {
     pollInterval: 2000,
     maxWait: 300000,
     onProgress: (status) => {
       console.log(`Progress: ${status.progress}%`);
     },
-  }
+  },
 );
 ```
 
 ### Batch Processing
 
 ```typescript
-const files = ['./doc1.pdf', './doc2.pdf', './doc3.pdf'];
+const files = ["./doc1.pdf", "./doc2.pdf", "./doc3.pdf"];
 
 const batch = await client.ocr.processBatch(files, {
-  model: 'standard-v1',
+  model: "standard-v1",
   concurrency: 5,
 });
 
@@ -99,13 +103,13 @@ console.log(`Uploaded ${batch.jobs.length}/${batch.totalFiles} files`);
 ### Error Handling
 
 ```typescript
-import { AuthenticationError, RateLimitError, FileError } from '@leapocr/sdk';
+import { AuthenticationError, RateLimitError, FileError } from "@leapocr/sdk";
 
 try {
-  const result = await client.ocr.processFile('./document.pdf');
+  const result = await client.ocr.processFile("./document.pdf");
 } catch (error) {
   if (error instanceof AuthenticationError) {
-    console.error('Invalid API key');
+    console.error("Invalid API key");
   } else if (error instanceof RateLimitError) {
     console.error(`Rate limited. Retry after ${error.retryAfter}s`);
   } else if (error instanceof FileError) {

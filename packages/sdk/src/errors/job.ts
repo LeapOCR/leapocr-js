@@ -1,4 +1,4 @@
-import { SDKError } from './base.js';
+import { SDKError } from "./base.js";
 
 /**
  * Base error for job-related errors
@@ -7,8 +7,8 @@ export class JobError extends SDKError {
   constructor(
     message: string,
     public jobId: string,
-    code: string = 'JOB_ERROR',
-    statusCode?: number
+    code: string = "JOB_ERROR",
+    statusCode?: number,
   ) {
     super(message, code, statusCode);
   }
@@ -20,12 +20,12 @@ export class JobError extends SDKError {
 export class JobFailedError extends JobError {
   constructor(
     jobId: string,
-    public jobError?: { code: string; message: string }
+    public jobError?: { code: string; message: string },
   ) {
     super(
-      `Job ${jobId} failed: ${jobError?.message || 'Unknown error'}`,
+      `Job ${jobId} failed: ${jobError?.message || "Unknown error"}`,
       jobId,
-      'JOB_FAILED'
+      "JOB_FAILED",
     );
   }
 }
@@ -36,8 +36,12 @@ export class JobFailedError extends JobError {
 export class TimeoutError extends JobError {
   constructor(
     jobId: string,
-    public timeoutMs: number
+    public timeoutMs: number,
   ) {
-    super(`Job ${jobId} timed out after ${timeoutMs}ms`, jobId, 'TIMEOUT_ERROR');
+    super(
+      `Job ${jobId} timed out after ${timeoutMs}ms`,
+      jobId,
+      "TIMEOUT_ERROR",
+    );
   }
 }

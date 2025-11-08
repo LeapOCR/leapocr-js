@@ -5,8 +5,8 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { CreditsPaginationInfo } from './creditsPaginationInfo';
-import type { CreditsCreditTransactionProjectResponse } from './creditsCreditTransactionProjectResponse';
+import type { CreditsPaginationInfo } from "./creditsPaginationInfo";
+import type { CreditsCreditTransactionProjectResponse } from "./creditsCreditTransactionProjectResponse";
 
 export interface CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse {
   pagination?: CreditsPaginationInfo;

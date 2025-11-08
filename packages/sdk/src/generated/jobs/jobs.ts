@@ -14,92 +14,113 @@ import type {
   JobsJobStatusResponse,
   JobsJobsListResponse,
   JobsRestartJobRequest,
-  JobsRetryJobRequest
-} from '.././models';
+  JobsRetryJobRequest,
+} from ".././models";
 
-import { customInstance } from '../../lib/custom-instance';
-import type { BodyType } from '../../lib/custom-instance';
-
+import { customInstance } from "../../lib/custom-instance";
+import type { BodyType } from "../../lib/custom-instance";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-  export const getJobs = () => {
-/**
- * Retrieve a paginated list of OCR jobs with basic filtering options. This endpoint focuses on job management operations.
- * @summary Get jobs list
- */
-const getJobsList = (
-    params: GetJobsListParams,
- options?: SecondParameter<typeof customInstance<JobsJobsListResponse>>,) => {
-      return customInstance<JobsJobsListResponse>(
-      {url: `/jobs/list`, method: 'GET',
-        params
-    },
-      options);
-    }
+export const getJobs = () => {
   /**
- * Cancel an OCR processing job that is currently in pending or processing status. Cannot cancel completed, failed, or already cancelled jobs
- * @summary Cancel OCR job
- */
-const cancelJob = (
+   * Retrieve a paginated list of OCR jobs with basic filtering options. This endpoint focuses on job management operations.
+   * @summary Get jobs list
+   */
+  const getJobsList = (
+    params: GetJobsListParams,
+    options?: SecondParameter<typeof customInstance<JobsJobsListResponse>>,
+  ) => {
+    return customInstance<JobsJobsListResponse>(
+      { url: `/jobs/list`, method: "GET", params },
+      options,
+    );
+  };
+  /**
+   * Cancel an OCR processing job that is currently in pending or processing status. Cannot cancel completed, failed, or already cancelled jobs
+   * @summary Cancel OCR job
+   */
+  const cancelJob = (
     jobId: string,
     cancelJobBody: BodyType<CancelJobBody>,
- options?: SecondParameter<typeof customInstance<JobsJobResponse>>,) => {
-      return customInstance<JobsJobResponse>(
-      {url: `/jobs/${jobId}/cancel`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: cancelJobBody
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<JobsJobResponse>>,
+  ) => {
+    return customInstance<JobsJobResponse>(
+      {
+        url: `/jobs/${jobId}/cancel`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: cancelJobBody,
+      },
+      options,
+    );
+  };
   /**
- * Restart an OCR job by canceling the current workflow (if running) and starting fresh. This is a more aggressive action than retry.
- * @summary Restart OCR job
- */
-const restartJob = (
+   * Restart an OCR job by canceling the current workflow (if running) and starting fresh. This is a more aggressive action than retry.
+   * @summary Restart OCR job
+   */
+  const restartJob = (
     jobId: string,
     jobsRestartJobRequest: BodyType<JobsRestartJobRequest>,
- options?: SecondParameter<typeof customInstance<JobsJobManagementResponse>>,) => {
-      return customInstance<JobsJobManagementResponse>(
-      {url: `/jobs/${jobId}/restart`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: jobsRestartJobRequest
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<JobsJobManagementResponse>>,
+  ) => {
+    return customInstance<JobsJobManagementResponse>(
+      {
+        url: `/jobs/${jobId}/restart`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: jobsRestartJobRequest,
+      },
+      options,
+    );
+  };
   /**
- * Retry a failed OCR job or restart a stuck job that has been pending/processing for over 1 hour. Checks Temporal workflow status before retrying.
- * @summary Retry OCR job
- */
-const retryJob = (
+   * Retry a failed OCR job or restart a stuck job that has been pending/processing for over 1 hour. Checks Temporal workflow status before retrying.
+   * @summary Retry OCR job
+   */
+  const retryJob = (
     jobId: string,
     jobsRetryJobRequest: BodyType<JobsRetryJobRequest>,
- options?: SecondParameter<typeof customInstance<JobsJobManagementResponse>>,) => {
-      return customInstance<JobsJobManagementResponse>(
-      {url: `/jobs/${jobId}/retry`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: jobsRetryJobRequest
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<JobsJobManagementResponse>>,
+  ) => {
+    return customInstance<JobsJobManagementResponse>(
+      {
+        url: `/jobs/${jobId}/retry`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: jobsRetryJobRequest,
+      },
+      options,
+    );
+  };
   /**
- * Get comprehensive job status including database state and Temporal workflow progress information
- * @summary Get job status with workflow details
- */
-const getJobStatusSimple = (
+   * Get comprehensive job status including database state and Temporal workflow progress information
+   * @summary Get job status with workflow details
+   */
+  const getJobStatusSimple = (
     jobId: string,
     params?: GetJobStatusSimpleParams,
- options?: SecondParameter<typeof customInstance<JobsJobStatusResponse>>,) => {
-      return customInstance<JobsJobStatusResponse>(
-      {url: `/jobs/${jobId}/status`, method: 'GET',
-        params
-    },
-      options);
-    }
-  return {getJobsList,cancelJob,restartJob,retryJob,getJobStatusSimple}};
-export type GetJobsListResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['getJobsList']>>>
-export type CancelJobResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['cancelJob']>>>
-export type RestartJobResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['restartJob']>>>
-export type RetryJobResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['retryJob']>>>
-export type GetJobStatusSimpleResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['getJobStatusSimple']>>>
+    options?: SecondParameter<typeof customInstance<JobsJobStatusResponse>>,
+  ) => {
+    return customInstance<JobsJobStatusResponse>(
+      { url: `/jobs/${jobId}/status`, method: "GET", params },
+      options,
+    );
+  };
+  return { getJobsList, cancelJob, restartJob, retryJob, getJobStatusSimple };
+};
+export type GetJobsListResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getJobs>["getJobsList"]>>
+>;
+export type CancelJobResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getJobs>["cancelJob"]>>
+>;
+export type RestartJobResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getJobs>["restartJob"]>>
+>;
+export type RetryJobResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getJobs>["retryJob"]>>
+>;
+export type GetJobStatusSimpleResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getJobs>["getJobStatusSimple"]>>
+>;

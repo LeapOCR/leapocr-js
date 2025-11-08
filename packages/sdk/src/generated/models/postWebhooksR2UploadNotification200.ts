@@ -6,4 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-export type PostWebhooksR2UploadNotification200 = {[key: string]: string};
+export type PostWebhooksR2UploadNotification200 = { [key: string]: string };

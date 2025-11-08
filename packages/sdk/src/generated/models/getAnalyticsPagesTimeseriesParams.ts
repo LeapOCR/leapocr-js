@@ -5,33 +5,33 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { GetAnalyticsPagesTimeseriesRange } from './getAnalyticsPagesTimeseriesRange';
-import type { GetAnalyticsPagesTimeseriesBucket } from './getAnalyticsPagesTimeseriesBucket';
-import type { GetAnalyticsPagesTimeseriesGranularity } from './getAnalyticsPagesTimeseriesGranularity';
+import type { GetAnalyticsPagesTimeseriesRange } from "./getAnalyticsPagesTimeseriesRange";
+import type { GetAnalyticsPagesTimeseriesBucket } from "./getAnalyticsPagesTimeseriesBucket";
+import type { GetAnalyticsPagesTimeseriesGranularity } from "./getAnalyticsPagesTimeseriesGranularity";
 
 export type GetAnalyticsPagesTimeseriesParams = {
-/**
- * Time range preset
- */
-range?: GetAnalyticsPagesTimeseriesRange;
-/**
- * Start date (RFC3339 or YYYY-MM-DD format)
- */
-start?: string;
-/**
- * End date (RFC3339 or YYYY-MM-DD format)
- */
-end?: string;
-/**
- * Time bucket granularity
- */
-bucket?: GetAnalyticsPagesTimeseriesBucket;
-/**
- * Alias for bucket parameter
- */
-granularity?: GetAnalyticsPagesTimeseriesGranularity;
-/**
- * Filter by team ID
- */
-team_id?: string;
+  /**
+   * Time range preset
+   */
+  range?: GetAnalyticsPagesTimeseriesRange;
+  /**
+   * Start date (RFC3339 or YYYY-MM-DD format)
+   */
+  start?: string;
+  /**
+   * End date (RFC3339 or YYYY-MM-DD format)
+   */
+  end?: string;
+  /**
+   * Time bucket granularity
+   */
+  bucket?: GetAnalyticsPagesTimeseriesBucket;
+  /**
+   * Alias for bucket parameter
+   */
+  granularity?: GetAnalyticsPagesTimeseriesGranularity;
+  /**
+   * Filter by team ID
+   */
+  team_id?: string;
 };

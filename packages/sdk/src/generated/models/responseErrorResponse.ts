@@ -5,8 +5,8 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { ResponseErrorCode } from './responseErrorCode';
-import type { ResponseErrorMessage } from './responseErrorMessage';
+import type { ResponseErrorCode } from "./responseErrorCode";
+import type { ResponseErrorMessage } from "./responseErrorMessage";
 
 export interface ResponseErrorResponse {
   code?: ResponseErrorCode;

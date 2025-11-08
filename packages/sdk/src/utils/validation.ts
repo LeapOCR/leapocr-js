@@ -1,6 +1,6 @@
-import { statSync, accessSync, constants as fsConstants } from 'fs';
-import { extname } from 'path';
-import { MAX_FILE_SIZE, SUPPORTED_EXTENSIONS } from './constants.js';
+import { statSync, accessSync, constants as fsConstants } from "fs";
+import { extname } from "path";
+import { MAX_FILE_SIZE, SUPPORTED_EXTENSIONS } from "./constants.js";
 
 export interface ValidationResult {
   valid: boolean;
@@ -27,7 +27,7 @@ function formatBytes(bytes: number): string {
  */
 export function validateFile(
   filePath: string,
-  options: ValidationOptions = {}
+  options: ValidationOptions = {},
 ): ValidationResult {
   const maxSize = options.maxSize ?? MAX_FILE_SIZE;
   const allowedTypes = options.allowedTypes ?? SUPPORTED_EXTENSIONS;
@@ -57,7 +57,7 @@ export function validateFile(
     if (!allowedTypes.includes(ext as any)) {
       return {
         valid: false,
-        error: `File type '${ext}' not supported. Allowed: ${allowedTypes.join(', ')}`,
+        error: `File type '${ext}' not supported. Allowed: ${allowedTypes.join(", ")}`,
       };
     }
 
@@ -73,7 +73,7 @@ export function validateFile(
 
     return { valid: true };
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
       return {
         valid: false,
         error: `File not found: ${filePath}`,
@@ -93,7 +93,7 @@ export function validateFile(
 export function validateBuffer(
   buffer: Buffer,
   fileName: string,
-  options: ValidationOptions = {}
+  options: ValidationOptions = {},
 ): ValidationResult {
   const maxSize = options.maxSize ?? MAX_FILE_SIZE;
   const allowedTypes = options.allowedTypes ?? SUPPORTED_EXTENSIONS;
@@ -111,7 +111,7 @@ export function validateBuffer(
   if (!allowedTypes.includes(ext as any)) {
     return {
       valid: false,
-      error: `File type '${ext}' not supported. Allowed: ${allowedTypes.join(', ')}`,
+      error: `File type '${ext}' not supported. Allowed: ${allowedTypes.join(", ")}`,
     };
   }
 

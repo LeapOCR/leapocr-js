@@ -6,16 +6,16 @@
  * OpenAPI spec version: v1
  */
 
-export type JobsWorkflowStatusInfoStatus = typeof JobsWorkflowStatusInfoStatus[keyof typeof JobsWorkflowStatusInfoStatus];
-
+export type JobsWorkflowStatusInfoStatus =
+  (typeof JobsWorkflowStatusInfoStatus)[keyof typeof JobsWorkflowStatusInfoStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const JobsWorkflowStatusInfoStatus = {
-  RUNNING: 'RUNNING',
-  COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED',
-  CANCELED: 'CANCELED',
-  TERMINATED: 'TERMINATED',
-  CONTINUED_AS_NEW: 'CONTINUED_AS_NEW',
-  TIMED_OUT: 'TIMED_OUT',
+  RUNNING: "RUNNING",
+  COMPLETED: "COMPLETED",
+  FAILED: "FAILED",
+  CANCELED: "CANCELED",
+  TERMINATED: "TERMINATED",
+  CONTINUED_AS_NEW: "CONTINUED_AS_NEW",
+  TIMED_OUT: "TIMED_OUT",
 } as const;

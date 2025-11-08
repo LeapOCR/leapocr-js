@@ -1,11 +1,11 @@
-import Axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import Axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 /**
  * Axios instance for LeapOCR API
  * This will be configured by the SDK client with API key and base URL
  */
 export const AXIOS_INSTANCE = Axios.create({
-  baseURL: '',  // Will be set by SDK
+  baseURL: "", // Will be set by SDK
 });
 
 /**
@@ -26,7 +26,7 @@ export const customInstance = <T>(
 
   // @ts-ignore
   promise.cancel = () => {
-    source.cancel('Query was cancelled');
+    source.cancel("Query was cancelled");
   };
 
   return promise;

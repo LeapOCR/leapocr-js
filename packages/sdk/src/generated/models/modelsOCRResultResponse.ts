@@ -5,9 +5,9 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { ModelsPageResponse } from './modelsPageResponse';
-import type { ModelsPaginationResponse } from './modelsPaginationResponse';
-import type { ModelsJobStatus } from './modelsJobStatus';
+import type { ModelsPageResponse } from "./modelsPageResponse";
+import type { ModelsPaginationResponse } from "./modelsPaginationResponse";
+import type { ModelsJobStatus } from "./modelsJobStatus";
 
 export interface ModelsOCRResultResponse {
   completed_at?: string;

@@ -7,32 +7,32 @@
  */
 
 export type ListTemplatesParams = {
-/**
- * Team ID to filter templates by
- */
-team_id: string;
-/**
- * Page number for pagination
- * @minimum 1
- */
-page?: number;
-/**
- * Number of items per page
- * @minimum 1
- * @maximum 100
- */
-limit?: number;
-/**
- * Filter by format type
- */
-format?: string;
-/**
- * Filter by favorite status
- */
-favorite?: boolean;
-/**
- * Search term for template names
- * @maxLength 255
- */
-search?: string;
+  /**
+   * Team ID to filter templates by
+   */
+  team_id: string;
+  /**
+   * Page number for pagination
+   * @minimum 1
+   */
+  page?: number;
+  /**
+   * Number of items per page
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number;
+  /**
+   * Filter by format type
+   */
+  format?: string;
+  /**
+   * Filter by favorite status
+   */
+  favorite?: boolean;
+  /**
+   * Search term for template names
+   * @maxLength 255
+   */
+  search?: string;
 };

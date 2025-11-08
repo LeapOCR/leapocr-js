@@ -15,84 +15,115 @@ import type {
   GetAnalyticsOverviewParams,
   GetAnalyticsPagesTimeseries200,
   GetAnalyticsPagesTimeseriesParams,
-  GetAnalyticsTemplatesTopParams
-} from '.././models';
+  GetAnalyticsTemplatesTopParams,
+} from ".././models";
 
-import { customInstance } from '../../lib/custom-instance';
-
+import { customInstance } from "../../lib/custom-instance";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-  export const getAnalytics = () => {
-/**
- * Returns comprehensive credit analytics including snapshot data, timeseries trends, and tier usage breakdown
- * @summary Get credit usage analytics
- */
-const getAnalyticsCreditsUsage = (
+export const getAnalytics = () => {
+  /**
+   * Returns comprehensive credit analytics including snapshot data, timeseries trends, and tier usage breakdown
+   * @summary Get credit usage analytics
+   */
+  const getAnalyticsCreditsUsage = (
     params?: GetAnalyticsCreditsUsageParams,
- options?: SecondParameter<typeof customInstance<AnalyticsCreditsUsageResponse>>,) => {
-      return customInstance<AnalyticsCreditsUsageResponse>(
-      {url: `/analytics/credits/usage`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<AnalyticsCreditsUsageResponse>
+    >,
+  ) => {
+    return customInstance<AnalyticsCreditsUsageResponse>(
+      { url: `/analytics/credits/usage`, method: "GET", params },
+      options,
+    );
+  };
   /**
- * Returns job metrics aggregated by time buckets including total jobs, completed jobs, failed jobs, active jobs, pages processed, and credits consumed
- * @summary Get job analytics timeseries
- */
-const getAnalyticsJobsTimeseries = (
+   * Returns job metrics aggregated by time buckets including total jobs, completed jobs, failed jobs, active jobs, pages processed, and credits consumed
+   * @summary Get job analytics timeseries
+   */
+  const getAnalyticsJobsTimeseries = (
     params?: GetAnalyticsJobsTimeseriesParams,
- options?: SecondParameter<typeof customInstance<GetAnalyticsJobsTimeseries200>>,) => {
-      return customInstance<GetAnalyticsJobsTimeseries200>(
-      {url: `/analytics/jobs/timeseries`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<GetAnalyticsJobsTimeseries200>
+    >,
+  ) => {
+    return customInstance<GetAnalyticsJobsTimeseries200>(
+      { url: `/analytics/jobs/timeseries`, method: "GET", params },
+      options,
+    );
+  };
   /**
- * Returns high-level analytics insights including job statistics, page outcomes, credit usage, and webhook metrics for the specified time range
- * @summary Get analytics overview
- */
-const getAnalyticsOverview = (
+   * Returns high-level analytics insights including job statistics, page outcomes, credit usage, and webhook metrics for the specified time range
+   * @summary Get analytics overview
+   */
+  const getAnalyticsOverview = (
     params?: GetAnalyticsOverviewParams,
- options?: SecondParameter<typeof customInstance<AnalyticsOverviewResponse>>,) => {
-      return customInstance<AnalyticsOverviewResponse>(
-      {url: `/analytics/overview`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<AnalyticsOverviewResponse>>,
+  ) => {
+    return customInstance<AnalyticsOverviewResponse>(
+      { url: `/analytics/overview`, method: "GET", params },
+      options,
+    );
+  };
   /**
- * Returns page outcomes aggregated by time buckets including totals, completion, failure, and token counts
- * @summary Get page analytics timeseries
- */
-const getAnalyticsPagesTimeseries = (
+   * Returns page outcomes aggregated by time buckets including totals, completion, failure, and token counts
+   * @summary Get page analytics timeseries
+   */
+  const getAnalyticsPagesTimeseries = (
     params?: GetAnalyticsPagesTimeseriesParams,
- options?: SecondParameter<typeof customInstance<GetAnalyticsPagesTimeseries200>>,) => {
-      return customInstance<GetAnalyticsPagesTimeseries200>(
-      {url: `/analytics/pages/timeseries`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<GetAnalyticsPagesTimeseries200>
+    >,
+  ) => {
+    return customInstance<GetAnalyticsPagesTimeseries200>(
+      { url: `/analytics/pages/timeseries`, method: "GET", params },
+      options,
+    );
+  };
   /**
- * Returns the most frequently used templates ranked by job count, usage count, and credits consumed
- * @summary Get top templates analytics
- */
-const getAnalyticsTemplatesTop = (
+   * Returns the most frequently used templates ranked by job count, usage count, and credits consumed
+   * @summary Get top templates analytics
+   */
+  const getAnalyticsTemplatesTop = (
     params?: GetAnalyticsTemplatesTopParams,
- options?: SecondParameter<typeof customInstance<AnalyticsTopTemplatesResponse>>,) => {
-      return customInstance<AnalyticsTopTemplatesResponse>(
-      {url: `/analytics/templates/top`, method: 'GET',
-        params
-    },
-      options);
-    }
-  return {getAnalyticsCreditsUsage,getAnalyticsJobsTimeseries,getAnalyticsOverview,getAnalyticsPagesTimeseries,getAnalyticsTemplatesTop}};
-export type GetAnalyticsCreditsUsageResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getAnalyticsCreditsUsage']>>>
-export type GetAnalyticsJobsTimeseriesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getAnalyticsJobsTimeseries']>>>
-export type GetAnalyticsOverviewResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getAnalyticsOverview']>>>
-export type GetAnalyticsPagesTimeseriesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getAnalyticsPagesTimeseries']>>>
-export type GetAnalyticsTemplatesTopResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getAnalyticsTemplatesTop']>>>
+    options?: SecondParameter<
+      typeof customInstance<AnalyticsTopTemplatesResponse>
+    >,
+  ) => {
+    return customInstance<AnalyticsTopTemplatesResponse>(
+      { url: `/analytics/templates/top`, method: "GET", params },
+      options,
+    );
+  };
+  return {
+    getAnalyticsCreditsUsage,
+    getAnalyticsJobsTimeseries,
+    getAnalyticsOverview,
+    getAnalyticsPagesTimeseries,
+    getAnalyticsTemplatesTop,
+  };
+};
+export type GetAnalyticsCreditsUsageResult = NonNullable<
+  Awaited<
+    ReturnType<ReturnType<typeof getAnalytics>["getAnalyticsCreditsUsage"]>
+  >
+>;
+export type GetAnalyticsJobsTimeseriesResult = NonNullable<
+  Awaited<
+    ReturnType<ReturnType<typeof getAnalytics>["getAnalyticsJobsTimeseries"]>
+  >
+>;
+export type GetAnalyticsOverviewResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getAnalyticsOverview"]>>
+>;
+export type GetAnalyticsPagesTimeseriesResult = NonNullable<
+  Awaited<
+    ReturnType<ReturnType<typeof getAnalytics>["getAnalyticsPagesTimeseries"]>
+  >
+>;
+export type GetAnalyticsTemplatesTopResult = NonNullable<
+  Awaited<
+    ReturnType<ReturnType<typeof getAnalytics>["getAnalyticsTemplatesTop"]>
+  >
+>;

@@ -5,9 +5,9 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { JobsWorkflowJobStatusInfo } from './jobsWorkflowJobStatusInfo';
-import type { JobsWorkflowProgressInfo } from './jobsWorkflowProgressInfo';
-import type { JobsWorkflowStatusInfoStatus } from './jobsWorkflowStatusInfoStatus';
+import type { JobsWorkflowJobStatusInfo } from "./jobsWorkflowJobStatusInfo";
+import type { JobsWorkflowProgressInfo } from "./jobsWorkflowProgressInfo";
+import type { JobsWorkflowStatusInfoStatus } from "./jobsWorkflowStatusInfoStatus";
 
 export interface JobsWorkflowStatusInfo {
   close_time?: string;

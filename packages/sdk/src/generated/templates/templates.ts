@@ -12,113 +12,149 @@ import type {
   TemplatesListTemplatesResponse,
   TemplatesTemplateResponse,
   TemplatesTemplateStatsResponse,
-  TemplatesUpdateTemplateRequest
-} from '.././models';
+  TemplatesUpdateTemplateRequest,
+} from ".././models";
 
-import { customInstance } from '../../lib/custom-instance';
-import type { BodyType } from '../../lib/custom-instance';
-
+import { customInstance } from "../../lib/custom-instance";
+import type { BodyType } from "../../lib/custom-instance";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-  export const getTemplates = () => {
-/**
- * Retrieve a paginated list of templates for a specific project with filtering and sorting capabilities
- * @summary List OCR processing templates
- */
-const listTemplates = (
+export const getTemplates = () => {
+  /**
+   * Retrieve a paginated list of templates for a specific project with filtering and sorting capabilities
+   * @summary List OCR processing templates
+   */
+  const listTemplates = (
     params: ListTemplatesParams,
- options?: SecondParameter<typeof customInstance<TemplatesListTemplatesResponse>>,) => {
-      return customInstance<TemplatesListTemplatesResponse>(
-      {url: `/templates`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<TemplatesListTemplatesResponse>
+    >,
+  ) => {
+    return customInstance<TemplatesListTemplatesResponse>(
+      { url: `/templates`, method: "GET", params },
+      options,
+    );
+  };
   /**
- * Create a new template for OCR processing with format, instructions, and schema configuration. Templates provide reusable configurations for document processing with consistent output formatting and validation rules
- * @summary Create OCR processing template
- */
-const createTemplate = (
+   * Create a new template for OCR processing with format, instructions, and schema configuration. Templates provide reusable configurations for document processing with consistent output formatting and validation rules
+   * @summary Create OCR processing template
+   */
+  const createTemplate = (
     templatesCreateTemplateRequest: BodyType<TemplatesCreateTemplateRequest>,
- options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,) => {
-      return customInstance<TemplatesTemplateResponse>(
-      {url: `/templates`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: templatesCreateTemplateRequest
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,
+  ) => {
+    return customInstance<TemplatesTemplateResponse>(
+      {
+        url: `/templates`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: templatesCreateTemplateRequest,
+      },
+      options,
+    );
+  };
   /**
- * Retrieve usage statistics for templates in a specific project
- * @summary Get template statistics
- */
-const getTemplateStats = (
+   * Retrieve usage statistics for templates in a specific project
+   * @summary Get template statistics
+   */
+  const getTemplateStats = (
     params: GetTemplateStatsParams,
- options?: SecondParameter<typeof customInstance<TemplatesTemplateStatsResponse>>,) => {
-      return customInstance<TemplatesTemplateStatsResponse>(
-      {url: `/templates/stats`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<TemplatesTemplateStatsResponse>
+    >,
+  ) => {
+    return customInstance<TemplatesTemplateStatsResponse>(
+      { url: `/templates/stats`, method: "GET", params },
+      options,
+    );
+  };
   /**
- * Permanently delete a template by its unique identifier
- * @summary Delete OCR processing template
- */
-const deleteTemplate = (
+   * Permanently delete a template by its unique identifier
+   * @summary Delete OCR processing template
+   */
+  const deleteTemplate = (
     id: string,
- options?: SecondParameter<typeof customInstance<void>>,) => {
-      return customInstance<void>(
-      {url: `/templates/${id}`, method: 'DELETE'
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<void>>,
+  ) => {
+    return customInstance<void>(
+      { url: `/templates/${id}`, method: "DELETE" },
+      options,
+    );
+  };
   /**
- * Retrieve a specific template by its unique identifier with complete configuration details
- * @summary Get OCR processing template
- */
-const getTemplate = (
+   * Retrieve a specific template by its unique identifier with complete configuration details
+   * @summary Get OCR processing template
+   */
+  const getTemplate = (
     id: string,
- options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,) => {
-      return customInstance<TemplatesTemplateResponse>(
-      {url: `/templates/${id}`, method: 'GET'
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,
+  ) => {
+    return customInstance<TemplatesTemplateResponse>(
+      { url: `/templates/${id}`, method: "GET" },
+      options,
+    );
+  };
   /**
- * Update an existing template configuration including format, instructions, and schema
- * @summary Update OCR processing template
- */
-const updateTemplate = (
+   * Update an existing template configuration including format, instructions, and schema
+   * @summary Update OCR processing template
+   */
+  const updateTemplate = (
     id: string,
     templatesUpdateTemplateRequest: BodyType<TemplatesUpdateTemplateRequest>,
- options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,) => {
-      return customInstance<TemplatesTemplateResponse>(
-      {url: `/templates/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: templatesUpdateTemplateRequest
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,
+  ) => {
+    return customInstance<TemplatesTemplateResponse>(
+      {
+        url: `/templates/${id}`,
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        data: templatesUpdateTemplateRequest,
+      },
+      options,
+    );
+  };
   /**
- * Toggle the favorite status of a template
- * @summary Toggle template favorite status
- */
-const toggleTemplateFavorite = (
+   * Toggle the favorite status of a template
+   * @summary Toggle template favorite status
+   */
+  const toggleTemplateFavorite = (
     id: string,
- options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,) => {
-      return customInstance<TemplatesTemplateResponse>(
-      {url: `/templates/${id}/favorite`, method: 'POST'
-    },
-      options);
-    }
-  return {listTemplates,createTemplate,getTemplateStats,deleteTemplate,getTemplate,updateTemplate,toggleTemplateFavorite}};
-export type ListTemplatesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['listTemplates']>>>
-export type CreateTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['createTemplate']>>>
-export type GetTemplateStatsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['getTemplateStats']>>>
-export type DeleteTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['deleteTemplate']>>>
-export type GetTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['getTemplate']>>>
-export type UpdateTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['updateTemplate']>>>
-export type ToggleTemplateFavoriteResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['toggleTemplateFavorite']>>>
+    options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,
+  ) => {
+    return customInstance<TemplatesTemplateResponse>(
+      { url: `/templates/${id}/favorite`, method: "POST" },
+      options,
+    );
+  };
+  return {
+    listTemplates,
+    createTemplate,
+    getTemplateStats,
+    deleteTemplate,
+    getTemplate,
+    updateTemplate,
+    toggleTemplateFavorite,
+  };
+};
+export type ListTemplatesResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTemplates>["listTemplates"]>>
+>;
+export type CreateTemplateResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTemplates>["createTemplate"]>>
+>;
+export type GetTemplateStatsResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTemplates>["getTemplateStats"]>>
+>;
+export type DeleteTemplateResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTemplates>["deleteTemplate"]>>
+>;
+export type GetTemplateResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTemplates>["getTemplate"]>>
+>;
+export type UpdateTemplateResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTemplates>["updateTemplate"]>>
+>;
+export type ToggleTemplateFavoriteResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTemplates>["toggleTemplateFavorite"]>>
+>;

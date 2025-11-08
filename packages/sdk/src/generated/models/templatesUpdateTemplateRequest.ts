@@ -5,7 +5,7 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { TemplatesUpdateTemplateRequestSchema } from './templatesUpdateTemplateRequestSchema';
+import type { TemplatesUpdateTemplateRequestSchema } from "./templatesUpdateTemplateRequestSchema";
 
 export interface TemplatesUpdateTemplateRequest {
   color?: string;

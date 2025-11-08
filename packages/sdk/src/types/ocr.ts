@@ -7,7 +7,7 @@
  */
 export interface UploadOptions {
   /** OCR model to use */
-  model?: 'standard-v1' | 'apex-v1' | 'genesis-v1';
+  model?: "standard-v1" | "apex-v1" | "genesis-v1";
 
   /** Webhook URL for job completion notifications */
   webhook?: string;
@@ -39,7 +39,7 @@ export interface PollOptions {
 /**
  * Job status type
  */
-export type JobStatusType = 'pending' | 'processing' | 'completed' | 'failed';
+export type JobStatusType = "pending" | "processing" | "completed" | "failed";
 
 /**
  * Job status response
@@ -59,7 +59,7 @@ export interface JobStatus {
  */
 export interface UploadResult {
   jobId: string;
-  status: 'pending' | 'processing';
+  status: "pending" | "processing";
   createdAt: Date;
   estimatedCompletion?: Date;
 }

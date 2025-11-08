@@ -6,23 +6,23 @@
  * OpenAPI spec version: v1
  */
 
-export type GetAnalyticsPagesTimeseriesRange = typeof GetAnalyticsPagesTimeseriesRange[keyof typeof GetAnalyticsPagesTimeseriesRange];
-
+export type GetAnalyticsPagesTimeseriesRange =
+  (typeof GetAnalyticsPagesTimeseriesRange)[keyof typeof GetAnalyticsPagesTimeseriesRange];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetAnalyticsPagesTimeseriesRange = {
-  '24h': '24h',
-  '1d': '1d',
-  day: 'day',
-  '7d': '7d',
-  week: 'week',
-  '14d': '14d',
-  '30d': '30d',
-  month: 'month',
-  '90d': '90d',
-  quarter: 'quarter',
-  '180d': '180d',
-  '6m': '6m',
-  '365d': '365d',
-  year: 'year',
+  "24h": "24h",
+  "1d": "1d",
+  day: "day",
+  "7d": "7d",
+  week: "week",
+  "14d": "14d",
+  "30d": "30d",
+  month: "month",
+  "90d": "90d",
+  quarter: "quarter",
+  "180d": "180d",
+  "6m": "6m",
+  "365d": "365d",
+  year: "year",
 } as const;

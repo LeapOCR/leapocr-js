@@ -5,28 +5,27 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type {
-  AuthAuthResponse
-} from '.././models';
+import type { AuthAuthResponse } from ".././models";
 
-import { customInstance } from '../../lib/custom-instance';
-
+import { customInstance } from "../../lib/custom-instance";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-  export const getAuthentication = () => {
-/**
- * Verify JWT token from Authorization header and return complete user information including all claims and authentication details
- * @summary Verify authentication token
- */
-const verifyAuthToken = (
-    
- options?: SecondParameter<typeof customInstance<AuthAuthResponse>>,) => {
-      return customInstance<AuthAuthResponse>(
-      {url: `/auth/verify`, method: 'GET'
-    },
-      options);
-    }
-  return {verifyAuthToken}};
-export type VerifyAuthTokenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAuthentication>['verifyAuthToken']>>>
+export const getAuthentication = () => {
+  /**
+   * Verify JWT token from Authorization header and return complete user information including all claims and authentication details
+   * @summary Verify authentication token
+   */
+  const verifyAuthToken = (
+    options?: SecondParameter<typeof customInstance<AuthAuthResponse>>,
+  ) => {
+    return customInstance<AuthAuthResponse>(
+      { url: `/auth/verify`, method: "GET" },
+      options,
+    );
+  };
+  return { verifyAuthToken };
+};
+export type VerifyAuthTokenResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getAuthentication>["verifyAuthToken"]>>
+>;

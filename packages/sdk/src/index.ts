@@ -5,10 +5,10 @@
  */
 
 // Main client
-export { LeapOCR } from './client.js';
+export { LeapOCR } from "./client.js";
 
 // Services
-export { OCRService } from './services/ocr.js';
+export { OCRService } from "./services/ocr.js";
 
 // Types
 export type {
@@ -23,7 +23,7 @@ export type {
   FileData,
   BatchOptions,
   BatchResult,
-} from './types/index.js';
+} from "./types/index.js";
 
 // Errors
 export {
@@ -38,7 +38,7 @@ export {
   TimeoutError,
   NetworkError,
   APIError,
-} from './errors/index.js';
+} from "./errors/index.js";
 
 // Constants
 export {
@@ -47,8 +47,8 @@ export {
   DEFAULT_POLL_INTERVAL,
   DEFAULT_MAX_WAIT,
   SDK_VERSION,
-} from './utils/constants.js';
+} from "./utils/constants.js";
 
 // Utilities (for advanced use)
-export { validateFile, validateBuffer } from './utils/validation.js';
-export type { ValidationResult } from './utils/validation.js';
+export { validateFile, validateBuffer } from "./utils/validation.js";
+export type { ValidationResult } from "./utils/validation.js";

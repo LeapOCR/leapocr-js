@@ -9,12 +9,12 @@
 /**
  * Option 2: Direct specification (will create template on-the-fly)
  */
-export type UploadInitiateDirectUploadRequestFormat = typeof UploadInitiateDirectUploadRequestFormat[keyof typeof UploadInitiateDirectUploadRequestFormat];
-
+export type UploadInitiateDirectUploadRequestFormat =
+  (typeof UploadInitiateDirectUploadRequestFormat)[keyof typeof UploadInitiateDirectUploadRequestFormat];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UploadInitiateDirectUploadRequestFormat = {
-  markdown: 'markdown',
-  structured: 'structured',
-  per_page_structured: 'per_page_structured',
+  markdown: "markdown",
+  structured: "structured",
+  per_page_structured: "per_page_structured",
 } as const;

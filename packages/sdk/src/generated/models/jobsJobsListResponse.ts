@@ -5,8 +5,8 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { JobsJobListItem } from './jobsJobListItem';
-import type { JobsPaginationInfo } from './jobsPaginationInfo';
+import type { JobsJobListItem } from "./jobsJobListItem";
+import type { JobsPaginationInfo } from "./jobsPaginationInfo";
 
 export interface JobsJobsListResponse {
   jobs?: JobsJobListItem[];

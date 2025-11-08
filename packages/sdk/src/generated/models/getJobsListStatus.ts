@@ -6,14 +6,14 @@
  * OpenAPI spec version: v1
  */
 
-export type GetJobsListStatus = typeof GetJobsListStatus[keyof typeof GetJobsListStatus];
-
+export type GetJobsListStatus =
+  (typeof GetJobsListStatus)[keyof typeof GetJobsListStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetJobsListStatus = {
-  pending: 'pending',
-  processing: 'processing',
-  completed: 'completed',
-  partially_done: 'partially_done',
-  failed: 'failed',
+  pending: "pending",
+  processing: "processing",
+  completed: "completed",
+  partially_done: "partially_done",
+  failed: "failed",
 } as const;

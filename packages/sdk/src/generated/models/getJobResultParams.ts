@@ -7,15 +7,15 @@
  */
 
 export type GetJobResultParams = {
-/**
- * Page number for result pagination
- * @minimum 1
- */
-page?: number;
-/**
- * Number of items per page
- * @minimum 1
- * @maximum 1000
- */
-limit?: number;
+  /**
+   * Page number for result pagination
+   * @minimum 1
+   */
+  page?: number;
+  /**
+   * Number of items per page
+   * @minimum 1
+   * @maximum 1000
+   */
+  limit?: number;
 };

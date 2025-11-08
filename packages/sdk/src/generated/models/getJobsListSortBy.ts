@@ -6,17 +6,17 @@
  * OpenAPI spec version: v1
  */
 
-export type GetJobsListSortBy = typeof GetJobsListSortBy[keyof typeof GetJobsListSortBy];
-
+export type GetJobsListSortBy =
+  (typeof GetJobsListSortBy)[keyof typeof GetJobsListSortBy];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetJobsListSortBy = {
-  created_at_desc: 'created_at_desc',
-  created_at_asc: 'created_at_asc',
-  file_name_asc: 'file_name_asc',
-  file_name_desc: 'file_name_desc',
-  status_asc: 'status_asc',
-  status_desc: 'status_desc',
-  credits_desc: 'credits_desc',
-  credits_asc: 'credits_asc',
+  created_at_desc: "created_at_desc",
+  created_at_asc: "created_at_asc",
+  file_name_asc: "file_name_asc",
+  file_name_desc: "file_name_desc",
+  status_asc: "status_asc",
+  status_desc: "status_desc",
+  credits_desc: "credits_desc",
+  credits_asc: "credits_asc",
 } as const;

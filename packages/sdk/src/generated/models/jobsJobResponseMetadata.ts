@@ -6,4 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-export type JobsJobResponseMetadata = {[key: string]: unknown};
+export type JobsJobResponseMetadata = { [key: string]: unknown };

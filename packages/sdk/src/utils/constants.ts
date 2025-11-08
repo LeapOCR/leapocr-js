@@ -7,13 +7,13 @@ export const MAX_FILE_SIZE = 100 * 1024 * 1024;
  * Supported file extensions
  */
 export const SUPPORTED_EXTENSIONS = [
-  '.pdf',
-  '.png',
-  '.jpg',
-  '.jpeg',
-  '.tiff',
-  '.tif',
-  '.webp',
+  ".pdf",
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".tiff",
+  ".tif",
+  ".webp",
 ] as const;
 
 /**
@@ -29,4 +29,4 @@ export const DEFAULT_MAX_WAIT = 300000;
 /**
  * SDK version
  */
-export const SDK_VERSION = '0.0.0';
+export const SDK_VERSION = "0.0.0";

@@ -6,4 +6,6 @@
  * OpenAPI spec version: v1
  */
 
-export type CreditsActiveSubscriptionResponseMetadata = {[key: string]: unknown};
+export type CreditsActiveSubscriptionResponseMetadata = {
+  [key: string]: unknown;
+};

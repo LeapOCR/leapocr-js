@@ -9,12 +9,12 @@
 /**
  * Option 2: Direct specification (will create template on-the-fly)
  */
-export type UploadRemoteURLUploadRequestFormat = typeof UploadRemoteURLUploadRequestFormat[keyof typeof UploadRemoteURLUploadRequestFormat];
-
+export type UploadRemoteURLUploadRequestFormat =
+  (typeof UploadRemoteURLUploadRequestFormat)[keyof typeof UploadRemoteURLUploadRequestFormat];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UploadRemoteURLUploadRequestFormat = {
-  markdown: 'markdown',
-  structured: 'structured',
-  per_page_structured: 'per_page_structured',
+  markdown: "markdown",
+  structured: "structured",
+  per_page_structured: "per_page_structured",
 } as const;

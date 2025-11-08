@@ -6,7 +6,7 @@ export class SDKError extends Error {
     message: string,
     public code: string,
     public statusCode?: number,
-    public cause?: Error
+    public cause?: Error,
   ) {
     super(message);
     this.name = this.constructor.name;

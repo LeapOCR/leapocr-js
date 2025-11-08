@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { AxiosError } from "axios";
 
 export interface RetryOptions {
   maxRetries: number;
@@ -26,7 +26,7 @@ export function isRetriableError(error: unknown): boolean {
   const status = error.response?.status;
 
   // Network errors (no response)
-  if (!status || error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
+  if (!status || error.code === "ECONNABORTED" || error.code === "ETIMEDOUT") {
     return true;
   }
 
@@ -59,11 +59,11 @@ export function isRetriableError(error: unknown): boolean {
 export function getRetryDelay(
   attempt: number,
   options: RetryOptions,
-  error: unknown
+  error: unknown,
 ): number {
   // Check for Retry-After header
-  if (error instanceof AxiosError && error.response?.headers['retry-after']) {
-    const retryAfter = parseInt(error.response.headers['retry-after'], 10);
+  if (error instanceof AxiosError && error.response?.headers["retry-after"]) {
+    const retryAfter = parseInt(error.response.headers["retry-after"], 10);
     if (!isNaN(retryAfter)) {
       return retryAfter * 1000; // Convert to ms
     }
@@ -72,7 +72,7 @@ export function getRetryDelay(
   // Exponential backoff with jitter
   const delay = Math.min(
     options.initialDelay * Math.pow(options.multiplier, attempt),
-    options.maxDelay
+    options.maxDelay,
   );
 
   // Add jitter (±25%)
@@ -85,7 +85,7 @@ export function getRetryDelay(
  */
 export async function withRetry<T>(
   operation: () => Promise<T>,
-  options: Partial<RetryOptions> = {}
+  options: Partial<RetryOptions> = {},
 ): Promise<T> {
   const opts = { ...DEFAULT_RETRY_OPTIONS, ...options };
   let lastError: Error;

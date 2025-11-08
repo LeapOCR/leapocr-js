@@ -5,7 +5,7 @@ export interface PollOptions<T> {
   onProgress?: (value: T) => void;
 }
 
-export const DEFAULT_POLL_OPTIONS: Omit<PollOptions<any>, 'signal'> = {
+export const DEFAULT_POLL_OPTIONS: Omit<PollOptions<any>, "signal"> = {
   pollInterval: 2000,
   maxWait: 300000, // 5 minutes
 };
@@ -23,7 +23,7 @@ export const DEFAULT_POLL_OPTIONS: Omit<PollOptions<any>, 'signal'> = {
 export async function pollUntil<T>(
   operation: () => Promise<T>,
   condition: (value: T) => boolean,
-  options: Partial<PollOptions<T>> = {}
+  options: Partial<PollOptions<T>> = {},
 ): Promise<T> {
   const opts = { ...DEFAULT_POLL_OPTIONS, ...options };
   const startTime = Date.now();
@@ -31,7 +31,7 @@ export async function pollUntil<T>(
   while (true) {
     // Check for cancellation
     if (opts.signal?.aborted) {
-      throw new Error('Polling cancelled');
+      throw new Error("Polling cancelled");
     }
 
     // Execute operation

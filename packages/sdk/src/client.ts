@@ -1,6 +1,6 @@
-import type { ClientConfig } from './types/config.js';
-import { OCRService } from './services/ocr.js';
-import { AXIOS_INSTANCE } from './lib/custom-instance.js';
+import type { ClientConfig } from "./types/config.js";
+import { OCRService } from "./services/ocr.js";
+import { AXIOS_INSTANCE } from "./lib/custom-instance.js";
 import {
   SDKError,
   AuthenticationError,
@@ -9,11 +9,11 @@ import {
   ValidationError,
   APIError,
   NetworkError,
-} from './errors/index.js';
-import { SDK_VERSION } from './utils/constants.js';
-import type { AxiosError } from 'axios';
+} from "./errors/index.js";
+import { SDK_VERSION } from "./utils/constants.js";
+import type { AxiosError } from "axios";
 
-const DEFAULT_BASE_URL = 'https://api.leapocr.com/api/v1';
+const DEFAULT_BASE_URL = "https://api.leapocr.com/api/v1";
 const DEFAULT_TIMEOUT = 30000;
 
 /**
@@ -25,10 +25,10 @@ export class LeapOCR {
 
   constructor(
     private readonly apiKey: string,
-    config: ClientConfig = {}
+    config: ClientConfig = {},
   ) {
     if (!apiKey) {
-      throw new Error('API key is required');
+      throw new Error("API key is required");
     }
 
     this.config = {
@@ -43,8 +43,9 @@ export class LeapOCR {
     // Configure the global Axios instance
     AXIOS_INSTANCE.defaults.baseURL = this.config.baseURL;
     AXIOS_INSTANCE.defaults.timeout = this.config.timeout;
-    AXIOS_INSTANCE.defaults.headers.common['X-API-KEY'] = apiKey;
-    AXIOS_INSTANCE.defaults.headers.common['User-Agent'] = `leapocr-sdk-js/${SDK_VERSION}`;
+    AXIOS_INSTANCE.defaults.headers.common["X-API-KEY"] = apiKey;
+    AXIOS_INSTANCE.defaults.headers.common["User-Agent"] =
+      `leapocr-sdk-js/${SDK_VERSION}`;
 
     // Setup interceptors
     this.setupInterceptors();
@@ -58,7 +59,7 @@ export class LeapOCR {
     if (this.config.debug) {
       AXIOS_INSTANCE.interceptors.request.use(
         (config) => {
-          console.log('[LeapOCR] Request:', {
+          console.log("[LeapOCR] Request:", {
             method: config.method?.toUpperCase(),
             url: config.url,
             params: config.params,
@@ -66,9 +67,9 @@ export class LeapOCR {
           return config;
         },
         (error) => {
-          console.error('[LeapOCR] Request Error:', error);
+          console.error("[LeapOCR] Request Error:", error);
           return Promise.reject(error);
-        }
+        },
       );
     }
 
@@ -76,7 +77,7 @@ export class LeapOCR {
     AXIOS_INSTANCE.interceptors.response.use(
       (response) => {
         if (this.config.debug) {
-          console.log('[LeapOCR] Response:', {
+          console.log("[LeapOCR] Response:", {
             status: response.status,
             data: response.data,
           });
@@ -86,10 +87,10 @@ export class LeapOCR {
       (error: AxiosError) => {
         const sdkError = this.mapError(error);
         if (this.config.debug) {
-          console.error('[LeapOCR] Response Error:', sdkError);
+          console.error("[LeapOCR] Response Error:", sdkError);
         }
         return Promise.reject(sdkError);
-      }
+      },
     );
   }
 
@@ -105,7 +106,7 @@ export class LeapOCR {
     if (!status) {
       return new NetworkError(
         `Network error: ${error.message}`,
-        error as Error
+        error as Error,
       );
     }
 
@@ -118,8 +119,8 @@ export class LeapOCR {
         return new AuthorizationError(message);
 
       case 429: {
-        const retryAfter = error.response?.headers['retry-after']
-          ? parseInt(error.response.headers['retry-after'], 10)
+        const retryAfter = error.response?.headers["retry-after"]
+          ? parseInt(error.response.headers["retry-after"], 10)
           : undefined;
         return new RateLimitError(message, retryAfter);
       }

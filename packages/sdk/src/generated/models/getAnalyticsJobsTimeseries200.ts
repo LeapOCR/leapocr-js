@@ -5,8 +5,8 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { AnalyticsRange } from './analyticsRange';
-import type { AnalyticsJobTimeseriesPoint } from './analyticsJobTimeseriesPoint';
+import type { AnalyticsRange } from "./analyticsRange";
+import type { AnalyticsJobTimeseriesPoint } from "./analyticsJobTimeseriesPoint";
 
 export type GetAnalyticsJobsTimeseries200 = {
   range?: AnalyticsRange;

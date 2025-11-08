@@ -1,4 +1,4 @@
-import { SDKError } from './base.js';
+import { SDKError } from "./base.js";
 
 /**
  * Error thrown when rate limit is exceeded (429)
@@ -6,8 +6,8 @@ import { SDKError } from './base.js';
 export class RateLimitError extends SDKError {
   constructor(
     message: string,
-    public retryAfter?: number // seconds
+    public retryAfter?: number, // seconds
   ) {
-    super(message, 'RATE_LIMIT_ERROR', 429);
+    super(message, "RATE_LIMIT_ERROR", 429);
   }
 }

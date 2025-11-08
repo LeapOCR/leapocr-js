@@ -1,4 +1,4 @@
-import { SDKError } from './base.js';
+import { SDKError } from "./base.js";
 
 /**
  * Error thrown when file operations fail
@@ -8,8 +8,8 @@ export class FileError extends SDKError {
     message: string,
     public filePath?: string,
     public fileSize?: number,
-    cause?: Error
+    cause?: Error,
   ) {
-    super(message, 'FILE_ERROR', undefined, cause);
+    super(message, "FILE_ERROR", undefined, cause);
   }
 }

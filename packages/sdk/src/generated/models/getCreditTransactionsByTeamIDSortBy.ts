@@ -6,17 +6,17 @@
  * OpenAPI spec version: v1
  */
 
-export type GetCreditTransactionsByTeamIDSortBy = typeof GetCreditTransactionsByTeamIDSortBy[keyof typeof GetCreditTransactionsByTeamIDSortBy];
-
+export type GetCreditTransactionsByTeamIDSortBy =
+  (typeof GetCreditTransactionsByTeamIDSortBy)[keyof typeof GetCreditTransactionsByTeamIDSortBy];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetCreditTransactionsByTeamIDSortBy = {
-  created_at_desc: 'created_at_desc',
-  created_at_asc: 'created_at_asc',
-  amount_desc: 'amount_desc',
-  amount_asc: 'amount_asc',
-  transaction_type_asc: 'transaction_type_asc',
-  transaction_type_desc: 'transaction_type_desc',
-  file_name_asc: 'file_name_asc',
-  file_name_desc: 'file_name_desc',
+  created_at_desc: "created_at_desc",
+  created_at_asc: "created_at_asc",
+  amount_desc: "amount_desc",
+  amount_asc: "amount_asc",
+  transaction_type_asc: "transaction_type_asc",
+  transaction_type_desc: "transaction_type_desc",
+  file_name_asc: "file_name_asc",
+  file_name_desc: "file_name_desc",
 } as const;

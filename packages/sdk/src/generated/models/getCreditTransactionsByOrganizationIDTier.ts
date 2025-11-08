@@ -6,11 +6,11 @@
  * OpenAPI spec version: v1
  */
 
-export type GetCreditTransactionsByOrganizationIDTier = typeof GetCreditTransactionsByOrganizationIDTier[keyof typeof GetCreditTransactionsByOrganizationIDTier];
-
+export type GetCreditTransactionsByOrganizationIDTier =
+  (typeof GetCreditTransactionsByOrganizationIDTier)[keyof typeof GetCreditTransactionsByOrganizationIDTier];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetCreditTransactionsByOrganizationIDTier = {
-  standard: 'standard',
-  pro: 'pro',
+  standard: "standard",
+  pro: "pro",
 } as const;

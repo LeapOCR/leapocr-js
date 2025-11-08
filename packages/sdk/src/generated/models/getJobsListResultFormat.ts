@@ -6,12 +6,12 @@
  * OpenAPI spec version: v1
  */
 
-export type GetJobsListResultFormat = typeof GetJobsListResultFormat[keyof typeof GetJobsListResultFormat];
-
+export type GetJobsListResultFormat =
+  (typeof GetJobsListResultFormat)[keyof typeof GetJobsListResultFormat];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetJobsListResultFormat = {
-  structured: 'structured',
-  per_page_structured: 'per_page_structured',
-  markdown: 'markdown',
+  structured: "structured",
+  per_page_structured: "per_page_structured",
+  markdown: "markdown",
 } as const;

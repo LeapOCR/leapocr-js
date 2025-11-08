@@ -2,7 +2,7 @@
  * Type definitions for the LeapOCR SDK
  */
 
-export type { ClientConfig } from './config.js';
+export type { ClientConfig } from "./config.js";
 export type {
   UploadOptions,
   PollOptions,
@@ -14,4 +14,4 @@ export type {
   FileData,
   BatchOptions,
   BatchResult,
-} from './ocr.js';
+} from "./ocr.js";
