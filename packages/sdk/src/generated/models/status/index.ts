@@ -1,1 +1,0 @@
-export type { StatusResponse } from "./Response.ts";

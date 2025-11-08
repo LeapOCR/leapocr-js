@@ -28,7 +28,7 @@
     "dev": "tsdown --watch",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "generate": "node scripts/filter-openapi.mjs && kubb generate",
+    "generate": "orval",
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
@@ -36,12 +36,10 @@
     "form-data": "^4.0.1"
   },
   "devDependencies": {
-    "@kubb/cli": "^3.4.1",
-    "@kubb/core": "^3.4.1",
-    "@kubb/plugin-oas": "^3.4.1",
-    "@kubb/plugin-ts": "^3.4.1",
     "@types/node": "^24.10.0",
     "bumpp": "^10.3.1",
+    "minimatch": "^10.1.1",
+    "orval": "^7.16.0",
     "tsdown": "^0.16.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.7"

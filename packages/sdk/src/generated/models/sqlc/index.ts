@@ -1,1 +1,0 @@
-export type { SqlcResultFormatEnum } from "./ResultFormatEnum.ts";
