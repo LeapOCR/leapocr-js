@@ -6,62 +6,27 @@
  * OpenAPI spec version: v1
  */
 import type {
-  AuthAuthResponse,
-  ResponseErrorResponse
+  AuthAuthResponse
 } from '.././models';
 
+import { customInstance } from '../../lib/custom-instance';
 
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+  export const getAuthentication = () => {
 /**
  * Verify JWT token from Authorization header and return complete user information including all claims and authentication details
  * @summary Verify authentication token
  */
-export type verifyAuthTokenResponse200 = {
-  data: AuthAuthResponse
-  status: 200
-}
-
-export type verifyAuthTokenResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type verifyAuthTokenResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
+const verifyAuthToken = (
     
-export type verifyAuthTokenResponseSuccess = (verifyAuthTokenResponse200) & {
-  headers: Headers;
-};
-export type verifyAuthTokenResponseError = (verifyAuthTokenResponse401 | verifyAuthTokenResponse500) & {
-  headers: Headers;
-};
-
-export type verifyAuthTokenResponse = (verifyAuthTokenResponseSuccess | verifyAuthTokenResponseError)
-
-export const getVerifyAuthTokenUrl = () => {
-
-
-  
-
-  return `/auth/verify`
-}
-
-export const verifyAuthToken = async ( options?: RequestInit): Promise<verifyAuthTokenResponse> => {
-  
-  const res = await fetch(getVerifyAuthTokenUrl(),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: verifyAuthTokenResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as verifyAuthTokenResponse
-}
-
-
+ options?: SecondParameter<typeof customInstance<AuthAuthResponse>>,) => {
+      return customInstance<AuthAuthResponse>(
+      {url: `/auth/verify`, method: 'GET'
+    },
+      options);
+    }
+  return {verifyAuthToken}};
+export type VerifyAuthTokenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAuthentication>['verifyAuthToken']>>>

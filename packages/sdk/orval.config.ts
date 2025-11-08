@@ -7,7 +7,14 @@ export default defineConfig({
       mode: "tags-split",
       target: "./src/generated/models.ts",
       schemas: "./src/generated/models",
-      client: "fetch",
+      client: "axios",
+      clean: true,
+      override: {
+        mutator: {
+          path: './src/lib/custom-instance.ts',
+          name: 'customInstance',
+        },
+      },
     },
   },
 });

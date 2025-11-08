@@ -14,360 +14,92 @@ import type {
   JobsJobStatusResponse,
   JobsJobsListResponse,
   JobsRestartJobRequest,
-  JobsRetryJobRequest,
-  ResponseErrorResponse
+  JobsRetryJobRequest
 } from '.././models';
 
+import { customInstance } from '../../lib/custom-instance';
+import type { BodyType } from '../../lib/custom-instance';
 
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+  export const getJobs = () => {
 /**
  * Retrieve a paginated list of OCR jobs with basic filtering options. This endpoint focuses on job management operations.
  * @summary Get jobs list
  */
-export type getJobsListResponse200 = {
-  data: JobsJobsListResponse
-  status: 200
-}
-
-export type getJobsListResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getJobsListResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getJobsListResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getJobsListResponseSuccess = (getJobsListResponse200) & {
-  headers: Headers;
-};
-export type getJobsListResponseError = (getJobsListResponse400 | getJobsListResponse401 | getJobsListResponse500) & {
-  headers: Headers;
-};
-
-export type getJobsListResponse = (getJobsListResponseSuccess | getJobsListResponseError)
-
-export const getGetJobsListUrl = (params: GetJobsListParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getJobsList = (
+    params: GetJobsListParams,
+ options?: SecondParameter<typeof customInstance<JobsJobsListResponse>>,) => {
+      return customInstance<JobsJobsListResponse>(
+      {url: `/jobs/list`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/jobs/list?${stringifiedParams}` : `/jobs/list`
-}
-
-export const getJobsList = async (params: GetJobsListParams, options?: RequestInit): Promise<getJobsListResponse> => {
-  
-  const res = await fetch(getGetJobsListUrl(params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getJobsListResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getJobsListResponse
-}
-
-
-/**
+  /**
  * Cancel an OCR processing job that is currently in pending or processing status. Cannot cancel completed, failed, or already cancelled jobs
  * @summary Cancel OCR job
  */
-export type cancelJobResponse200 = {
-  data: JobsJobResponse
-  status: 200
-}
-
-export type cancelJobResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type cancelJobResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type cancelJobResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type cancelJobResponse409 = {
-  data: ResponseErrorResponse
-  status: 409
-}
-
-export type cancelJobResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type cancelJobResponseSuccess = (cancelJobResponse200) & {
-  headers: Headers;
-};
-export type cancelJobResponseError = (cancelJobResponse400 | cancelJobResponse401 | cancelJobResponse404 | cancelJobResponse409 | cancelJobResponse500) & {
-  headers: Headers;
-};
-
-export type cancelJobResponse = (cancelJobResponseSuccess | cancelJobResponseError)
-
-export const getCancelJobUrl = (jobId: string,) => {
-
-
-  
-
-  return `/jobs/${jobId}/cancel`
-}
-
-export const cancelJob = async (jobId: string,
-    cancelJobBody: CancelJobBody, options?: RequestInit): Promise<cancelJobResponse> => {
-  
-  const res = await fetch(getCancelJobUrl(jobId),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      cancelJobBody,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: cancelJobResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as cancelJobResponse
-}
-
-
-/**
+const cancelJob = (
+    jobId: string,
+    cancelJobBody: BodyType<CancelJobBody>,
+ options?: SecondParameter<typeof customInstance<JobsJobResponse>>,) => {
+      return customInstance<JobsJobResponse>(
+      {url: `/jobs/${jobId}/cancel`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: cancelJobBody
+    },
+      options);
+    }
+  /**
  * Restart an OCR job by canceling the current workflow (if running) and starting fresh. This is a more aggressive action than retry.
  * @summary Restart OCR job
  */
-export type restartJobResponse200 = {
-  data: JobsJobManagementResponse
-  status: 200
-}
-
-export type restartJobResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type restartJobResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type restartJobResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type restartJobResponse409 = {
-  data: ResponseErrorResponse
-  status: 409
-}
-
-export type restartJobResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type restartJobResponseSuccess = (restartJobResponse200) & {
-  headers: Headers;
-};
-export type restartJobResponseError = (restartJobResponse400 | restartJobResponse401 | restartJobResponse404 | restartJobResponse409 | restartJobResponse500) & {
-  headers: Headers;
-};
-
-export type restartJobResponse = (restartJobResponseSuccess | restartJobResponseError)
-
-export const getRestartJobUrl = (jobId: string,) => {
-
-
-  
-
-  return `/jobs/${jobId}/restart`
-}
-
-export const restartJob = async (jobId: string,
-    jobsRestartJobRequest: JobsRestartJobRequest, options?: RequestInit): Promise<restartJobResponse> => {
-  
-  const res = await fetch(getRestartJobUrl(jobId),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      jobsRestartJobRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: restartJobResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as restartJobResponse
-}
-
-
-/**
+const restartJob = (
+    jobId: string,
+    jobsRestartJobRequest: BodyType<JobsRestartJobRequest>,
+ options?: SecondParameter<typeof customInstance<JobsJobManagementResponse>>,) => {
+      return customInstance<JobsJobManagementResponse>(
+      {url: `/jobs/${jobId}/restart`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: jobsRestartJobRequest
+    },
+      options);
+    }
+  /**
  * Retry a failed OCR job or restart a stuck job that has been pending/processing for over 1 hour. Checks Temporal workflow status before retrying.
  * @summary Retry OCR job
  */
-export type retryJobResponse200 = {
-  data: JobsJobManagementResponse
-  status: 200
-}
-
-export type retryJobResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type retryJobResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type retryJobResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type retryJobResponse409 = {
-  data: ResponseErrorResponse
-  status: 409
-}
-
-export type retryJobResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type retryJobResponseSuccess = (retryJobResponse200) & {
-  headers: Headers;
-};
-export type retryJobResponseError = (retryJobResponse400 | retryJobResponse401 | retryJobResponse404 | retryJobResponse409 | retryJobResponse500) & {
-  headers: Headers;
-};
-
-export type retryJobResponse = (retryJobResponseSuccess | retryJobResponseError)
-
-export const getRetryJobUrl = (jobId: string,) => {
-
-
-  
-
-  return `/jobs/${jobId}/retry`
-}
-
-export const retryJob = async (jobId: string,
-    jobsRetryJobRequest: JobsRetryJobRequest, options?: RequestInit): Promise<retryJobResponse> => {
-  
-  const res = await fetch(getRetryJobUrl(jobId),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      jobsRetryJobRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: retryJobResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as retryJobResponse
-}
-
-
-/**
+const retryJob = (
+    jobId: string,
+    jobsRetryJobRequest: BodyType<JobsRetryJobRequest>,
+ options?: SecondParameter<typeof customInstance<JobsJobManagementResponse>>,) => {
+      return customInstance<JobsJobManagementResponse>(
+      {url: `/jobs/${jobId}/retry`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: jobsRetryJobRequest
+    },
+      options);
+    }
+  /**
  * Get comprehensive job status including database state and Temporal workflow progress information
  * @summary Get job status with workflow details
  */
-export type getJobStatusSimpleResponse200 = {
-  data: JobsJobStatusResponse
-  status: 200
-}
-
-export type getJobStatusSimpleResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getJobStatusSimpleResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getJobStatusSimpleResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type getJobStatusSimpleResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getJobStatusSimpleResponseSuccess = (getJobStatusSimpleResponse200) & {
-  headers: Headers;
-};
-export type getJobStatusSimpleResponseError = (getJobStatusSimpleResponse400 | getJobStatusSimpleResponse401 | getJobStatusSimpleResponse404 | getJobStatusSimpleResponse500) & {
-  headers: Headers;
-};
-
-export type getJobStatusSimpleResponse = (getJobStatusSimpleResponseSuccess | getJobStatusSimpleResponseError)
-
-export const getGetJobStatusSimpleUrl = (jobId: string,
-    params?: GetJobStatusSimpleParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getJobStatusSimple = (
+    jobId: string,
+    params?: GetJobStatusSimpleParams,
+ options?: SecondParameter<typeof customInstance<JobsJobStatusResponse>>,) => {
+      return customInstance<JobsJobStatusResponse>(
+      {url: `/jobs/${jobId}/status`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/jobs/${jobId}/status?${stringifiedParams}` : `/jobs/${jobId}/status`
-}
-
-export const getJobStatusSimple = async (jobId: string,
-    params?: GetJobStatusSimpleParams, options?: RequestInit): Promise<getJobStatusSimpleResponse> => {
-  
-  const res = await fetch(getGetJobStatusSimpleUrl(jobId,params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getJobStatusSimpleResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getJobStatusSimpleResponse
-}
-
-
+  return {getJobsList,cancelJob,restartJob,retryJob,getJobStatusSimple}};
+export type GetJobsListResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['getJobsList']>>>
+export type CancelJobResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['cancelJob']>>>
+export type RestartJobResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['restartJob']>>>
+export type RetryJobResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['retryJob']>>>
+export type GetJobStatusSimpleResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['getJobStatusSimple']>>>

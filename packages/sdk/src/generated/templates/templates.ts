@@ -8,7 +8,6 @@
 import type {
   GetTemplateStatsParams,
   ListTemplatesParams,
-  ResponseErrorResponse,
   TemplatesCreateTemplateRequest,
   TemplatesListTemplatesResponse,
   TemplatesTemplateResponse,
@@ -16,484 +15,110 @@ import type {
   TemplatesUpdateTemplateRequest
 } from '.././models';
 
+import { customInstance } from '../../lib/custom-instance';
+import type { BodyType } from '../../lib/custom-instance';
 
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+  export const getTemplates = () => {
 /**
  * Retrieve a paginated list of templates for a specific project with filtering and sorting capabilities
  * @summary List OCR processing templates
  */
-export type listTemplatesResponse200 = {
-  data: TemplatesListTemplatesResponse
-  status: 200
-}
-
-export type listTemplatesResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type listTemplatesResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type listTemplatesResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type listTemplatesResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type listTemplatesResponseSuccess = (listTemplatesResponse200) & {
-  headers: Headers;
-};
-export type listTemplatesResponseError = (listTemplatesResponse400 | listTemplatesResponse401 | listTemplatesResponse403 | listTemplatesResponse500) & {
-  headers: Headers;
-};
-
-export type listTemplatesResponse = (listTemplatesResponseSuccess | listTemplatesResponseError)
-
-export const getListTemplatesUrl = (params: ListTemplatesParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const listTemplates = (
+    params: ListTemplatesParams,
+ options?: SecondParameter<typeof customInstance<TemplatesListTemplatesResponse>>,) => {
+      return customInstance<TemplatesListTemplatesResponse>(
+      {url: `/templates`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/templates?${stringifiedParams}` : `/templates`
-}
-
-export const listTemplates = async (params: ListTemplatesParams, options?: RequestInit): Promise<listTemplatesResponse> => {
-  
-  const res = await fetch(getListTemplatesUrl(params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: listTemplatesResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as listTemplatesResponse
-}
-
-
-/**
+  /**
  * Create a new template for OCR processing with format, instructions, and schema configuration. Templates provide reusable configurations for document processing with consistent output formatting and validation rules
  * @summary Create OCR processing template
  */
-export type createTemplateResponse201 = {
-  data: TemplatesTemplateResponse
-  status: 201
-}
-
-export type createTemplateResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type createTemplateResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type createTemplateResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type createTemplateResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type createTemplateResponseSuccess = (createTemplateResponse201) & {
-  headers: Headers;
-};
-export type createTemplateResponseError = (createTemplateResponse400 | createTemplateResponse401 | createTemplateResponse403 | createTemplateResponse500) & {
-  headers: Headers;
-};
-
-export type createTemplateResponse = (createTemplateResponseSuccess | createTemplateResponseError)
-
-export const getCreateTemplateUrl = () => {
-
-
-  
-
-  return `/templates`
-}
-
-export const createTemplate = async (templatesCreateTemplateRequest: TemplatesCreateTemplateRequest, options?: RequestInit): Promise<createTemplateResponse> => {
-  
-  const res = await fetch(getCreateTemplateUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      templatesCreateTemplateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: createTemplateResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as createTemplateResponse
-}
-
-
-/**
+const createTemplate = (
+    templatesCreateTemplateRequest: BodyType<TemplatesCreateTemplateRequest>,
+ options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,) => {
+      return customInstance<TemplatesTemplateResponse>(
+      {url: `/templates`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: templatesCreateTemplateRequest
+    },
+      options);
+    }
+  /**
  * Retrieve usage statistics for templates in a specific project
  * @summary Get template statistics
  */
-export type getTemplateStatsResponse200 = {
-  data: TemplatesTemplateStatsResponse
-  status: 200
-}
-
-export type getTemplateStatsResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getTemplateStatsResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getTemplateStatsResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type getTemplateStatsResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getTemplateStatsResponseSuccess = (getTemplateStatsResponse200) & {
-  headers: Headers;
-};
-export type getTemplateStatsResponseError = (getTemplateStatsResponse400 | getTemplateStatsResponse401 | getTemplateStatsResponse403 | getTemplateStatsResponse500) & {
-  headers: Headers;
-};
-
-export type getTemplateStatsResponse = (getTemplateStatsResponseSuccess | getTemplateStatsResponseError)
-
-export const getGetTemplateStatsUrl = (params: GetTemplateStatsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getTemplateStats = (
+    params: GetTemplateStatsParams,
+ options?: SecondParameter<typeof customInstance<TemplatesTemplateStatsResponse>>,) => {
+      return customInstance<TemplatesTemplateStatsResponse>(
+      {url: `/templates/stats`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/templates/stats?${stringifiedParams}` : `/templates/stats`
-}
-
-export const getTemplateStats = async (params: GetTemplateStatsParams, options?: RequestInit): Promise<getTemplateStatsResponse> => {
-  
-  const res = await fetch(getGetTemplateStatsUrl(params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getTemplateStatsResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getTemplateStatsResponse
-}
-
-
-/**
+  /**
  * Permanently delete a template by its unique identifier
  * @summary Delete OCR processing template
  */
-export type deleteTemplateResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteTemplateResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type deleteTemplateResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type deleteTemplateResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type deleteTemplateResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type deleteTemplateResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type deleteTemplateResponseSuccess = (deleteTemplateResponse204) & {
-  headers: Headers;
-};
-export type deleteTemplateResponseError = (deleteTemplateResponse400 | deleteTemplateResponse401 | deleteTemplateResponse403 | deleteTemplateResponse404 | deleteTemplateResponse500) & {
-  headers: Headers;
-};
-
-export type deleteTemplateResponse = (deleteTemplateResponseSuccess | deleteTemplateResponseError)
-
-export const getDeleteTemplateUrl = (id: string,) => {
-
-
-  
-
-  return `/templates/${id}`
-}
-
-export const deleteTemplate = async (id: string, options?: RequestInit): Promise<deleteTemplateResponse> => {
-  
-  const res = await fetch(getDeleteTemplateUrl(id),
-  {      
-    ...options,
-    method: 'DELETE'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: deleteTemplateResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteTemplateResponse
-}
-
-
-/**
+const deleteTemplate = (
+    id: string,
+ options?: SecondParameter<typeof customInstance<void>>,) => {
+      return customInstance<void>(
+      {url: `/templates/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  /**
  * Retrieve a specific template by its unique identifier with complete configuration details
  * @summary Get OCR processing template
  */
-export type getTemplateResponse200 = {
-  data: TemplatesTemplateResponse
-  status: 200
-}
-
-export type getTemplateResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getTemplateResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getTemplateResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type getTemplateResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getTemplateResponseSuccess = (getTemplateResponse200) & {
-  headers: Headers;
-};
-export type getTemplateResponseError = (getTemplateResponse400 | getTemplateResponse401 | getTemplateResponse404 | getTemplateResponse500) & {
-  headers: Headers;
-};
-
-export type getTemplateResponse = (getTemplateResponseSuccess | getTemplateResponseError)
-
-export const getGetTemplateUrl = (id: string,) => {
-
-
-  
-
-  return `/templates/${id}`
-}
-
-export const getTemplate = async (id: string, options?: RequestInit): Promise<getTemplateResponse> => {
-  
-  const res = await fetch(getGetTemplateUrl(id),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getTemplateResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getTemplateResponse
-}
-
-
-/**
+const getTemplate = (
+    id: string,
+ options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,) => {
+      return customInstance<TemplatesTemplateResponse>(
+      {url: `/templates/${id}`, method: 'GET'
+    },
+      options);
+    }
+  /**
  * Update an existing template configuration including format, instructions, and schema
  * @summary Update OCR processing template
  */
-export type updateTemplateResponse200 = {
-  data: TemplatesTemplateResponse
-  status: 200
-}
-
-export type updateTemplateResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type updateTemplateResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type updateTemplateResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type updateTemplateResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type updateTemplateResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type updateTemplateResponseSuccess = (updateTemplateResponse200) & {
-  headers: Headers;
-};
-export type updateTemplateResponseError = (updateTemplateResponse400 | updateTemplateResponse401 | updateTemplateResponse403 | updateTemplateResponse404 | updateTemplateResponse500) & {
-  headers: Headers;
-};
-
-export type updateTemplateResponse = (updateTemplateResponseSuccess | updateTemplateResponseError)
-
-export const getUpdateTemplateUrl = (id: string,) => {
-
-
-  
-
-  return `/templates/${id}`
-}
-
-export const updateTemplate = async (id: string,
-    templatesUpdateTemplateRequest: TemplatesUpdateTemplateRequest, options?: RequestInit): Promise<updateTemplateResponse> => {
-  
-  const res = await fetch(getUpdateTemplateUrl(id),
-  {      
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      templatesUpdateTemplateRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: updateTemplateResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as updateTemplateResponse
-}
-
-
-/**
+const updateTemplate = (
+    id: string,
+    templatesUpdateTemplateRequest: BodyType<TemplatesUpdateTemplateRequest>,
+ options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,) => {
+      return customInstance<TemplatesTemplateResponse>(
+      {url: `/templates/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: templatesUpdateTemplateRequest
+    },
+      options);
+    }
+  /**
  * Toggle the favorite status of a template
  * @summary Toggle template favorite status
  */
-export type toggleTemplateFavoriteResponse200 = {
-  data: TemplatesTemplateResponse
-  status: 200
-}
-
-export type toggleTemplateFavoriteResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type toggleTemplateFavoriteResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type toggleTemplateFavoriteResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type toggleTemplateFavoriteResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type toggleTemplateFavoriteResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type toggleTemplateFavoriteResponseSuccess = (toggleTemplateFavoriteResponse200) & {
-  headers: Headers;
-};
-export type toggleTemplateFavoriteResponseError = (toggleTemplateFavoriteResponse400 | toggleTemplateFavoriteResponse401 | toggleTemplateFavoriteResponse403 | toggleTemplateFavoriteResponse404 | toggleTemplateFavoriteResponse500) & {
-  headers: Headers;
-};
-
-export type toggleTemplateFavoriteResponse = (toggleTemplateFavoriteResponseSuccess | toggleTemplateFavoriteResponseError)
-
-export const getToggleTemplateFavoriteUrl = (id: string,) => {
-
-
-  
-
-  return `/templates/${id}/favorite`
-}
-
-export const toggleTemplateFavorite = async (id: string, options?: RequestInit): Promise<toggleTemplateFavoriteResponse> => {
-  
-  const res = await fetch(getToggleTemplateFavoriteUrl(id),
-  {      
-    ...options,
-    method: 'POST'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: toggleTemplateFavoriteResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as toggleTemplateFavoriteResponse
-}
-
-
+const toggleTemplateFavorite = (
+    id: string,
+ options?: SecondParameter<typeof customInstance<TemplatesTemplateResponse>>,) => {
+      return customInstance<TemplatesTemplateResponse>(
+      {url: `/templates/${id}/favorite`, method: 'POST'
+    },
+      options);
+    }
+  return {listTemplates,createTemplate,getTemplateStats,deleteTemplate,getTemplate,updateTemplate,toggleTemplateFavorite}};
+export type ListTemplatesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['listTemplates']>>>
+export type CreateTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['createTemplate']>>>
+export type GetTemplateStatsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['getTemplateStats']>>>
+export type DeleteTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['deleteTemplate']>>>
+export type GetTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['getTemplate']>>>
+export type UpdateTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['updateTemplate']>>>
+export type ToggleTemplateFavoriteResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTemplates>['toggleTemplateFavorite']>>>

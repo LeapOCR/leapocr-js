@@ -10,7 +10,6 @@ import type {
   ModelsListModelsListResponse,
   ModelsOCRResultResponse,
   ModelsOCRStatusResponse,
-  ResponseErrorResponse,
   StatusResponse,
   UploadDirectUploadCompleteRequest,
   UploadDirectUploadCompleteResponse,
@@ -20,214 +19,53 @@ import type {
   UploadRemoteURLUploadResponse
 } from '.././models';
 
+import { customInstance } from '../../lib/custom-instance';
+import type { BodyType } from '../../lib/custom-instance';
 
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+  export const getOcr = () => {
 /**
  * Retrieve a list of all enabled OCR models with their configurations, pricing, and capabilities
  * @summary List available OCR models
  */
-export type listOCRModelsResponse200 = {
-  data: ModelsListModelsListResponse
-  status: 200
-}
-
-export type listOCRModelsResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type listOCRModelsResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
+const listOCRModels = (
     
-export type listOCRModelsResponseSuccess = (listOCRModelsResponse200) & {
-  headers: Headers;
-};
-export type listOCRModelsResponseError = (listOCRModelsResponse401 | listOCRModelsResponse500) & {
-  headers: Headers;
-};
-
-export type listOCRModelsResponse = (listOCRModelsResponseSuccess | listOCRModelsResponseError)
-
-export const getListOCRModelsUrl = () => {
-
-
-  
-
-  return `/ocr/models`
-}
-
-export const listOCRModels = async ( options?: RequestInit): Promise<listOCRModelsResponse> => {
-  
-  const res = await fetch(getListOCRModelsUrl(),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: listOCRModelsResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as listOCRModelsResponse
-}
-
-
-/**
+ options?: SecondParameter<typeof customInstance<ModelsListModelsListResponse>>,) => {
+      return customInstance<ModelsListModelsListResponse>(
+      {url: `/ocr/models`, method: 'GET'
+    },
+      options);
+    }
+  /**
  * Retrieve OCR processing results for a completed job with extracted text and structured data. Returns job status if processing is still in progress. Supports pagination
  * @summary Get OCR job result
  */
-export type getJobResultResponse200 = {
-  data: ModelsOCRResultResponse
-  status: 200
-}
-
-export type getJobResultResponse202 = {
-  data: ModelsOCRStatusResponse
-  status: 202
-}
-
-export type getJobResultResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getJobResultResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getJobResultResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type getJobResultResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type getJobResultResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getJobResultResponseSuccess = (getJobResultResponse200 | getJobResultResponse202) & {
-  headers: Headers;
-};
-export type getJobResultResponseError = (getJobResultResponse400 | getJobResultResponse401 | getJobResultResponse403 | getJobResultResponse404 | getJobResultResponse500) & {
-  headers: Headers;
-};
-
-export type getJobResultResponse = (getJobResultResponseSuccess | getJobResultResponseError)
-
-export const getGetJobResultUrl = (jobId: string,
-    params?: GetJobResultParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getJobResult = (
+    jobId: string,
+    params?: GetJobResultParams,
+ options?: SecondParameter<typeof customInstance<ModelsOCRResultResponse | ModelsOCRStatusResponse>>,) => {
+      return customInstance<ModelsOCRResultResponse | ModelsOCRStatusResponse>(
+      {url: `/ocr/result/${jobId}`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/ocr/result/${jobId}?${stringifiedParams}` : `/ocr/result/${jobId}`
-}
-
-export const getJobResult = async (jobId: string,
-    params?: GetJobResultParams, options?: RequestInit): Promise<getJobResultResponse> => {
-  
-  const res = await fetch(getGetJobResultUrl(jobId,params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getJobResultResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getJobResultResponse
-}
-
-
-/**
+  /**
  * Retrieve current processing status and progress information for an OCR job. Shows completion status, progress percentage, and any error details
  * @summary Get OCR job status
  */
-export type getJobStatusResponse200 = {
-  data: StatusResponse
-  status: 200
-}
-
-export type getJobStatusResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getJobStatusResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getJobStatusResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type getJobStatusResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type getJobStatusResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getJobStatusResponseSuccess = (getJobStatusResponse200) & {
-  headers: Headers;
-};
-export type getJobStatusResponseError = (getJobStatusResponse400 | getJobStatusResponse401 | getJobStatusResponse403 | getJobStatusResponse404 | getJobStatusResponse500) & {
-  headers: Headers;
-};
-
-export type getJobStatusResponse = (getJobStatusResponseSuccess | getJobStatusResponseError)
-
-export const getGetJobStatusUrl = (jobId: string,) => {
-
-
-  
-
-  return `/ocr/status/${jobId}`
-}
-
-export const getJobStatus = async (jobId: string, options?: RequestInit): Promise<getJobStatusResponse> => {
-  
-  const res = await fetch(getGetJobStatusUrl(jobId),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getJobStatusResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getJobStatusResponse
-}
-
-
-/**
+const getJobStatus = (
+    jobId: string,
+ options?: SecondParameter<typeof customInstance<StatusResponse>>,) => {
+      return customInstance<StatusResponse>(
+      {url: `/ocr/status/${jobId}`, method: 'GET'
+    },
+      options);
+    }
+  /**
  * Create a job and generate presigned URLs for direct file upload to S3. Uses multipart upload for all files (1 part for small files, multiple parts for large files ≥50MB).
 **Output Types:**
 - `structured`: Structured data extraction. Requires one of: category_id (with schema & instructions)
@@ -236,68 +74,17 @@ export const getJobStatus = async (jobId: string, options?: RequestInit): Promis
 **Note:** Only one of category_id, schema, or instruction can be provided per request
  * @summary Direct upload
  */
-export type directUploadResponse200 = {
-  data: UploadDirectUploadResponse
-  status: 200
-}
-
-export type directUploadResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type directUploadResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type directUploadResponse402 = {
-  data: ResponseErrorResponse
-  status: 402
-}
-
-export type directUploadResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type directUploadResponseSuccess = (directUploadResponse200) & {
-  headers: Headers;
-};
-export type directUploadResponseError = (directUploadResponse400 | directUploadResponse401 | directUploadResponse402 | directUploadResponse500) & {
-  headers: Headers;
-};
-
-export type directUploadResponse = (directUploadResponseSuccess | directUploadResponseError)
-
-export const getDirectUploadUrl = () => {
-
-
-  
-
-  return `/ocr/uploads/direct`
-}
-
-export const directUpload = async (uploadInitiateDirectUploadRequest: UploadInitiateDirectUploadRequest, options?: RequestInit): Promise<directUploadResponse> => {
-  
-  const res = await fetch(getDirectUploadUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      uploadInitiateDirectUploadRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: directUploadResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as directUploadResponse
-}
-
-
-/**
+const directUpload = (
+    uploadInitiateDirectUploadRequest: BodyType<UploadInitiateDirectUploadRequest>,
+ options?: SecondParameter<typeof customInstance<UploadDirectUploadResponse>>,) => {
+      return customInstance<UploadDirectUploadResponse>(
+      {url: `/ocr/uploads/direct`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: uploadInitiateDirectUploadRequest
+    },
+      options);
+    }
+  /**
  * Create a job and start processing from a remote URL. Supported format: PDF (.pdf) only.
 **Output Types:**
 - `structured`: Structured data extraction. Requires one of: category_id (with schema & instructions)
@@ -306,135 +93,35 @@ export const directUpload = async (uploadInitiateDirectUploadRequest: UploadInit
 **Note:** Only one of category_id, schema, or instruction can be provided per request
  * @summary Remote URL upload
  */
-export type uploadFromRemoteURLResponse200 = {
-  data: UploadRemoteURLUploadResponse
-  status: 200
-}
-
-export type uploadFromRemoteURLResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type uploadFromRemoteURLResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type uploadFromRemoteURLResponse402 = {
-  data: ResponseErrorResponse
-  status: 402
-}
-
-export type uploadFromRemoteURLResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type uploadFromRemoteURLResponseSuccess = (uploadFromRemoteURLResponse200) & {
-  headers: Headers;
-};
-export type uploadFromRemoteURLResponseError = (uploadFromRemoteURLResponse400 | uploadFromRemoteURLResponse401 | uploadFromRemoteURLResponse402 | uploadFromRemoteURLResponse500) & {
-  headers: Headers;
-};
-
-export type uploadFromRemoteURLResponse = (uploadFromRemoteURLResponseSuccess | uploadFromRemoteURLResponseError)
-
-export const getUploadFromRemoteURLUrl = () => {
-
-
-  
-
-  return `/ocr/uploads/url`
-}
-
-export const uploadFromRemoteURL = async (uploadRemoteURLUploadRequest: UploadRemoteURLUploadRequest, options?: RequestInit): Promise<uploadFromRemoteURLResponse> => {
-  
-  const res = await fetch(getUploadFromRemoteURLUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      uploadRemoteURLUploadRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: uploadFromRemoteURLResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as uploadFromRemoteURLResponse
-}
-
-
-/**
+const uploadFromRemoteURL = (
+    uploadRemoteURLUploadRequest: BodyType<UploadRemoteURLUploadRequest>,
+ options?: SecondParameter<typeof customInstance<UploadRemoteURLUploadResponse>>,) => {
+      return customInstance<UploadRemoteURLUploadResponse>(
+      {url: `/ocr/uploads/url`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: uploadRemoteURLUploadRequest
+    },
+      options);
+    }
+  /**
  * Complete a direct upload by providing all uploaded part ETags
  * @summary Complete direct upload
  */
-export type completeDirectUploadResponse200 = {
-  data: UploadDirectUploadCompleteResponse
-  status: 200
-}
-
-export type completeDirectUploadResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type completeDirectUploadResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type completeDirectUploadResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type completeDirectUploadResponse404 = {
-  data: ResponseErrorResponse
-  status: 404
-}
-
-export type completeDirectUploadResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type completeDirectUploadResponseSuccess = (completeDirectUploadResponse200) & {
-  headers: Headers;
-};
-export type completeDirectUploadResponseError = (completeDirectUploadResponse400 | completeDirectUploadResponse401 | completeDirectUploadResponse403 | completeDirectUploadResponse404 | completeDirectUploadResponse500) & {
-  headers: Headers;
-};
-
-export type completeDirectUploadResponse = (completeDirectUploadResponseSuccess | completeDirectUploadResponseError)
-
-export const getCompleteDirectUploadUrl = (jobId: string,) => {
-
-
-  
-
-  return `/ocr/uploads/${jobId}/complete`
-}
-
-export const completeDirectUpload = async (jobId: string,
-    uploadDirectUploadCompleteRequest: UploadDirectUploadCompleteRequest, options?: RequestInit): Promise<completeDirectUploadResponse> => {
-  
-  const res = await fetch(getCompleteDirectUploadUrl(jobId),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      uploadDirectUploadCompleteRequest,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: completeDirectUploadResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as completeDirectUploadResponse
-}
-
-
+const completeDirectUpload = (
+    jobId: string,
+    uploadDirectUploadCompleteRequest: BodyType<UploadDirectUploadCompleteRequest>,
+ options?: SecondParameter<typeof customInstance<UploadDirectUploadCompleteResponse>>,) => {
+      return customInstance<UploadDirectUploadCompleteResponse>(
+      {url: `/ocr/uploads/${jobId}/complete`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: uploadDirectUploadCompleteRequest
+    },
+      options);
+    }
+  return {listOCRModels,getJobResult,getJobStatus,directUpload,uploadFromRemoteURL,completeDirectUpload}};
+export type ListOCRModelsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['listOCRModels']>>>
+export type GetJobResultResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['getJobResult']>>>
+export type GetJobStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['getJobStatus']>>>
+export type DirectUploadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['directUpload']>>>
+export type UploadFromRemoteURLResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['uploadFromRemoteURL']>>>
+export type CompleteDirectUploadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOcr>['completeDirectUpload']>>>

@@ -1,6 +1,6 @@
-import axios, { type AxiosInstance } from 'axios';
 import type { ClientConfig } from './types/config.js';
 import { OCRService } from './services/ocr.js';
+import { AXIOS_INSTANCE } from './lib/custom-instance.js';
 import {
   SDKError,
   AuthenticationError,
@@ -20,12 +20,11 @@ const DEFAULT_TIMEOUT = 30000;
  * Main LeapOCR SDK client
  */
 export class LeapOCR {
-  private httpClient: AxiosInstance;
-  private readonly config: Required<Omit<ClientConfig, 'httpClient'>>;
+  private readonly config: Required<ClientConfig>;
   private _ocr?: OCRService;
 
   constructor(
-    apiKey: string,
+    private readonly apiKey: string,
     config: ClientConfig = {}
   ) {
     if (!apiKey) {
@@ -41,18 +40,11 @@ export class LeapOCR {
       debug: config.debug ?? false,
     };
 
-    // Create HTTP client
-    this.httpClient =
-      config.httpClient ??
-      axios.create({
-        baseURL: this.config.baseURL,
-        timeout: this.config.timeout,
-        headers: {
-          'X-API-KEY': apiKey,
-          'User-Agent': `leapocr-sdk-js/${SDK_VERSION}`,
-          'Content-Type': 'application/json',
-        },
-      });
+    // Configure the global Axios instance
+    AXIOS_INSTANCE.defaults.baseURL = this.config.baseURL;
+    AXIOS_INSTANCE.defaults.timeout = this.config.timeout;
+    AXIOS_INSTANCE.defaults.headers.common['X-API-KEY'] = apiKey;
+    AXIOS_INSTANCE.defaults.headers.common['User-Agent'] = `leapocr-sdk-js/${SDK_VERSION}`;
 
     // Setup interceptors
     this.setupInterceptors();
@@ -64,7 +56,7 @@ export class LeapOCR {
   private setupInterceptors(): void {
     // Request interceptor for debugging
     if (this.config.debug) {
-      this.httpClient.interceptors.request.use(
+      AXIOS_INSTANCE.interceptors.request.use(
         (config) => {
           console.log('[LeapOCR] Request:', {
             method: config.method?.toUpperCase(),
@@ -81,7 +73,7 @@ export class LeapOCR {
     }
 
     // Response interceptor for error handling
-    this.httpClient.interceptors.response.use(
+    AXIOS_INSTANCE.interceptors.response.use(
       (response) => {
         if (this.config.debug) {
           console.log('[LeapOCR] Response:', {
@@ -146,7 +138,7 @@ export class LeapOCR {
    */
   get ocr(): OCRService {
     if (!this._ocr) {
-      this._ocr = new OCRService(this.httpClient, this.config);
+      this._ocr = new OCRService(this.config);
     }
     return this._ocr;
   }

@@ -15,363 +15,84 @@ import type {
   GetAnalyticsOverviewParams,
   GetAnalyticsPagesTimeseries200,
   GetAnalyticsPagesTimeseriesParams,
-  GetAnalyticsTemplatesTopParams,
-  ResponseErrorResponse
+  GetAnalyticsTemplatesTopParams
 } from '.././models';
 
+import { customInstance } from '../../lib/custom-instance';
 
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+  export const getAnalytics = () => {
 /**
  * Returns comprehensive credit analytics including snapshot data, timeseries trends, and tier usage breakdown
  * @summary Get credit usage analytics
  */
-export type getAnalyticsCreditsUsageResponse200 = {
-  data: AnalyticsCreditsUsageResponse
-  status: 200
-}
-
-export type getAnalyticsCreditsUsageResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getAnalyticsCreditsUsageResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getAnalyticsCreditsUsageResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type getAnalyticsCreditsUsageResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getAnalyticsCreditsUsageResponseSuccess = (getAnalyticsCreditsUsageResponse200) & {
-  headers: Headers;
-};
-export type getAnalyticsCreditsUsageResponseError = (getAnalyticsCreditsUsageResponse400 | getAnalyticsCreditsUsageResponse401 | getAnalyticsCreditsUsageResponse403 | getAnalyticsCreditsUsageResponse500) & {
-  headers: Headers;
-};
-
-export type getAnalyticsCreditsUsageResponse = (getAnalyticsCreditsUsageResponseSuccess | getAnalyticsCreditsUsageResponseError)
-
-export const getGetAnalyticsCreditsUsageUrl = (params?: GetAnalyticsCreditsUsageParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getAnalyticsCreditsUsage = (
+    params?: GetAnalyticsCreditsUsageParams,
+ options?: SecondParameter<typeof customInstance<AnalyticsCreditsUsageResponse>>,) => {
+      return customInstance<AnalyticsCreditsUsageResponse>(
+      {url: `/analytics/credits/usage`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/analytics/credits/usage?${stringifiedParams}` : `/analytics/credits/usage`
-}
-
-export const getAnalyticsCreditsUsage = async (params?: GetAnalyticsCreditsUsageParams, options?: RequestInit): Promise<getAnalyticsCreditsUsageResponse> => {
-  
-  const res = await fetch(getGetAnalyticsCreditsUsageUrl(params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getAnalyticsCreditsUsageResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getAnalyticsCreditsUsageResponse
-}
-
-
-/**
+  /**
  * Returns job metrics aggregated by time buckets including total jobs, completed jobs, failed jobs, active jobs, pages processed, and credits consumed
  * @summary Get job analytics timeseries
  */
-export type getAnalyticsJobsTimeseriesResponse200 = {
-  data: GetAnalyticsJobsTimeseries200
-  status: 200
-}
-
-export type getAnalyticsJobsTimeseriesResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getAnalyticsJobsTimeseriesResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getAnalyticsJobsTimeseriesResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type getAnalyticsJobsTimeseriesResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getAnalyticsJobsTimeseriesResponseSuccess = (getAnalyticsJobsTimeseriesResponse200) & {
-  headers: Headers;
-};
-export type getAnalyticsJobsTimeseriesResponseError = (getAnalyticsJobsTimeseriesResponse400 | getAnalyticsJobsTimeseriesResponse401 | getAnalyticsJobsTimeseriesResponse403 | getAnalyticsJobsTimeseriesResponse500) & {
-  headers: Headers;
-};
-
-export type getAnalyticsJobsTimeseriesResponse = (getAnalyticsJobsTimeseriesResponseSuccess | getAnalyticsJobsTimeseriesResponseError)
-
-export const getGetAnalyticsJobsTimeseriesUrl = (params?: GetAnalyticsJobsTimeseriesParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getAnalyticsJobsTimeseries = (
+    params?: GetAnalyticsJobsTimeseriesParams,
+ options?: SecondParameter<typeof customInstance<GetAnalyticsJobsTimeseries200>>,) => {
+      return customInstance<GetAnalyticsJobsTimeseries200>(
+      {url: `/analytics/jobs/timeseries`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/analytics/jobs/timeseries?${stringifiedParams}` : `/analytics/jobs/timeseries`
-}
-
-export const getAnalyticsJobsTimeseries = async (params?: GetAnalyticsJobsTimeseriesParams, options?: RequestInit): Promise<getAnalyticsJobsTimeseriesResponse> => {
-  
-  const res = await fetch(getGetAnalyticsJobsTimeseriesUrl(params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getAnalyticsJobsTimeseriesResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getAnalyticsJobsTimeseriesResponse
-}
-
-
-/**
+  /**
  * Returns high-level analytics insights including job statistics, page outcomes, credit usage, and webhook metrics for the specified time range
  * @summary Get analytics overview
  */
-export type getAnalyticsOverviewResponse200 = {
-  data: AnalyticsOverviewResponse
-  status: 200
-}
-
-export type getAnalyticsOverviewResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getAnalyticsOverviewResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getAnalyticsOverviewResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type getAnalyticsOverviewResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getAnalyticsOverviewResponseSuccess = (getAnalyticsOverviewResponse200) & {
-  headers: Headers;
-};
-export type getAnalyticsOverviewResponseError = (getAnalyticsOverviewResponse400 | getAnalyticsOverviewResponse401 | getAnalyticsOverviewResponse403 | getAnalyticsOverviewResponse500) & {
-  headers: Headers;
-};
-
-export type getAnalyticsOverviewResponse = (getAnalyticsOverviewResponseSuccess | getAnalyticsOverviewResponseError)
-
-export const getGetAnalyticsOverviewUrl = (params?: GetAnalyticsOverviewParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getAnalyticsOverview = (
+    params?: GetAnalyticsOverviewParams,
+ options?: SecondParameter<typeof customInstance<AnalyticsOverviewResponse>>,) => {
+      return customInstance<AnalyticsOverviewResponse>(
+      {url: `/analytics/overview`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/analytics/overview?${stringifiedParams}` : `/analytics/overview`
-}
-
-export const getAnalyticsOverview = async (params?: GetAnalyticsOverviewParams, options?: RequestInit): Promise<getAnalyticsOverviewResponse> => {
-  
-  const res = await fetch(getGetAnalyticsOverviewUrl(params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getAnalyticsOverviewResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getAnalyticsOverviewResponse
-}
-
-
-/**
+  /**
  * Returns page outcomes aggregated by time buckets including totals, completion, failure, and token counts
  * @summary Get page analytics timeseries
  */
-export type getAnalyticsPagesTimeseriesResponse200 = {
-  data: GetAnalyticsPagesTimeseries200
-  status: 200
-}
-
-export type getAnalyticsPagesTimeseriesResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getAnalyticsPagesTimeseriesResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getAnalyticsPagesTimeseriesResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type getAnalyticsPagesTimeseriesResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getAnalyticsPagesTimeseriesResponseSuccess = (getAnalyticsPagesTimeseriesResponse200) & {
-  headers: Headers;
-};
-export type getAnalyticsPagesTimeseriesResponseError = (getAnalyticsPagesTimeseriesResponse400 | getAnalyticsPagesTimeseriesResponse401 | getAnalyticsPagesTimeseriesResponse403 | getAnalyticsPagesTimeseriesResponse500) & {
-  headers: Headers;
-};
-
-export type getAnalyticsPagesTimeseriesResponse = (getAnalyticsPagesTimeseriesResponseSuccess | getAnalyticsPagesTimeseriesResponseError)
-
-export const getGetAnalyticsPagesTimeseriesUrl = (params?: GetAnalyticsPagesTimeseriesParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getAnalyticsPagesTimeseries = (
+    params?: GetAnalyticsPagesTimeseriesParams,
+ options?: SecondParameter<typeof customInstance<GetAnalyticsPagesTimeseries200>>,) => {
+      return customInstance<GetAnalyticsPagesTimeseries200>(
+      {url: `/analytics/pages/timeseries`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/analytics/pages/timeseries?${stringifiedParams}` : `/analytics/pages/timeseries`
-}
-
-export const getAnalyticsPagesTimeseries = async (params?: GetAnalyticsPagesTimeseriesParams, options?: RequestInit): Promise<getAnalyticsPagesTimeseriesResponse> => {
-  
-  const res = await fetch(getGetAnalyticsPagesTimeseriesUrl(params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getAnalyticsPagesTimeseriesResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getAnalyticsPagesTimeseriesResponse
-}
-
-
-/**
+  /**
  * Returns the most frequently used templates ranked by job count, usage count, and credits consumed
  * @summary Get top templates analytics
  */
-export type getAnalyticsTemplatesTopResponse200 = {
-  data: AnalyticsTopTemplatesResponse
-  status: 200
-}
-
-export type getAnalyticsTemplatesTopResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getAnalyticsTemplatesTopResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getAnalyticsTemplatesTopResponse403 = {
-  data: ResponseErrorResponse
-  status: 403
-}
-
-export type getAnalyticsTemplatesTopResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getAnalyticsTemplatesTopResponseSuccess = (getAnalyticsTemplatesTopResponse200) & {
-  headers: Headers;
-};
-export type getAnalyticsTemplatesTopResponseError = (getAnalyticsTemplatesTopResponse400 | getAnalyticsTemplatesTopResponse401 | getAnalyticsTemplatesTopResponse403 | getAnalyticsTemplatesTopResponse500) & {
-  headers: Headers;
-};
-
-export type getAnalyticsTemplatesTopResponse = (getAnalyticsTemplatesTopResponseSuccess | getAnalyticsTemplatesTopResponseError)
-
-export const getGetAnalyticsTemplatesTopUrl = (params?: GetAnalyticsTemplatesTopParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getAnalyticsTemplatesTop = (
+    params?: GetAnalyticsTemplatesTopParams,
+ options?: SecondParameter<typeof customInstance<AnalyticsTopTemplatesResponse>>,) => {
+      return customInstance<AnalyticsTopTemplatesResponse>(
+      {url: `/analytics/templates/top`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/analytics/templates/top?${stringifiedParams}` : `/analytics/templates/top`
-}
-
-export const getAnalyticsTemplatesTop = async (params?: GetAnalyticsTemplatesTopParams, options?: RequestInit): Promise<getAnalyticsTemplatesTopResponse> => {
-  
-  const res = await fetch(getGetAnalyticsTemplatesTopUrl(params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getAnalyticsTemplatesTopResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getAnalyticsTemplatesTopResponse
-}
-
-
+  return {getAnalyticsCreditsUsage,getAnalyticsJobsTimeseries,getAnalyticsOverview,getAnalyticsPagesTimeseries,getAnalyticsTemplatesTop}};
+export type GetAnalyticsCreditsUsageResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getAnalyticsCreditsUsage']>>>
+export type GetAnalyticsJobsTimeseriesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getAnalyticsJobsTimeseries']>>>
+export type GetAnalyticsOverviewResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getAnalyticsOverview']>>>
+export type GetAnalyticsPagesTimeseriesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getAnalyticsPagesTimeseries']>>>
+export type GetAnalyticsTemplatesTopResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getAnalyticsTemplatesTop']>>>

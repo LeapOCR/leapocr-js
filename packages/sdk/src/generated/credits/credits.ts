@@ -11,252 +11,70 @@ import type {
   CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse,
   CreditsProductCatalog,
   GetCreditTransactionsByOrganizationIDParams,
-  GetCreditTransactionsByTeamIDParams,
-  ResponseErrorResponse
+  GetCreditTransactionsByTeamIDParams
 } from '.././models';
 
+import { customInstance } from '../../lib/custom-instance';
 
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+  export const getCredits = () => {
 /**
  * Retrieve current credit balance, consumption, trial status, active subscriptions, granted benefits, and active meters for the authenticated user's organization from the JWT token.
  * @summary Get organization credits balance
  */
-export type getOrganizationCreditsBalanceResponse200 = {
-  data: CreditsCreditBalanceResponse
-  status: 200
-}
-
-export type getOrganizationCreditsBalanceResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getOrganizationCreditsBalanceResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
+const getOrganizationCreditsBalance = (
     
-export type getOrganizationCreditsBalanceResponseSuccess = (getOrganizationCreditsBalanceResponse200) & {
-  headers: Headers;
-};
-export type getOrganizationCreditsBalanceResponseError = (getOrganizationCreditsBalanceResponse401 | getOrganizationCreditsBalanceResponse500) & {
-  headers: Headers;
-};
-
-export type getOrganizationCreditsBalanceResponse = (getOrganizationCreditsBalanceResponseSuccess | getOrganizationCreditsBalanceResponseError)
-
-export const getGetOrganizationCreditsBalanceUrl = () => {
-
-
-  
-
-  return `/credits/organizations/balance`
-}
-
-export const getOrganizationCreditsBalance = async ( options?: RequestInit): Promise<getOrganizationCreditsBalanceResponse> => {
-  
-  const res = await fetch(getGetOrganizationCreditsBalanceUrl(),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getOrganizationCreditsBalanceResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getOrganizationCreditsBalanceResponse
-}
-
-
-/**
+ options?: SecondParameter<typeof customInstance<CreditsCreditBalanceResponse>>,) => {
+      return customInstance<CreditsCreditBalanceResponse>(
+      {url: `/credits/organizations/balance`, method: 'GET'
+    },
+      options);
+    }
+  /**
  * Retrieve paginated list of credit transactions for the authenticated user's organization
  * @summary Get credit transactions by organization ID
  */
-export type getCreditTransactionsByOrganizationIDResponse200 = {
-  data: CreditsCreditTransactionsResponseCreditsCreditTransactionOrganizationResponse
-  status: 200
-}
-
-export type getCreditTransactionsByOrganizationIDResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getCreditTransactionsByOrganizationIDResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getCreditTransactionsByOrganizationIDResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getCreditTransactionsByOrganizationIDResponseSuccess = (getCreditTransactionsByOrganizationIDResponse200) & {
-  headers: Headers;
-};
-export type getCreditTransactionsByOrganizationIDResponseError = (getCreditTransactionsByOrganizationIDResponse400 | getCreditTransactionsByOrganizationIDResponse401 | getCreditTransactionsByOrganizationIDResponse500) & {
-  headers: Headers;
-};
-
-export type getCreditTransactionsByOrganizationIDResponse = (getCreditTransactionsByOrganizationIDResponseSuccess | getCreditTransactionsByOrganizationIDResponseError)
-
-export const getGetCreditTransactionsByOrganizationIDUrl = (organizationId: string,
-    params?: GetCreditTransactionsByOrganizationIDParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getCreditTransactionsByOrganizationID = (
+    organizationId: string,
+    params?: GetCreditTransactionsByOrganizationIDParams,
+ options?: SecondParameter<typeof customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionOrganizationResponse>>,) => {
+      return customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionOrganizationResponse>(
+      {url: `/credits/organizations/${organizationId}/transactions`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/credits/organizations/${organizationId}/transactions?${stringifiedParams}` : `/credits/organizations/${organizationId}/transactions`
-}
-
-export const getCreditTransactionsByOrganizationID = async (organizationId: string,
-    params?: GetCreditTransactionsByOrganizationIDParams, options?: RequestInit): Promise<getCreditTransactionsByOrganizationIDResponse> => {
-  
-  const res = await fetch(getGetCreditTransactionsByOrganizationIDUrl(organizationId,params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getCreditTransactionsByOrganizationIDResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getCreditTransactionsByOrganizationIDResponse
-}
-
-
-/**
+  /**
  * Retrieve list of all available products from Polar with caching
  * @summary Get Polar products catalog
  */
-export type getPolarProductsCatalogResponse200 = {
-  data: CreditsProductCatalog
-  status: 200
-}
-
-export type getPolarProductsCatalogResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getPolarProductsCatalogResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
+const getPolarProductsCatalog = (
     
-export type getPolarProductsCatalogResponseSuccess = (getPolarProductsCatalogResponse200) & {
-  headers: Headers;
-};
-export type getPolarProductsCatalogResponseError = (getPolarProductsCatalogResponse401 | getPolarProductsCatalogResponse500) & {
-  headers: Headers;
-};
-
-export type getPolarProductsCatalogResponse = (getPolarProductsCatalogResponseSuccess | getPolarProductsCatalogResponseError)
-
-export const getGetPolarProductsCatalogUrl = () => {
-
-
-  
-
-  return `/credits/polar/products/catalog`
-}
-
-export const getPolarProductsCatalog = async ( options?: RequestInit): Promise<getPolarProductsCatalogResponse> => {
-  
-  const res = await fetch(getGetPolarProductsCatalogUrl(),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getPolarProductsCatalogResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getPolarProductsCatalogResponse
-}
-
-
-/**
+ options?: SecondParameter<typeof customInstance<CreditsProductCatalog>>,) => {
+      return customInstance<CreditsProductCatalog>(
+      {url: `/credits/polar/products/catalog`, method: 'GET'
+    },
+      options);
+    }
+  /**
  * Retrieve paginated list of credit transactions for the authenticated user's team
  * @summary Get credit transactions by team ID
  */
-export type getCreditTransactionsByTeamIDResponse200 = {
-  data: CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse
-  status: 200
-}
-
-export type getCreditTransactionsByTeamIDResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type getCreditTransactionsByTeamIDResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type getCreditTransactionsByTeamIDResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type getCreditTransactionsByTeamIDResponseSuccess = (getCreditTransactionsByTeamIDResponse200) & {
-  headers: Headers;
-};
-export type getCreditTransactionsByTeamIDResponseError = (getCreditTransactionsByTeamIDResponse400 | getCreditTransactionsByTeamIDResponse401 | getCreditTransactionsByTeamIDResponse500) & {
-  headers: Headers;
-};
-
-export type getCreditTransactionsByTeamIDResponse = (getCreditTransactionsByTeamIDResponseSuccess | getCreditTransactionsByTeamIDResponseError)
-
-export const getGetCreditTransactionsByTeamIDUrl = (teamId: string,
-    params?: GetCreditTransactionsByTeamIDParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+const getCreditTransactionsByTeamID = (
+    teamId: string,
+    params?: GetCreditTransactionsByTeamIDParams,
+ options?: SecondParameter<typeof customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse>>,) => {
+      return customInstance<CreditsCreditTransactionsResponseCreditsCreditTransactionProjectResponse>(
+      {url: `/credits/teams/${teamId}/transactions`, method: 'GET',
+        params
+    },
+      options);
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/credits/teams/${teamId}/transactions?${stringifiedParams}` : `/credits/teams/${teamId}/transactions`
-}
-
-export const getCreditTransactionsByTeamID = async (teamId: string,
-    params?: GetCreditTransactionsByTeamIDParams, options?: RequestInit): Promise<getCreditTransactionsByTeamIDResponse> => {
-  
-  const res = await fetch(getGetCreditTransactionsByTeamIDUrl(teamId,params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getCreditTransactionsByTeamIDResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getCreditTransactionsByTeamIDResponse
-}
-
-
+  return {getOrganizationCreditsBalance,getCreditTransactionsByOrganizationID,getPolarProductsCatalog,getCreditTransactionsByTeamID}};
+export type GetOrganizationCreditsBalanceResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['getOrganizationCreditsBalance']>>>
+export type GetCreditTransactionsByOrganizationIDResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['getCreditTransactionsByOrganizationID']>>>
+export type GetPolarProductsCatalogResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['getPolarProductsCatalog']>>>
+export type GetCreditTransactionsByTeamIDResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['getCreditTransactionsByTeamID']>>>

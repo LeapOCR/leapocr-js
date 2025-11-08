@@ -8,128 +8,45 @@
 import type {
   HandlePolarWebhookBody,
   PostWebhooksR2UploadNotification200,
-  ResponseErrorResponse,
   WebhooksR2UploadNotification
 } from '.././models';
 
+import { customInstance } from '../../lib/custom-instance';
+import type { BodyType } from '../../lib/custom-instance';
 
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+  export const getWebhooks = () => {
 /**
  * Process webhook events from Polar billing system with signature verification
  * @summary Handle Polar webhooks
  */
-export type handlePolarWebhookResponse200 = {
-  data: string
-  status: 200
-}
-
-export type handlePolarWebhookResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type handlePolarWebhookResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type handlePolarWebhookResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type handlePolarWebhookResponseSuccess = (handlePolarWebhookResponse200) & {
-  headers: Headers;
-};
-export type handlePolarWebhookResponseError = (handlePolarWebhookResponse400 | handlePolarWebhookResponse401 | handlePolarWebhookResponse500) & {
-  headers: Headers;
-};
-
-export type handlePolarWebhookResponse = (handlePolarWebhookResponseSuccess | handlePolarWebhookResponseError)
-
-export const getHandlePolarWebhookUrl = () => {
-
-
-  
-
-  return `/webhooks/polar`
-}
-
-export const handlePolarWebhook = async (handlePolarWebhookBody: HandlePolarWebhookBody, options?: RequestInit): Promise<handlePolarWebhookResponse> => {
-  
-  const res = await fetch(getHandlePolarWebhookUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      handlePolarWebhookBody,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: handlePolarWebhookResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as handlePolarWebhookResponse
-}
-
-
-/**
+const handlePolarWebhook = (
+    handlePolarWebhookBody: BodyType<HandlePolarWebhookBody>,
+ options?: SecondParameter<typeof customInstance<string>>,) => {
+      return customInstance<string>(
+      {url: `/webhooks/polar`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: handlePolarWebhookBody
+    },
+      options);
+    }
+  /**
  * Receive notification from Cloudflare R2 when file upload is complete
  * @summary Handle R2 upload notification
  */
-export type postWebhooksR2UploadNotificationResponse200 = {
-  data: PostWebhooksR2UploadNotification200
-  status: 200
-}
-
-export type postWebhooksR2UploadNotificationResponse400 = {
-  data: ResponseErrorResponse
-  status: 400
-}
-
-export type postWebhooksR2UploadNotificationResponse401 = {
-  data: ResponseErrorResponse
-  status: 401
-}
-
-export type postWebhooksR2UploadNotificationResponse500 = {
-  data: ResponseErrorResponse
-  status: 500
-}
-    
-export type postWebhooksR2UploadNotificationResponseSuccess = (postWebhooksR2UploadNotificationResponse200) & {
-  headers: Headers;
-};
-export type postWebhooksR2UploadNotificationResponseError = (postWebhooksR2UploadNotificationResponse400 | postWebhooksR2UploadNotificationResponse401 | postWebhooksR2UploadNotificationResponse500) & {
-  headers: Headers;
-};
-
-export type postWebhooksR2UploadNotificationResponse = (postWebhooksR2UploadNotificationResponseSuccess | postWebhooksR2UploadNotificationResponseError)
-
-export const getPostWebhooksR2UploadNotificationUrl = () => {
-
-
-  
-
-  return `/webhooks/r2-upload-notification`
-}
-
-export const postWebhooksR2UploadNotification = async (webhooksR2UploadNotification: WebhooksR2UploadNotification, options?: RequestInit): Promise<postWebhooksR2UploadNotificationResponse> => {
-  
-  const res = await fetch(getPostWebhooksR2UploadNotificationUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      webhooksR2UploadNotification,)
-  }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: postWebhooksR2UploadNotificationResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as postWebhooksR2UploadNotificationResponse
-}
-
-
+const postWebhooksR2UploadNotification = (
+    webhooksR2UploadNotification: BodyType<WebhooksR2UploadNotification>,
+ options?: SecondParameter<typeof customInstance<PostWebhooksR2UploadNotification200>>,) => {
+      return customInstance<PostWebhooksR2UploadNotification200>(
+      {url: `/webhooks/r2-upload-notification`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: webhooksR2UploadNotification
+    },
+      options);
+    }
+  return {handlePolarWebhook,postWebhooksR2UploadNotification}};
+export type HandlePolarWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['handlePolarWebhook']>>>
+export type PostWebhooksR2UploadNotificationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['postWebhooksR2UploadNotification']>>>
