@@ -1,8 +1,7 @@
-import { describe, it, expect, beforeAll } from "vitest";
-import { LeapOCR } from "../../src/client.js";
-import { writeFileSync, mkdirSync, rmSync } from "fs";
+import { mkdirSync, rmSync } from "fs";
 import { join } from "path";
-import { Readable } from "stream";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { LeapOCR } from "../../src/client.js";
 
 /**
  * Integration tests for OCR service
@@ -11,50 +10,21 @@ import { Readable } from "stream";
  */
 
 const TEST_DIR = join(process.cwd(), "tests", "fixtures", "integration");
-const SAMPLE_DIR = join(process.cwd(), "../..", "sample"); // Assuming monorepo structure
 const API_KEY = process.env.LEAPOCR_API_KEY || "";
 const BASE_URL = process.env.LEAPOCR_BASE_URL || "http://localhost:8080/api/v1";
 
 // Skip integration tests if API key is not set
 const runIntegrationTests = API_KEY.length > 0;
 
-// Helper to find test PDF file
-function findTestPDF(): string | null {
-  const testFiles = [
-    join(SAMPLE_DIR, "test.pdf"),
-    join(SAMPLE_DIR, "A129of19_14.01.22.pdf"),
-    join(SAMPLE_DIR, "A141of21_10.02.22.pdf"),
-  ];
-
-  for (const file of testFiles) {
-    try {
-      require("fs").accessSync(file);
-      return file;
-    } catch {
-      // File doesn't exist, try next
-    }
-  }
-  return null;
-}
-
 describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
   let client: LeapOCR;
-  let testPDFPath: string | null;
+  let testPDFPath: string;
 
   beforeAll(() => {
     mkdirSync(TEST_DIR, { recursive: true });
 
-    // Try to find real test PDF
-    testPDFPath = findTestPDF();
-
-    if (!testPDFPath) {
-      // Fallback: Create minimal test PDF
-      testPDFPath = join(TEST_DIR, "sample.pdf");
-      const pdfContent = Buffer.from(
-        "%PDF-1.4\n1 0 obj\n<<\n/Type /Catalog\n/Pages 2 0 R\n>>\nendobj\n2 0 obj\n<<\n/Type /Pages\n/Kids [3 0 R]\n/Count 1\n>>\nendobj\n3 0 obj\n<<\n/Type /Page\n/Parent 2 0 R\n/Resources <<\n/Font <<\n/F1 4 0 R\n>>\n>>\n/MediaBox [0 0 612 792]\n/Contents 5 0 R\n>>\nendobj\n4 0 obj\n<<\n/Type /Font\n/Subtype /Type1\n/BaseFont /Helvetica\n>>\nendobj\n5 0 obj\n<<\n/Length 44\n>>\nstream\nBT\n/F1 12 Tf\n100 700 Td\n(Hello World) Tj\nET\nendstream\nendobj\nxref\n0 6\n0000000000 65535 f\n0000000009 00000 n\n0000000058 00000 n\n0000000115 00000 n\n0000000262 00000 n\n0000000341 00000 n\ntrailer\n<<\n/Size 6\n/Root 1 0 R\n>>\nstartxref\n435\n%%EOF",
-      );
-      writeFileSync(testPDFPath, pdfContent);
-    }
+    // Reference the test PDF in packages/sdk/sample/test.pdf
+    testPDFPath = join(process.cwd(), "sample", "test.pdf");
 
     client = new LeapOCR({
       apiKey: API_KEY,
@@ -68,10 +38,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
   describe("File Upload", () => {
     it("should upload PDF file successfully", async () => {
-      if (!testPDFPath) {
-        throw new Error("No test PDF available");
-      }
-
       const result = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
@@ -83,10 +49,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     }, 30000);
 
     it("should upload with structured format", async () => {
-      if (!testPDFPath) {
-        throw new Error("No test PDF available");
-      }
-
       const result = await client.ocr.processFile(testPDFPath, {
         format: "structured",
         model: "standard-v1",
@@ -98,10 +60,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     }, 30000);
 
     it("should upload with pro model", async () => {
-      if (!testPDFPath) {
-        throw new Error("No test PDF available");
-      }
-
       const result = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "pro-v1",
@@ -111,10 +69,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     }, 30000);
 
     it("should upload with english-pro model", async () => {
-      if (!testPDFPath) {
-        throw new Error("No test PDF available");
-      }
-
       const result = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "english-pro-v1",
@@ -126,10 +80,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
   describe("Buffer Upload", () => {
     it("should upload buffer successfully", async () => {
-      if (!testPDFPath) {
-        throw new Error("No test PDF available");
-      }
-
       const buffer = require("fs").readFileSync(testPDFPath);
 
       const result = await client.ocr.processFileBuffer(buffer, "test.pdf", {
@@ -144,10 +94,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
   describe("Stream Upload", () => {
     it("should upload stream successfully", async () => {
-      if (!testPDFPath) {
-        throw new Error("No test PDF available");
-      }
-
       const stream = require("fs").createReadStream(testPDFPath);
 
       const result = await client.ocr.processFileStream(stream, "test.pdf", {
@@ -178,8 +124,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
   describe("Job Status", () => {
     it("should get job status", async () => {
-      if (!testPDFPath) throw new Error("No test PDF");
-
       const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
@@ -195,8 +139,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
   describe("Wait for Completion", () => {
     it("should wait for job completion", async () => {
-      if (!testPDFPath) throw new Error("No test PDF");
-
       const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
@@ -212,8 +154,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     }, 70000);
 
     it("should track progress during polling", async () => {
-      if (!testPDFPath) throw new Error("No test PDF");
-
       const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
@@ -235,8 +175,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
   describe("Get Results", () => {
     it("should get job results after completion", async () => {
-      if (!testPDFPath) throw new Error("No test PDF");
-
       const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
@@ -258,8 +196,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     }, 70000);
 
     it("should support pagination", async () => {
-      if (!testPDFPath) throw new Error("No test PDF");
-
       const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
@@ -282,7 +218,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
   describe("Error Handling", () => {
     it("should handle invalid file type", async () => {
       const txtPath = join(TEST_DIR, "test.txt");
-      writeFileSync(txtPath, "Text content");
+      require("fs").writeFileSync(txtPath, "Text content");
 
       await expect(client.ocr.processFile(txtPath)).rejects.toThrow(
         "not supported",
@@ -300,8 +236,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     });
 
     it("should timeout on long-running job", async () => {
-      if (!testPDFPath) throw new Error("No test PDF");
-
       const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
@@ -318,8 +252,6 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
   describe("Concurrent Operations", () => {
     it("should handle multiple concurrent uploads", async () => {
-      if (!testPDFPath) throw new Error("No test PDF");
-
       const uploads = await Promise.all([
         client.ocr.processFile(testPDFPath, {
           format: "markdown",
