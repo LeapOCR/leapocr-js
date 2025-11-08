@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { writeFileSync, unlinkSync, mkdirSync, rmSync } from "fs";
+import { mkdirSync, rmSync, writeFileSync } from "fs";
 import { join } from "path";
-import { validateFile, validateBuffer } from "../../src/utils/validation.js";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { validateBuffer, validateFile } from "../../src/utils/validation.js";
 
 const TEST_DIR = join(process.cwd(), "tests", "fixtures", "temp");
 

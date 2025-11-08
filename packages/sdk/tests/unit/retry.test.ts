@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AxiosError } from "axios";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  isRetriableError,
-  getRetryDelay,
-  withRetry,
   DEFAULT_RETRY_OPTIONS,
+  getRetryDelay,
+  isRetriableError,
+  withRetry,
 } from "../../src/utils/retry.js";
 
 describe("Retry Logic", () => {

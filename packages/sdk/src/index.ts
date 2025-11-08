@@ -13,40 +13,40 @@ export { OCRService } from "./services/ocr.js";
 // Types
 export type {
   ClientConfig,
-  OCRModel,
-  UploadOptions,
-  PollOptions,
   JobStatus,
   JobStatusType,
-  UploadResult,
+  OCRModel,
   PaginationInfo,
+  PollOptions,
   ResultMetadata,
+  UploadOptions,
+  UploadResult,
 } from "./types/index.js";
 
 // Errors
 export {
-  SDKError,
+  APIError,
   AuthenticationError,
   AuthorizationError,
-  RateLimitError,
-  ValidationError,
   FileError,
   JobError,
   JobFailedError,
-  TimeoutError,
   NetworkError,
-  APIError,
+  RateLimitError,
+  SDKError,
+  TimeoutError,
+  ValidationError,
 } from "./errors/index.js";
 
 // Constants
 export {
-  MAX_FILE_SIZE,
-  SUPPORTED_EXTENSIONS,
-  DEFAULT_POLL_INTERVAL,
   DEFAULT_MAX_WAIT,
+  DEFAULT_POLL_INTERVAL,
+  MAX_FILE_SIZE,
   SDK_VERSION,
+  SUPPORTED_EXTENSIONS,
 } from "./utils/constants.js";
 
 // Utilities (for advanced use)
-export { validateFile, validateBuffer } from "./utils/validation.js";
+export { validateBuffer, validateFile } from "./utils/validation.js";
 export type { ValidationResult } from "./utils/validation.js";

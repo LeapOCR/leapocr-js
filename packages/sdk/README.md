@@ -1,149 +1,332 @@
-# LeapOCR JavaScript/TypeScript SDK
+# LeapOCR JavaScript SDK
 
-Official JavaScript/TypeScript SDK for the [LeapOCR](https://leapocr.com) API - Fast, accurate document OCR and data extraction.
+[![npm version](https://img.shields.io/npm/v/leapocr.svg)](https://www.npmjs.com/package/leapocr)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
-## Features
+Official JavaScript/TypeScript SDK for [LeapOCR](https://www.leapocr.com/) - Transform documents into structured data using AI-powered OCR.
 
-- ✨ **Simple & Intuitive** - Clean, idiomatic JavaScript/TypeScript API
-- 🔄 **Auto-Retry** - Built-in exponential backoff for transient errors
-- ⏱️ **Polling Helpers** - Convenience methods for async job management
-- 📦 **Multiple Upload Methods** - File path, Buffer, Stream, or URL
-- 🎯 **TypeScript First** - Full type safety and IntelliSense support
-- 🚀 **Batch Processing** - Process multiple files with concurrency control
-- 🛡️ **Comprehensive Error Handling** - Typed errors for better error handling
-- 🔍 **File Validation** - Client-side validation before upload
+## Overview
+
+LeapOCR provides enterprise-grade document processing with AI-powered data extraction. This SDK offers a JavaScript/TypeScript-native interface for seamless integration into your Node.js and browser applications.
 
 ## Installation
 
 ```bash
-# Using pnpm
-pnpm add @leapocr/sdk
-
-# Using npm
-npm install @leapocr/sdk
-
-# Using yarn
-yarn add @leapocr/sdk
+npm install leapocr
+# or
+yarn add leapocr
+# or
+pnpm add leapocr
 ```
 
 ## Quick Start
 
-```typescript
-import { LeapOCR } from "@leapocr/sdk";
+### Prerequisites
 
-// Initialize client
-const client = new LeapOCR("your-api-key");
+- Node.js 18 or higher
+- LeapOCR API key ([sign up here](https://www.leapocr.com/signup))
 
-// Process a document (upload + poll until complete)
-const result = await client.ocr.processFile(
-  "./document.pdf",
-  {
-    model: "standard-v1",
-  },
-  {
-    onProgress: (status) => {
-      console.log(`Progress: ${status.progress}%`);
-    },
-  },
-);
-
-console.log("Extracted text:", result.pages[0].text);
-```
-
-## Authentication
-
-Get your API key from the [LeapOCR Dashboard](https://leapocr.com/dashboard).
+### Basic Example
 
 ```typescript
-const client = new LeapOCR("your-api-key");
+import { LeapOCR } from "leapocr";
 
-// Or with environment variable
-const client = new LeapOCR(process.env.LEAPOCR_API_KEY);
+// Initialize the SDK with your API key
+const client = new LeapOCR({
+  apiKey: process.env.LEAPOCR_API_KEY,
+});
+
+// Submit a document for processing
+const job = await client.ocr.processURL("https://example.com/document.pdf", {
+  format: "structured",
+  model: "standard-v1",
+});
+
+// Wait for processing to complete
+const result = await client.ocr.waitUntilDone(job.jobId);
+
+console.log("Extracted data:", result.data);
 ```
+
+## Key Features
+
+- **TypeScript First** - Full type safety with comprehensive TypeScript definitions
+- **Multiple Processing Formats** - Structured data extraction, markdown output, or per-page processing
+- **Flexible Model Selection** - Choose from standard, pro, or custom AI models
+- **Custom Schema Support** - Define extraction schemas for your specific use case
+- **Built-in Retry Logic** - Automatic handling of transient failures
+- **Universal Runtime** - Works in Node.js and modern browsers
+- **Direct File Upload** - Efficient multipart uploads for local files
+
+## Processing Models
+
+| Model            | Use Case                           | Credits/Page | Priority |
+| ---------------- | ---------------------------------- | ------------ | -------- |
+| `standard-v1`    | General purpose (default)          | 1            | 1        |
+| `english-pro-v1` | English documents, premium quality | 2            | 4        |
+| `pro-v1`         | Highest quality, all languages     | 5            | 5        |
+
+Specify a model in the processing options. Defaults to `standard-v1`.
 
 ## Usage Examples
 
-### Simple File Upload
+### Processing from URL
 
 ```typescript
-// Upload and wait for completion
-const result = await client.ocr.processFile("./document.pdf");
-console.log(result.pages[0].text);
-```
-
-### Upload with Progress Tracking
-
-```typescript
-const result = await client.ocr.processFile(
-  "./document.pdf",
-  { model: "standard-v1" },
-  {
-    pollInterval: 2000,
-    maxWait: 300000,
-    onProgress: (status) => {
-      console.log(`Progress: ${status.progress}%`);
-    },
-  },
-);
-```
-
-### Batch Processing
-
-```typescript
-const files = ["./doc1.pdf", "./doc2.pdf", "./doc3.pdf"];
-
-const batch = await client.ocr.processBatch(files, {
-  model: "standard-v1",
-  concurrency: 5,
+const client = new LeapOCR({
+  apiKey: process.env.LEAPOCR_API_KEY,
 });
 
-console.log(`Uploaded ${batch.jobs.length}/${batch.totalFiles} files`);
+const job = await client.ocr.processURL("https://example.com/invoice.pdf", {
+  format: "structured",
+  model: "standard-v1",
+  instructions: "Extract invoice number, date, and total amount",
+});
+
+const result = await client.ocr.waitUntilDone(job.jobId);
+
+console.log(`Processing completed in ${result.processing_time_seconds}s`);
+console.log(`Credits used: ${result.credits_used}`);
+console.log("Data:", result.data);
 ```
 
-### Error Handling
+### Processing Local Files
 
 ```typescript
-import { AuthenticationError, RateLimitError, FileError } from "@leapocr/sdk";
+import { readFileSync } from "fs";
+
+const client = new LeapOCR({
+  apiKey: process.env.LEAPOCR_API_KEY,
+});
+
+const job = await client.ocr.processFile("./invoice.pdf", {
+  format: "structured",
+  model: "pro-v1",
+  schema: {
+    invoice_number: "string",
+    total_amount: "number",
+    invoice_date: "string",
+    vendor_name: "string",
+  },
+});
+
+const result = await client.ocr.waitUntilDone(job.jobId);
+console.log("Extracted data:", result.data);
+```
+
+### Custom Schema Extraction
+
+```typescript
+const schema = {
+  type: "object",
+  properties: {
+    patient_name: { type: "string" },
+    date_of_birth: { type: "string" },
+    medications: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          dosage: { type: "string" },
+        },
+      },
+    },
+  },
+};
+
+const job = await client.ocr.processFile("./medical-record.pdf", {
+  format: "structured",
+  schema,
+});
+```
+
+### Output Formats
+
+| Format                | Description        | Use Case                                       |
+| --------------------- | ------------------ | ---------------------------------------------- |
+| `structured`          | Single JSON object | Extract specific fields across entire document |
+| `markdown`            | Text per page      | Convert document to readable text              |
+| `per-page-structured` | JSON per page      | Extract fields from multi-section documents    |
+
+### Monitoring Job Progress
+
+```typescript
+// Poll for status updates
+const pollInterval = 2000; // 2 seconds
+const maxAttempts = 150; // 5 minutes max
+let attempts = 0;
+
+while (attempts < maxAttempts) {
+  const status = await client.ocr.getJobStatus(job.jobId);
+
+  console.log(
+    `Status: ${status.status} (${status.progress?.toFixed(1)}% complete)`,
+  );
+
+  if (status.status === "completed") {
+    const result = await client.ocr.getJobResult(job.jobId);
+    console.log("Processing complete!");
+    break;
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, pollInterval));
+  attempts++;
+}
+```
+
+For more examples, see the [`examples/`](../../examples) directory.
+
+## Configuration
+
+### Custom Configuration
+
+```typescript
+import { LeapOCR } from "leapocr";
+
+const client = new LeapOCR({
+  apiKey: "your-api-key",
+  baseURL: "https://api.leapocr.com", // optional
+  timeout: 30000, // 30 seconds (optional)
+});
+```
+
+### Environment Variables
+
+```bash
+export LEAPOCR_API_KEY="your-api-key"
+export LEAPOCR_BASE_URL="https://api.leapocr.com"  # optional
+```
+
+## Error Handling
+
+The SDK provides typed errors for robust error handling:
+
+```typescript
+import {
+  AuthenticationError,
+  ValidationError,
+  JobFailedError,
+  TimeoutError,
+  NetworkError,
+} from "leapocr";
 
 try {
-  const result = await client.ocr.processFile("./document.pdf");
+  const result = await client.ocr.waitUntilDone(job.jobId);
 } catch (error) {
   if (error instanceof AuthenticationError) {
-    console.error("Invalid API key");
-  } else if (error instanceof RateLimitError) {
-    console.error(`Rate limited. Retry after ${error.retryAfter}s`);
-  } else if (error instanceof FileError) {
-    console.error(`File error: ${error.message}`);
+    console.error("Authentication failed - check your API key");
+  } else if (error instanceof ValidationError) {
+    console.error("Validation error:", error.message);
+  } else if (error instanceof NetworkError) {
+    // Retry the operation
+    console.error("Network error, retrying...");
+  } else if (error instanceof JobFailedError) {
+    console.error("Processing failed:", error.message);
+  } else if (error instanceof TimeoutError) {
+    console.error("Operation timed out");
   }
 }
 ```
 
+### Error Types
+
+- `AuthenticationError` - Invalid API key or authentication failures
+- `AuthorizationError` - Permission denied for requested resource
+- `RateLimitError` - API rate limit exceeded
+- `ValidationError` - Input validation errors
+- `FileError` - File-related errors (size, format, etc.)
+- `JobError` - Job processing errors
+- `JobFailedError` - Job completed with failure status
+- `TimeoutError` - Operation timeouts
+- `NetworkError` - Network/connectivity issues (retryable)
+- `APIError` - General API errors
+
 ## API Reference
 
-See [`examples/`](../../examples/) for more detailed examples.
+Full API documentation is available in the [TypeScript definitions](./src/types/).
+
+### Core Methods
+
+```typescript
+// Initialize SDK
+new LeapOCR(config: ClientConfig)
+
+// Process documents
+client.ocr.processURL(url: string, options?: UploadOptions): Promise<UploadResult>
+client.ocr.processFile(filePath: string, options?: UploadOptions): Promise<UploadResult>
+client.ocr.processBuffer(buffer: Buffer, filename: string, options?: UploadOptions): Promise<UploadResult>
+
+// Job management
+client.ocr.getJobStatus(jobId: string): Promise<JobStatus>
+client.ocr.getJobResult(jobId: string): Promise<OCRResult>
+client.ocr.waitUntilDone(jobId: string, options?: PollOptions): Promise<OCRResult>
+```
+
+### Processing Options
+
+```typescript
+interface UploadOptions {
+  format?: "structured" | "markdown" | "per-page-structured";
+  model?: OCRModel;
+  schema?: Record<string, any>;
+  instructions?: string;
+  categoryId?: string;
+}
+```
 
 ## Development
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm 9+
+
+### Setup
 
 ```bash
 # Install dependencies
 pnpm install
 
-# Generate types from OpenAPI
-pnpm run generate
-
-# Build
-pnpm run build
-
-# Test
-pnpm test
+# Build the SDK
+pnpm build
 ```
 
-## Support
+### Common Tasks
 
-- 📧 Email: support@leapocr.com
-- 🐛 Issues: [GitHub Issues](https://github.com/leapocr/leapocr-js/issues)
-- 📖 Docs: [LeapOCR Documentation](https://docs.leapocr.com)
+```bash
+pnpm build              # Build the SDK
+pnpm test               # Run unit tests
+pnpm typecheck          # Type check
+pnpm format             # Format code
+pnpm dev                # Development mode with watch
+pnpm generate           # Generate types from OpenAPI spec
+```
+
+## Contributing
+
+We welcome contributions! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+See [CONTRIBUTING.md](../../CONTRIBUTING.md) for detailed guidelines.
 
 ## License
 
-MIT © LeapOCR
+This project is licensed under the MIT License - see the [LICENSE](../../LICENSE) file for details.
+
+## Support & Resources
+
+- **Documentation**: [docs.leapocr.com](https://docs.leapocr.com)
+- **NPM Package**: [npmjs.com/package/leapocr](https://www.npmjs.com/package/leapocr)
+- **Issues**: [GitHub Issues](https://github.com/leapocr/leapocr-js/issues)
+- **Website**: [leapocr.com](https://www.leapocr.com)
+
+---
+
+**Version**: 0.0.2

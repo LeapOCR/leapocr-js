@@ -1,4 +1,4 @@
-import { statSync, accessSync, constants as fsConstants } from "fs";
+import { accessSync, constants as fsConstants, statSync } from "fs";
 import { extname } from "path";
 import { MAX_FILE_SIZE, SUPPORTED_EXTENSIONS } from "./constants.js";
 

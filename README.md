@@ -1,135 +1,352 @@
-# Turborepo starter
+# LeapOCR JavaScript SDK
 
-This Turborepo starter is maintained by the Turborepo core team.
+[![npm version](https://img.shields.io/npm/v/leapocr.svg)](https://www.npmjs.com/package/leapocr)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
-## Using this example
+Official JavaScript/TypeScript SDK for [LeapOCR](https://www.leapocr.com/) - Transform documents into structured data using AI-powered OCR.
 
-Run the following command:
+## Overview
 
-```sh
-npx create-turbo@latest
+LeapOCR provides enterprise-grade document processing with AI-powered data extraction. This SDK offers a JavaScript/TypeScript-native interface for seamless integration into your Node.js and browser applications.
+
+## Installation
+
+```bash
+npm install leapocr
+# or
+yarn add leapocr
+# or
+pnpm add leapocr
 ```
 
-## What's inside?
+## Quick Start
 
-This Turborepo includes the following packages/apps:
+### Prerequisites
 
-### Apps and Packages
+- Node.js 18 or higher
+- LeapOCR API key ([sign up here](https://www.leapocr.com/signup))
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Basic Example
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+```typescript
+import { LeapOCR } from "leapocr";
 
-### Utilities
+// Initialize the SDK with your API key
+const client = new LeapOCR({
+  apiKey: process.env.LEAPOCR_API_KEY,
+});
 
-This Turborepo has some additional tools already setup for you:
+// Submit a document for processing
+const job = await client.ocr.processURL("https://example.com/document.pdf", {
+  format: "structured",
+  model: "standard-v1",
+});
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+// Wait for processing to complete
+const result = await client.ocr.waitUntilDone(job.jobId);
 
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+console.log("Extracted data:", result.data);
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## Key Features
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+- **TypeScript First** - Full type safety with comprehensive TypeScript definitions
+- **Multiple Processing Formats** - Structured data extraction, markdown output, or per-page processing
+- **Flexible Model Selection** - Choose from standard, pro, or custom AI models
+- **Custom Schema Support** - Define extraction schemas for your specific use case
+- **Built-in Retry Logic** - Automatic handling of transient failures
+- **Universal Runtime** - Works in Node.js and modern browsers
+- **Direct File Upload** - Efficient multipart uploads for local files
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## Processing Models
 
-### Develop
+| Model            | Use Case                           | Credits/Page | Priority |
+| ---------------- | ---------------------------------- | ------------ | -------- |
+| `standard-v1`    | General purpose (default)          | 1            | 1        |
+| `english-pro-v1` | English documents, premium quality | 2            | 4        |
+| `pro-v1`         | Highest quality, all languages     | 5            | 5        |
 
-To develop all apps and packages, run the following command:
+Specify a model in the processing options. Defaults to `standard-v1`.
 
-```
-cd my-turborepo
+## Usage Examples
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+### Processing from URL
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+```typescript
+const client = new LeapOCR({
+  apiKey: process.env.LEAPOCR_API_KEY,
+});
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+const job = await client.ocr.processURL("https://example.com/invoice.pdf", {
+  format: "structured",
+  model: "standard-v1",
+  instructions: "Extract invoice number, date, and total amount",
+});
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+const result = await client.ocr.waitUntilDone(job.jobId);
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+console.log(`Processing completed in ${result.processing_time_seconds}s`);
+console.log(`Credits used: ${result.credits_used}`);
+console.log("Data:", result.data);
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### Processing Local Files
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+```typescript
+import { readFileSync } from "fs";
 
+const client = new LeapOCR({
+  apiKey: process.env.LEAPOCR_API_KEY,
+});
+
+const job = await client.ocr.processFile("./invoice.pdf", {
+  format: "structured",
+  model: "pro-v1",
+  schema: {
+    invoice_number: "string",
+    total_amount: "number",
+    invoice_date: "string",
+    vendor_name: "string",
+  },
+});
+
+const result = await client.ocr.waitUntilDone(job.jobId);
+console.log("Extracted data:", result.data);
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+### Custom Schema Extraction
+
+```typescript
+const schema = {
+  type: "object",
+  properties: {
+    patient_name: { type: "string" },
+    date_of_birth: { type: "string" },
+    medications: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          dosage: { type: "string" },
+        },
+      },
+    },
+  },
+};
+
+const job = await client.ocr.processFile("./medical-record.pdf", {
+  format: "structured",
+  schema,
+});
 ```
 
-## Useful Links
+### Output Formats
 
-Learn more about the power of Turborepo:
+| Format                | Description        | Use Case                                       |
+| --------------------- | ------------------ | ---------------------------------------------- |
+| `structured`          | Single JSON object | Extract specific fields across entire document |
+| `markdown`            | Text per page      | Convert document to readable text              |
+| `per-page-structured` | JSON per page      | Extract fields from multi-section documents    |
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+### Monitoring Job Progress
+
+```typescript
+// Poll for status updates
+const pollInterval = 2000; // 2 seconds
+const maxAttempts = 150; // 5 minutes max
+let attempts = 0;
+
+while (attempts < maxAttempts) {
+  const status = await client.ocr.getJobStatus(job.jobId);
+
+  console.log(
+    `Status: ${status.status} (${status.progress?.toFixed(1)}% complete)`,
+  );
+
+  if (status.status === "completed") {
+    const result = await client.ocr.getJobResult(job.jobId);
+    console.log("Processing complete!");
+    break;
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, pollInterval));
+  attempts++;
+}
+```
+
+For more examples, see the [`examples/`](./examples) directory.
+
+## Configuration
+
+### Custom Configuration
+
+```typescript
+import { LeapOCR } from "leapocr";
+
+const client = new LeapOCR({
+  apiKey: "your-api-key",
+  baseURL: "https://api.leapocr.com", // optional
+  timeout: 30000, // 30 seconds (optional)
+});
+```
+
+### Environment Variables
+
+```bash
+export LEAPOCR_API_KEY="your-api-key"
+export LEAPOCR_BASE_URL="https://api.leapocr.com"  # optional
+```
+
+## Error Handling
+
+The SDK provides typed errors for robust error handling:
+
+```typescript
+import {
+  AuthenticationError,
+  ValidationError,
+  JobFailedError,
+  TimeoutError,
+  NetworkError,
+} from "leapocr";
+
+try {
+  const result = await client.ocr.waitUntilDone(job.jobId);
+} catch (error) {
+  if (error instanceof AuthenticationError) {
+    console.error("Authentication failed - check your API key");
+  } else if (error instanceof ValidationError) {
+    console.error("Validation error:", error.message);
+  } else if (error instanceof NetworkError) {
+    // Retry the operation
+    console.error("Network error, retrying...");
+  } else if (error instanceof JobFailedError) {
+    console.error("Processing failed:", error.message);
+  } else if (error instanceof TimeoutError) {
+    console.error("Operation timed out");
+  }
+}
+```
+
+### Error Types
+
+- `AuthenticationError` - Invalid API key or authentication failures
+- `AuthorizationError` - Permission denied for requested resource
+- `RateLimitError` - API rate limit exceeded
+- `ValidationError` - Input validation errors
+- `FileError` - File-related errors (size, format, etc.)
+- `JobError` - Job processing errors
+- `JobFailedError` - Job completed with failure status
+- `TimeoutError` - Operation timeouts
+- `NetworkError` - Network/connectivity issues (retryable)
+- `APIError` - General API errors
+
+## API Reference
+
+Full API documentation is available in the [TypeScript definitions](./packages/sdk/src/types/).
+
+### Core Methods
+
+```typescript
+// Initialize SDK
+new LeapOCR(config: ClientConfig)
+
+// Process documents
+client.ocr.processURL(url: string, options?: UploadOptions): Promise<UploadResult>
+client.ocr.processFile(filePath: string, options?: UploadOptions): Promise<UploadResult>
+client.ocr.processBuffer(buffer: Buffer, filename: string, options?: UploadOptions): Promise<UploadResult>
+
+// Job management
+client.ocr.getJobStatus(jobId: string): Promise<JobStatus>
+client.ocr.getJobResult(jobId: string): Promise<OCRResult>
+client.ocr.waitUntilDone(jobId: string, options?: PollOptions): Promise<OCRResult>
+```
+
+### Processing Options
+
+```typescript
+interface UploadOptions {
+  format?: "structured" | "markdown" | "per-page-structured";
+  model?: OCRModel;
+  schema?: Record<string, any>;
+  instructions?: string;
+  categoryId?: string;
+}
+```
+
+## Development
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm 9+
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/leapocr/leapocr-js.git
+cd leapocr-js
+
+# Install dependencies
+pnpm install
+
+# Build the SDK
+pnpm build
+```
+
+### Common Tasks
+
+```bash
+pnpm build              # Build all packages
+pnpm test               # Run unit tests
+pnpm lint               # Run linters
+pnpm format             # Format code
+pnpm dev                # Development mode with watch
+```
+
+### Running Examples
+
+```bash
+# Set your API key
+export LEAPOCR_API_KEY="your-api-key"
+
+# Run basic example
+cd examples/basic
+pnpm install
+pnpm start
+
+# Run advanced example
+cd examples/advanced
+pnpm install
+pnpm start
+```
+
+## Contributing
+
+We welcome contributions! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support & Resources
+
+- **Documentation**: [docs.leapocr.com](https://docs.leapocr.com)
+- **NPM Package**: [npmjs.com/package/leapocr](https://www.npmjs.com/package/leapocr)
+- **Issues**: [GitHub Issues](https://github.com/leapocr/leapocr-js/issues)
+- **Website**: [leapocr.com](https://www.leapocr.com)
+
+---
+
+**Version**: 0.0.2

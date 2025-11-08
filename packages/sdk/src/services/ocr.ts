@@ -1,22 +1,19 @@
 import { readFileSync } from "fs";
 import { basename } from "path";
 import type { Readable } from "stream";
+import { FileError, TimeoutError } from "../errors/index.js";
+import { getOcr } from "../generated/ocr/ocr.js";
 import type { ClientConfig } from "../types/config.js";
 import type {
-  UploadOptions,
-  PollOptions,
   JobStatus,
+  PollOptions,
+  UploadOptions,
   UploadResult,
-  FileData,
-  BatchOptions,
-  BatchResult,
 } from "../types/ocr.js";
-import { getOcr } from "../generated/ocr/ocr.js";
-import { validateFile, validateBuffer } from "../utils/validation.js";
-import { withRetry } from "../utils/retry.js";
+import { DEFAULT_MAX_WAIT, DEFAULT_POLL_INTERVAL } from "../utils/constants.js";
 import { pollUntil } from "../utils/polling.js";
-import { FileError, JobFailedError, TimeoutError } from "../errors/index.js";
-import { DEFAULT_POLL_INTERVAL, DEFAULT_MAX_WAIT } from "../utils/constants.js";
+import { withRetry } from "../utils/retry.js";
+import { validateBuffer, validateFile } from "../utils/validation.js";
 
 /**
  * OCR Service for document processing operations.

@@ -4,12 +4,12 @@
 
 export type { ClientConfig } from "./config.js";
 export type {
-  OCRModel,
-  UploadOptions,
-  PollOptions,
   JobStatus,
   JobStatusType,
-  UploadResult,
+  OCRModel,
   PaginationInfo,
+  PollOptions,
   ResultMetadata,
+  UploadOptions,
+  UploadResult,
 } from "./ocr.js";
