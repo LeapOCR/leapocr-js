@@ -13,6 +13,7 @@ export { OCRService } from "./services/ocr.js";
 // Types
 export type {
   ClientConfig,
+  OCRModel,
   UploadOptions,
   PollOptions,
   JobStatus,

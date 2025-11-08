@@ -4,6 +4,7 @@
 
 export type { ClientConfig } from "./config.js";
 export type {
+  OCRModel,
   UploadOptions,
   PollOptions,
   JobStatus,

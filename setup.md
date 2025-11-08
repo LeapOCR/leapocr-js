@@ -160,7 +160,7 @@ Timeout errors                  → Retry (configurable)
 ```typescript
 async function withRetry<T>(
   operation: () => Promise<T>,
-  options: RetryOptions
+  options: RetryOptions,
 ): Promise<T> {
   let lastError: Error;
 
@@ -246,7 +246,7 @@ class FileProcessingError extends SDKError {
     message: string,
     public filePath: string,
     public fileSize?: number,
-    cause?: Error
+    cause?: Error,
   ) {
     super(message, cause);
   }
@@ -257,7 +257,7 @@ throw new FileProcessingError(
   "Failed to process PDF",
   "/path/to/file.pdf",
   stats.size,
-  originalError
+  originalError,
 );
 ```
 
@@ -491,13 +491,13 @@ interface OCRService {
   // Core operations
   processFile(
     filePath: string,
-    options?: ProcessOptions
+    options?: ProcessOptions,
   ): Promise<ProcessResult>;
 
   processFileStream(
     fileData: Buffer | Stream | Readable,
     fileName: string,
-    options?: ProcessOptions
+    options?: ProcessOptions,
   ): Promise<ProcessResult>;
 
   // Job management
@@ -509,19 +509,19 @@ interface OCRService {
   processAndWait(
     filePath: string,
     options?: ProcessOptions,
-    pollOptions?: PollOptions
+    pollOptions?: PollOptions,
   ): Promise<JobResult>;
 
   // Batch operations
   processBatch(
     files: string[] | FileData[],
-    options?: ProcessOptions
+    options?: ProcessOptions,
   ): Promise<BatchResult>;
 
   // List jobs
   listJobs(
     filters?: JobFilters,
-    pagination?: PaginationOptions
+    pagination?: PaginationOptions,
   ): Promise<JobList>;
 }
 
@@ -742,7 +742,7 @@ interface BatchStatus {
 // Usage example
 const results = await client.ocr.processBatch(
   ["file1.pdf", "file2.pdf", "file3.pdf"],
-  { format: "structured", model: "standard-v1" }
+  { format: "structured", model: "standard-v1" },
 );
 
 // Poll batch status
@@ -816,7 +816,7 @@ class LeapOCR {
     options?: {
       maxSize?: number; // bytes
       allowedTypes?: string[]; // ["pdf", "png", "jpg"]
-    }
+    },
   ): ValidationResult;
 
   // Get SDK information
@@ -1294,7 +1294,7 @@ describe("Integration Tests", () => {
       },
       {
         maxWait: 60000,
-      }
+      },
     );
 
     expect(result.status).toBe("completed");
@@ -1305,7 +1305,7 @@ describe("Integration Tests", () => {
   it("handles rate limiting gracefully", async () => {
     // Submit multiple jobs quickly
     const promises = Array.from({ length: 10 }, (_, i) =>
-      client.ocr.processFile(`file${i}.pdf`)
+      client.ocr.processFile(`file${i}.pdf`),
     );
 
     // Should not throw, retry logic handles 429
@@ -1398,7 +1398,6 @@ jobs:
 ### Phase 1: Setup & Generation
 
 - [ ] **Project Structure**
-
   - [ ] Create repository with standard structure
   - [ ] Setup package manager (npm/poetry)
   - [ ] Configure TypeScript/Python build tools
@@ -1414,7 +1413,6 @@ jobs:
 ### Phase 2: Wrapper Layer
 
 - [ ] **Core Client**
-
   - [ ] Implement main client class
   - [ ] Add configuration management
   - [ ] Setup HTTP client with auth
@@ -1422,7 +1420,6 @@ jobs:
   - [ ] Implement close/cleanup methods
 
 - [ ] **Retry Logic**
-
   - [ ] Implement exponential backoff
   - [ ] Handle 429 rate limits
   - [ ] Detect retriable vs non-retriable errors
@@ -1439,7 +1436,6 @@ jobs:
 ### Phase 3: OCR Service
 
 - [ ] **Basic Operations**
-
   - [ ] `processFile()` - path version
   - [ ] `processFileStream()` - buffer/stream version
   - [ ] `getJobStatus()` - check status
@@ -1456,7 +1452,6 @@ jobs:
 ### Phase 4: Error Handling
 
 - [ ] **Error Classes**
-
   - [ ] Base `SDKError` class
   - [ ] `AuthenticationError`
   - [ ] `RateLimitError` with retry-after
@@ -1476,7 +1471,6 @@ jobs:
 ### Phase 5: Types & Models
 
 - [ ] **Core Types**
-
   - [ ] `ProcessResult`
   - [ ] `JobStatus`
   - [ ] `JobResult`
@@ -1493,7 +1487,6 @@ jobs:
 ### Phase 6: Testing
 
 - [ ] **Unit Tests**
-
   - [ ] Client initialization
   - [ ] Configuration merging
   - [ ] Retry logic
@@ -1503,7 +1496,6 @@ jobs:
   - [ ] Mock HTTP responses
 
 - [ ] **Integration Tests**
-
   - [ ] Real API processing
   - [ ] File upload
   - [ ] Job status checking
@@ -1520,7 +1512,6 @@ jobs:
 ### Phase 7: Documentation & Examples
 
 - [ ] **Documentation**
-
   - [ ] README with quickstart
   - [ ] API reference
   - [ ] Configuration guide
@@ -1538,7 +1529,6 @@ jobs:
 ### Phase 8: Build & Release
 
 - [ ] **Build System**
-
   - [ ] Generation scripts
   - [ ] Build/compile process
   - [ ] Bundle optimization
@@ -1546,7 +1536,6 @@ jobs:
   - [ ] Source maps
 
 - [ ] **Package Configuration**
-
   - [ ] `package.json` / `pyproject.toml`
   - [ ] Dependency versions
   - [ ] Exports/entry points
@@ -1563,14 +1552,12 @@ jobs:
 ### Phase 9: Quality Assurance
 
 - [ ] **Code Quality**
-
   - [ ] Linter passing
   - [ ] 80%+ test coverage
   - [ ] No TypeScript errors
   - [ ] Documentation complete
 
 - [ ] **Compatibility**
-
   - [ ] Test on multiple language versions
   - [ ] Test on multiple platforms
   - [ ] Browser compatibility (TS only)
@@ -1585,7 +1572,6 @@ jobs:
 ### Phase 10: Launch Preparation
 
 - [ ] **Pre-Launch**
-
   - [ ] Internal dogfooding
   - [ ] Beta testing with users
   - [ ] Security audit

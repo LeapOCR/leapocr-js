@@ -54,10 +54,12 @@ examples/
 ### 2. Core Features Implemented
 
 #### ✅ Two-Layer Architecture
+
 - **Generated Layer** (`src/generated/`): Auto-generated from OpenAPI spec via Kubb
 - **Wrapper Layer** (`src/`): Idiomatic JS/TS API with retry, polling, validation
 
 #### ✅ Main Client (`LeapOCR`)
+
 - Clean initialization with API key
 - Configurable timeout, retries, base URL
 - Debug logging support
@@ -65,21 +67,26 @@ examples/
 - Service accessor pattern (`client.ocr`)
 
 #### ✅ OCR Service
+
 File upload methods:
+
 - `uploadFile(path)` - From filesystem
 - `uploadFileBuffer(buffer, name)` - From Buffer
 - `uploadFileStream(stream, name)` - From Stream
 - `uploadFromURL(url)` - From remote URL
 
 Job management:
+
 - `getJobStatus(jobId)` - Check processing status
 - `getResults(jobId)` - Fetch results with pagination
 
 Convenience methods:
+
 - `processFile()` - Upload + poll until complete (recommended)
 - `processBatch()` - Process multiple files with concurrency control
 
 #### ✅ Retry Logic (`utils/retry.ts`)
+
 - Exponential backoff with jitter
 - Respects `Retry-After` header
 - Only retries transient errors (5xx, 429, network)
@@ -87,19 +94,23 @@ Convenience methods:
 - Never retries auth/validation errors (4xx)
 
 #### ✅ Polling (`utils/polling.ts`)
+
 - Poll until condition met
 - Configurable interval and timeout
 - Progress callbacks
 - AbortSignal support for cancellation
 
 #### ✅ File Validation (`utils/validation.ts`)
+
 - Client-side validation before upload
 - Checks: file exists, size, type, readable
 - Supports both file paths and buffers
 - Clear error messages with context
 
 #### ✅ Error Hierarchy (`errors/`)
+
 All errors extend `SDKError` with typed properties:
+
 - `AuthenticationError` (401)
 - `AuthorizationError` (403)
 - `RateLimitError` (429) - includes `retryAfter`
@@ -111,6 +122,7 @@ All errors extend `SDKError` with typed properties:
 - `APIError` - generic API errors
 
 #### ✅ TypeScript Support
+
 - Full type safety throughout
 - Generated types from OpenAPI spec
 - Custom types for SDK interfaces
@@ -118,6 +130,7 @@ All errors extend `SDKError` with typed properties:
 - `.d.ts` files generated
 
 #### ✅ Multiple Input Methods
+
 - Local file path (`string`)
 - Buffer (`Buffer`)
 - Stream (`Readable`)
@@ -139,6 +152,7 @@ All errors extend `SDKError` with typed properties:
 ```
 
 **Filtered Endpoints** (5 total):
+
 ```
 POST   /ocr/uploads/direct          - Direct file upload
 POST   /ocr/uploads/url             - Upload from URL
@@ -157,6 +171,7 @@ GET    /ocr/result/{job_id}         - Results (paginated)
 ### 5. Documentation
 
 **README.md** includes:
+
 - Feature overview
 - Installation instructions
 - Quick start guide
@@ -174,18 +189,18 @@ GET    /ocr/result/{job_id}         - Results (paginated)
 ### Minimal Example
 
 ```typescript
-import { LeapOCR } from '@leapocr/sdk';
+import { LeapOCR } from "@leapocr/sdk";
 
-const client = new LeapOCR('api-key');
-const result = await client.ocr.processFile('./document.pdf');
+const client = new LeapOCR("api-key");
+const result = await client.ocr.processFile("./document.pdf");
 console.log(result.pages[0].text);
 ```
 
 ### With All Options
 
 ```typescript
-const client = new LeapOCR('api-key', {
-  baseURL: 'https://api.leapocr.com/api/v1',
+const client = new LeapOCR("api-key", {
+  baseURL: "https://api.leapocr.com/api/v1",
   timeout: 30000,
   maxRetries: 3,
   retryDelay: 1000,
@@ -194,35 +209,38 @@ const client = new LeapOCR('api-key', {
 });
 
 const result = await client.ocr.processFile(
-  './document.pdf',
+  "./document.pdf",
   {
-    model: 'apex-v1',
-    webhook: 'https://myapp.com/webhook',
-    metadata: { source: 'my-app' },
+    model: "apex-v1",
+    webhook: "https://myapp.com/webhook",
+    metadata: { source: "my-app" },
   },
   {
     pollInterval: 2000,
     maxWait: 300000,
     onProgress: (status) => console.log(status.progress),
-  }
+  },
 );
 ```
 
 ## Technical Decisions
 
 ### Why Axios?
+
 - Built-in retry support via interceptors
 - Easy form-data uploads
 - Widely used and maintained
 - Excellent TypeScript support
 
 ### Why Kubb?
+
 - Modern OpenAPI → TS generator
 - Plugin architecture for customization
 - Generates clean, typed interfaces
 - Active development
 
 ### Why tsdown?
+
 - Fast bundling (rolldown-based)
 - Simple configuration
 - ESM support out of the box
@@ -230,15 +248,15 @@ const result = await client.ocr.processFile(
 
 ## Key Differences from Go SDK
 
-| Aspect | Go SDK | JS/TS SDK |
-|--------|--------|-----------|
-| Concurrency | Goroutines + contexts | Promises + async/await |
-| Cancellation | `context.Context` | `AbortSignal` |
-| Error Handling | Multiple return values | Try/catch with typed errors |
-| Configuration | Functional options | Config object |
-| File Handling | `io.Reader` interface | Buffer/Stream/Path overloads |
-| HTTP Client | `net/http` | Axios |
-| Type System | Structs + interfaces | TypeScript types + interfaces |
+| Aspect         | Go SDK                 | JS/TS SDK                     |
+| -------------- | ---------------------- | ----------------------------- |
+| Concurrency    | Goroutines + contexts  | Promises + async/await        |
+| Cancellation   | `context.Context`      | `AbortSignal`                 |
+| Error Handling | Multiple return values | Try/catch with typed errors   |
+| Configuration  | Functional options     | Config object                 |
+| File Handling  | `io.Reader` interface  | Buffer/Stream/Path overloads  |
+| HTTP Client    | `net/http`             | Axios                         |
+| Type System    | Structs + interfaces   | TypeScript types + interfaces |
 
 ## What's Working
 
@@ -259,6 +277,7 @@ const result = await client.ocr.processFile(
 ## Next Steps (Not Implemented)
 
 ### Phase 2 - Testing
+
 - [ ] Unit tests for retry logic
 - [ ] Unit tests for polling
 - [ ] Unit tests for validation
@@ -267,6 +286,7 @@ const result = await client.ocr.processFile(
 - [ ] Mock server for testing
 
 ### Phase 3 - Advanced Features
+
 - [ ] Streaming results (async iteration)
 - [ ] Progress tracking for uploads
 - [ ] Multipart upload support for large files
@@ -275,6 +295,7 @@ const result = await client.ocr.processFile(
 - [ ] Request deduplication
 
 ### Phase 4 - DX Improvements
+
 - [ ] CLI tool for quick testing
 - [ ] VSCode snippets
 - [ ] Interactive examples
@@ -283,6 +304,7 @@ const result = await client.ocr.processFile(
 - [ ] API playground
 
 ### Phase 5 - Production Readiness
+
 - [ ] Security audit
 - [ ] Performance benchmarks
 - [ ] Load testing
@@ -291,6 +313,7 @@ const result = await client.ocr.processFile(
 - [ ] Node.js version matrix testing
 
 ### Phase 6 - Release
+
 - [ ] Semantic versioning setup
 - [ ] Changelog automation
 - [ ] npm publishing workflow
@@ -300,10 +323,12 @@ const result = await client.ocr.processFile(
 ## Dependencies
 
 ### Production
+
 - `axios@^1.7.7` - HTTP client
 - `form-data@^4.0.1` - Multipart uploads
 
 ### Development
+
 - `@kubb/cli@^3.4.1` - OpenAPI CLI
 - `@kubb/core@^3.4.1` - Kubb core
 - `@kubb/plugin-oas@^3.4.1` - OpenAPI plugin
@@ -339,6 +364,7 @@ Total: **26.41 kB** (gzipped: ~7.15 kB)
 ## Time to Implement
 
 **Total**: ~2 hours
+
 - Setup & dependencies: 15 min
 - OpenAPI filtering & generation: 20 min
 - Error hierarchy: 15 min
@@ -386,6 +412,7 @@ tsx url-upload.ts
 ## Conclusion
 
 The LeapOCR JavaScript/TypeScript SDK is now in a **production-ready state** with:
+
 - Clean, idiomatic API
 - Comprehensive error handling
 - File validation

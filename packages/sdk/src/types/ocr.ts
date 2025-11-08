@@ -3,11 +3,27 @@
  */
 
 /**
+ * Available OCR models
+ */
+export type OCRModel =
+  | "standard-v1" // Baseline model, handles all cases (1 credit/page)
+  | "english-pro-v1" // Premium quality, English documents only (2 credits/page)
+  | "pro-v1" // Highest quality, handles all cases (5 credits/page)
+  | (string & {}); // Allow any string while preserving autocomplete
+
+/**
  * Upload options
  */
 export interface UploadOptions {
-  /** OCR model to use */
-  model?: string;
+  /**
+   * OCR model to use
+   *
+   * Available models:
+   * - `standard-v1`: Baseline model, handles all cases (1 credit/page)
+   * - `english-pro-v1`: Premium quality, English documents only (2 credits/page)
+   * - `pro-v1`: Highest quality, handles all cases (5 credits/page)
+   */
+  model?: OCRModel;
 
   /** Output format: markdown (page-by-page OCR), structured (data extraction), or per_page_structured */
   format?: "markdown" | "structured" | "per_page_structured";
