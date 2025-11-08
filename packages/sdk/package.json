@@ -1,6 +1,9 @@
 {
-  "name": "@leapocr/sdk",
-  "version": "0.0.0",
+  "name": "leapocr",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Official JavaScript/TypeScript SDK for LeapOCR API",
   "type": "module",
   "license": "MIT",
