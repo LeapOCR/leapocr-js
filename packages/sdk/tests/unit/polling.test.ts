@@ -86,10 +86,12 @@ describe("Polling Logic", () => {
       const promise = pollUntil(operation, condition, {
         pollInterval: 100,
         maxWait: 500,
-      });
+      }).catch((e) => e);
 
       await vi.runAllTimersAsync();
-      await expect(promise).rejects.toThrow("Polling timeout after 500ms");
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe("Polling timeout after 500ms");
     });
 
     it("should respect poll interval", async () => {
@@ -126,13 +128,15 @@ describe("Polling Logic", () => {
         pollInterval: 100,
         maxWait: 10000,
         signal: abortController.signal,
-      });
+      }).catch((e) => e);
 
       // Abort after first call
       setTimeout(() => abortController.abort(), 50);
 
       await vi.runAllTimersAsync();
-      await expect(promise).rejects.toThrow("Polling cancelled");
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe("Polling cancelled");
     });
 
     it("should use default options when not specified", async () => {
@@ -155,10 +159,12 @@ describe("Polling Logic", () => {
       const promise = pollUntil(operation, condition, {
         pollInterval: 100,
         maxWait: 1000,
-      });
+      }).catch((e) => e);
 
       await vi.runAllTimersAsync();
-      await expect(promise).rejects.toThrow("Operation failed");
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe("Operation failed");
     });
 
     it("should not exceed maxWait with delay", async () => {
@@ -168,10 +174,12 @@ describe("Polling Logic", () => {
       const promise = pollUntil(operation, condition, {
         pollInterval: 1000,
         maxWait: 2500,
-      });
+      }).catch((e) => e);
 
       await vi.runAllTimersAsync();
-      await expect(promise).rejects.toThrow("Polling timeout after 2500ms");
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe("Polling timeout after 2500ms");
 
       // Should have polled at least twice
       expect(operation.mock.calls.length).toBeGreaterThanOrEqual(2);
@@ -184,10 +192,12 @@ describe("Polling Logic", () => {
       const promise = pollUntil(operation, condition, {
         pollInterval: 1000,
         maxWait: 1500,
-      });
+      }).catch((e) => e);
 
       await vi.runAllTimersAsync();
-      await expect(promise).rejects.toThrow("Polling timeout after 1500ms");
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe("Polling timeout after 1500ms");
 
       // Should have polled at least once
       expect(operation.mock.calls.length).toBeGreaterThanOrEqual(1);
@@ -265,14 +275,16 @@ describe("Polling Logic", () => {
         pollInterval: 100,
         maxWait: 10000,
         signal: abortController.signal,
-      });
+      }).catch((e) => e);
 
       // Let it poll twice, then abort
       await vi.advanceTimersByTimeAsync(150);
       abortController.abort();
 
       await vi.runAllTimersAsync();
-      await expect(promise).rejects.toThrow("Polling cancelled");
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe("Polling cancelled");
 
       expect(operation).toHaveBeenCalledTimes(2);
     });
