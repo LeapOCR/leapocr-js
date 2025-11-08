@@ -1,17 +1,17 @@
-import type { ClientConfig } from "./types/config.js";
-import { OCRService } from "./services/ocr.js";
-import { AXIOS_INSTANCE } from "./lib/custom-instance.js";
+import type { AxiosError } from "axios";
 import {
-  SDKError,
+  APIError,
   AuthenticationError,
   AuthorizationError,
-  RateLimitError,
-  ValidationError,
-  APIError,
   NetworkError,
+  RateLimitError,
+  SDKError,
+  ValidationError,
 } from "./errors/index.js";
+import { AXIOS_INSTANCE } from "./lib/custom-instance.js";
+import { OCRService } from "./services/ocr.js";
+import type { ClientConfig } from "./types/config.js";
 import { SDK_VERSION } from "./utils/constants.js";
-import type { AxiosError } from "axios";
 
 const DEFAULT_BASE_URL = "https://api.leapocr.com/api/v1";
 const DEFAULT_TIMEOUT = 30000;
@@ -20,30 +20,29 @@ const DEFAULT_TIMEOUT = 30000;
  * Main LeapOCR SDK client
  */
 export class LeapOCR {
-  private readonly config: Required<ClientConfig>;
+  private readonly config: Required<ClientConfig> & { apiKey: string };
   private _ocr?: OCRService;
 
-  constructor(
-    private readonly apiKey: string,
-    config: ClientConfig = {},
-  ) {
-    if (!apiKey) {
+  constructor(config: ClientConfig & { apiKey: string }) {
+    if (!config.apiKey) {
       throw new Error("API key is required");
     }
 
     this.config = {
+      apiKey: config.apiKey,
       baseURL: config.baseURL ?? DEFAULT_BASE_URL,
       timeout: config.timeout ?? DEFAULT_TIMEOUT,
       maxRetries: config.maxRetries ?? 3,
       retryDelay: config.retryDelay ?? 1000,
       retryMultiplier: config.retryMultiplier ?? 2,
       debug: config.debug ?? false,
+      httpClient: config.httpClient ?? AXIOS_INSTANCE,
     };
 
     // Configure the global Axios instance
     AXIOS_INSTANCE.defaults.baseURL = this.config.baseURL;
     AXIOS_INSTANCE.defaults.timeout = this.config.timeout;
-    AXIOS_INSTANCE.defaults.headers.common["X-API-KEY"] = apiKey;
+    AXIOS_INSTANCE.defaults.headers.common["X-API-KEY"] = config.apiKey;
     AXIOS_INSTANCE.defaults.headers.common["User-Agent"] =
       `leapocr-sdk-js/${SDK_VERSION}`;
 
@@ -100,7 +99,20 @@ export class LeapOCR {
   private mapError(error: AxiosError): SDKError {
     const status = error.response?.status;
     const data = error.response?.data as any;
-    const message = data?.message || data?.error || error.message;
+
+    // Extract message - handle both string and object formats
+    let message: string;
+    if (typeof data?.error === "string") {
+      message = data.error;
+    } else if (data?.error?.message) {
+      message = data.error.message;
+    } else if (typeof data?.message === "string") {
+      message = data.message;
+    } else if (data?.error) {
+      message = JSON.stringify(data.error);
+    } else {
+      message = error.message;
+    }
 
     // Network errors
     if (!status) {

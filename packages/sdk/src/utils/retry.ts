@@ -62,10 +62,13 @@ export function getRetryDelay(
   error: unknown,
 ): number {
   // Check for Retry-After header
-  if (error instanceof AxiosError && error.response?.headers["retry-after"]) {
-    const retryAfter = parseInt(error.response.headers["retry-after"], 10);
-    if (!isNaN(retryAfter)) {
-      return retryAfter * 1000; // Convert to ms
+  if (error instanceof AxiosError && error.response?.headers) {
+    const retryAfter = error.response.headers["retry-after"];
+    if (retryAfter) {
+      const parsed = parseInt(retryAfter, 10);
+      if (!isNaN(parsed)) {
+        return parsed * 1000; // Convert to ms
+      }
     }
   }
 

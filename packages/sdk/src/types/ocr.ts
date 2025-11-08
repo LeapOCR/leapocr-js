@@ -7,13 +7,19 @@
  */
 export interface UploadOptions {
   /** OCR model to use */
-  model?: "standard-v1" | "apex-v1" | "genesis-v1";
+  model?: string;
 
-  /** Webhook URL for job completion notifications */
-  webhook?: string;
+  /** Output format: markdown (page-by-page OCR), structured (data extraction), or per_page_structured */
+  format?: "markdown" | "structured" | "per_page_structured";
 
-  /** Custom metadata (string values only) */
-  metadata?: Record<string, string>;
+  /** Instructions for structured extraction (max 100 chars) */
+  instructions?: string;
+
+  /** Schema for structured data extraction */
+  schema?: Record<string, unknown>;
+
+  /** Template ID for using existing template */
+  templateId?: string;
 
   /** AbortSignal for cancellation */
   signal?: AbortSignal;

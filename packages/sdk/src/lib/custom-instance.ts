@@ -1,4 +1,4 @@
-import Axios, { AxiosError, AxiosRequestConfig } from "axios";
+import Axios, { AxiosError, type AxiosRequestConfig } from "axios";
 
 /**
  * Axios instance for LeapOCR API

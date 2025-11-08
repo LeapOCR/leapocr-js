@@ -1,4 +1,4 @@
-import { readFileSync, statSync } from "fs";
+import { readFileSync } from "fs";
 import { basename } from "path";
 import type { Readable } from "stream";
 import type { ClientConfig } from "../types/config.js";
@@ -42,8 +42,7 @@ export class OCRService {
       throw new FileError(validation.error!, filePath);
     }
 
-    // Get file stats and content
-    const stats = statSync(filePath);
+    // Get file content
     const fileName = basename(filePath);
     const fileBuffer = readFileSync(filePath);
 
@@ -76,8 +75,11 @@ export class OCRService {
           file_name: fileName,
           file_size: buffer.length,
           content_type: this.getContentType(fileName),
-          model: options.model,
-          ...(options.metadata && { metadata: options.metadata as any }),
+          ...(options.model && { model: options.model }),
+          ...(options.format && { format: options.format }),
+          ...(options.instructions && { instructions: options.instructions }),
+          ...(options.schema && { schema: options.schema as any }),
+          ...(options.templateId && { template_id: options.templateId }),
         }),
       {
         maxRetries: this.config.maxRetries,
@@ -93,7 +95,18 @@ export class OCRService {
     }
 
     // Step 2: Upload to presigned URLs
-    const uploadedParts = await this.uploadParts(buffer, parts);
+    // Filter out parts that don't have required fields
+    const validParts = parts.filter(
+      (part): part is { part_number: number; upload_url: string } =>
+        typeof part.part_number === "number" &&
+        typeof part.upload_url === "string",
+    );
+
+    if (validParts.length === 0) {
+      throw new Error("No valid upload parts in response");
+    }
+
+    const uploadedParts = await this.uploadParts(buffer, validParts);
 
     // Step 3: Complete the upload
     if (upload_type === "multipart" && uploadedParts.length > 0) {
@@ -212,8 +225,11 @@ export class OCRService {
       () =>
         this.client.uploadFromRemoteURL({
           url,
-          model: options.model,
-          ...(options.metadata && { metadata: options.metadata as any }),
+          ...(options.model && { model: options.model }),
+          ...(options.format && { format: options.format }),
+          ...(options.instructions && { instructions: options.instructions }),
+          ...(options.schema && { schema: options.schema as any }),
+          ...(options.templateId && { template_id: options.templateId }),
         }),
       {
         maxRetries: this.config.maxRetries,
