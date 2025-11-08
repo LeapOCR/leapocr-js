@@ -259,6 +259,55 @@ export class OCRService {
   }
 
   /**
+   * Wait for job completion by polling
+   */
+  async waitForCompletion(
+    jobId: string,
+    options: PollOptions = {},
+  ): Promise<JobStatus> {
+    const result = await pollUntil(
+      () => this.getJobStatus(jobId, options.signal),
+      (status) => status.status === "completed" || status.status === "failed",
+      {
+        pollInterval: options.pollInterval || DEFAULT_POLL_INTERVAL,
+        maxWait: options.maxWait || DEFAULT_MAX_WAIT,
+        signal: options.signal,
+        onProgress: options.onProgress,
+      },
+    ).catch((error) => {
+      if (error.message?.includes("timeout")) {
+        throw new TimeoutError(jobId, options.maxWait || DEFAULT_MAX_WAIT);
+      }
+      throw error;
+    });
+
+    return result;
+  }
+
+  /**
+   * Get job result (alias for getResults with different signature for compatibility)
+   */
+  async getJobResult(
+    jobId: string,
+    options: { page?: number; pageSize?: number; signal?: AbortSignal } = {},
+  ): Promise<any> {
+    const response = await withRetry(
+      () =>
+        this.client.getJobResult(jobId, {
+          page: options.page || 1,
+          limit: options.pageSize || 100,
+        }),
+      {
+        maxRetries: this.config.maxRetries,
+        initialDelay: this.config.retryDelay,
+        multiplier: this.config.retryMultiplier,
+      },
+    );
+
+    return response;
+  }
+
+  /**
    * Get job results
    */
   async getResults(
@@ -293,7 +342,7 @@ export class OCRService {
     const uploadResult = await this.uploadFile(filePath, uploadOptions);
 
     // Poll until complete
-    const result = await pollUntil(
+    await pollUntil(
       () => this.getJobStatus(uploadResult.jobId, pollOptions.signal),
       (status) => status.status === "completed" || status.status === "failed",
       {
@@ -312,13 +361,10 @@ export class OCRService {
       throw error;
     });
 
-    // Check if failed
-    if (result.status === "failed") {
-      throw new JobFailedError(uploadResult.jobId, result.error);
-    }
-
-    // Get results
-    return this.getResults(uploadResult.jobId, { signal: pollOptions.signal });
+    // Get full results
+    return this.getJobResult(uploadResult.jobId, {
+      signal: pollOptions.signal,
+    });
   }
 
   /**
