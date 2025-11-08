@@ -74,7 +74,7 @@ async function inputValidationExample(apiKey: string) {
     // Test invalid URL processing
     console.log("3. Testing invalid URL...");
     try {
-      await client.ocr.uploadFromURL("not-a-valid-url", {
+      await client.ocr.processURL("not-a-valid-url", {
         format: "structured",
       });
       console.log("[FAIL] Should have rejected invalid URL");
@@ -85,7 +85,7 @@ async function inputValidationExample(apiKey: string) {
     // Test non-existent file
     console.log("4. Testing non-existent file...");
     try {
-      await client.ocr.uploadFile("/path/to/nonexistent/file.pdf");
+      await client.ocr.processFile("/path/to/nonexistent/file.pdf");
       console.log("[FAIL] Should have rejected non-existent file");
     } catch (error) {
       console.log(`[PASS] Correctly rejected non-existent file: ${error}`);
@@ -94,7 +94,7 @@ async function inputValidationExample(apiKey: string) {
     // Test unsupported file type
     console.log("5. Testing unsupported file type...");
     try {
-      await client.ocr.uploadFile("./package.json");
+      await client.ocr.processFile("./package.json");
       console.log("[FAIL] Should have rejected unsupported file type");
     } catch (error) {
       console.log(`[PASS] Correctly rejected unsupported file type: ${error}`);
@@ -117,7 +117,7 @@ async function errorHandlingExample(apiKey: string) {
   // Test processing with invalid URL (will likely fail)
   console.log("1. Testing error handling for invalid processing...");
   try {
-    await client.ocr.uploadFromURL(
+    await client.ocr.processURL(
       "https://nonexistent-domain-12345.com/fake.pdf",
       {
         format: "structured",
@@ -160,7 +160,7 @@ async function errorHandlingExample(apiKey: string) {
       baseURL: process.env.LEAPOCR_BASE_URL,
     });
 
-    await invalidClient.ocr.uploadFromURL(
+    await invalidClient.ocr.processURL(
       "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
       { format: "markdown" },
     );
@@ -190,7 +190,7 @@ async function timeoutHandlingExample(apiKey: string) {
 
   const start = Date.now();
   try {
-    await shortTimeoutClient.ocr.uploadFromURL(
+    await shortTimeoutClient.ocr.processURL(
       "https://httpbin.org/delay/2", // Delayed response
       { format: "structured" },
     );
@@ -215,7 +215,7 @@ async function timeoutHandlingExample(apiKey: string) {
 
   // Create a job and test waiting with very short timeout
   try {
-    const job = await normalClient.ocr.uploadFromURL(
+    const job = await normalClient.ocr.processURL(
       "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
       {
         format: "markdown",
@@ -228,7 +228,7 @@ async function timeoutHandlingExample(apiKey: string) {
     // Wait with very short timeout (will likely fail)
     const waitStart = Date.now();
     try {
-      await normalClient.ocr.waitForCompletion(job.jobId, {
+      await normalClient.ocr.waitUntilDone(job.jobId, {
         pollInterval: 100,
         maxWait: 500, // Very short timeout
       });
@@ -252,7 +252,7 @@ async function timeoutHandlingExample(apiKey: string) {
   try {
     const controller = new AbortController();
 
-    const job = await normalClient.ocr.uploadFromURL(
+    const job = await normalClient.ocr.processURL(
       "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
       {
         format: "markdown",
@@ -268,7 +268,7 @@ async function timeoutHandlingExample(apiKey: string) {
     }, 1000);
 
     try {
-      await normalClient.ocr.waitForCompletion(job.jobId, {
+      await normalClient.ocr.waitUntilDone(job.jobId, {
         pollInterval: 500,
         maxWait: 10000,
         signal: controller.signal,

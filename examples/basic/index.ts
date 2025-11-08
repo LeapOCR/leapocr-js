@@ -56,7 +56,7 @@ async function processLocalFile(apiKey: string) {
   try {
     // Start processing with options
     console.log(`Starting OCR processing for ${filePath}...`);
-    const job = await client.ocr.uploadFile(filePath, {
+    const job = await client.ocr.processFile(filePath, {
       format: "structured",
       model: "standard-v1",
       instructions:
@@ -67,7 +67,7 @@ async function processLocalFile(apiKey: string) {
 
     // Wait for completion
     console.log("Waiting for processing to complete...");
-    const result = await client.ocr.waitForCompletion(job.jobId, {
+    const result = await client.ocr.waitUntilDone(job.jobId, {
       pollInterval: 2000,
       maxWait: 300000, // 5 minutes
     });
@@ -114,7 +114,7 @@ async function processFileFromURL(apiKey: string) {
 
   try {
     console.log(`Starting OCR processing for URL: ${fileURL}...`);
-    const job = await client.ocr.uploadFromURL(fileURL, {
+    const job = await client.ocr.processURL(fileURL, {
       format: "markdown",
       model: "standard-v1",
       instructions: "Extract key financial information",

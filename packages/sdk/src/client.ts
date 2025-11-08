@@ -17,7 +17,26 @@ const DEFAULT_BASE_URL = "https://api.leapocr.com/api/v1";
 const DEFAULT_TIMEOUT = 30000;
 
 /**
- * Main LeapOCR SDK client
+ * Main LeapOCR SDK client for document OCR and data extraction.
+ *
+ * @example
+ * ```typescript
+ * import { LeapOCR } from '@leapocr/sdk';
+ *
+ * // Initialize with API key
+ * const client = new LeapOCR({
+ *   apiKey: 'your-api-key',
+ *   baseURL: 'https://api.leapocr.com/api/v1', // optional
+ * });
+ *
+ * // Process a document
+ * const result = await client.ocr.processFile('./document.pdf', {
+ *   format: 'markdown',
+ *   model: 'standard-v1',
+ * });
+ * ```
+ *
+ * @see {@link https://docs.leapocr.com LeapOCR Documentation}
  */
 export class LeapOCR {
   private readonly config: Required<ClientConfig> & { apiKey: string };
@@ -147,7 +166,27 @@ export class LeapOCR {
   }
 
   /**
-   * Get OCR service
+   * Access the OCR service for document processing operations.
+   *
+   * Provides methods for:
+   * - File uploads (local files, buffers, streams, URLs)
+   * - Job status tracking
+   * - Result retrieval
+   * - Batch processing
+   *
+   * @returns The OCR service instance
+   *
+   * @example
+   * ```typescript
+   * // Upload a file
+   * const job = await client.ocr.uploadFile('./document.pdf', {
+   *   format: 'markdown',
+   *   model: 'standard-v1',
+   * });
+   *
+   * // Wait for completion
+   * const result = await client.ocr.waitForCompletion(job.jobId);
+   * ```
    */
   get ocr(): OCRService {
     if (!this._ocr) {

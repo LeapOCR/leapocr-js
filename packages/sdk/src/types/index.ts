@@ -12,7 +12,4 @@ export type {
   UploadResult,
   PaginationInfo,
   ResultMetadata,
-  FileData,
-  BatchOptions,
-  BatchResult,
 } from "./ocr.js";

@@ -72,7 +72,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
         throw new Error("No test PDF available");
       }
 
-      const result = await client.ocr.uploadFile(testPDFPath, {
+      const result = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
       });
@@ -87,7 +87,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
         throw new Error("No test PDF available");
       }
 
-      const result = await client.ocr.uploadFile(testPDFPath, {
+      const result = await client.ocr.processFile(testPDFPath, {
         format: "structured",
         model: "standard-v1",
         instructions: "Extract all text and identify key information",
@@ -102,7 +102,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
         throw new Error("No test PDF available");
       }
 
-      const result = await client.ocr.uploadFile(testPDFPath, {
+      const result = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "pro-v1",
       });
@@ -115,7 +115,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
         throw new Error("No test PDF available");
       }
 
-      const result = await client.ocr.uploadFile(testPDFPath, {
+      const result = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "english-pro-v1",
       });
@@ -132,7 +132,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
       const buffer = require("fs").readFileSync(testPDFPath);
 
-      const result = await client.ocr.uploadFileBuffer(buffer, "test.pdf", {
+      const result = await client.ocr.processFileBuffer(buffer, "test.pdf", {
         format: "markdown",
         model: "standard-v1",
       });
@@ -150,7 +150,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
       const stream = require("fs").createReadStream(testPDFPath);
 
-      const result = await client.ocr.uploadFileStream(stream, "test.pdf", {
+      const result = await client.ocr.processFileStream(stream, "test.pdf", {
         format: "markdown",
         model: "standard-v1",
       });
@@ -166,7 +166,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
       const url =
         "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
 
-      const result = await client.ocr.uploadFromURL(url, {
+      const result = await client.ocr.processURL(url, {
         format: "markdown",
         model: "standard-v1",
       });
@@ -180,7 +180,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     it("should get job status", async () => {
       if (!testPDFPath) throw new Error("No test PDF");
 
-      const uploadResult = await client.ocr.uploadFile(testPDFPath, {
+      const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
       });
@@ -197,12 +197,12 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     it("should wait for job completion", async () => {
       if (!testPDFPath) throw new Error("No test PDF");
 
-      const uploadResult = await client.ocr.uploadFile(testPDFPath, {
+      const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
       });
 
-      const result = await client.ocr.waitForCompletion(uploadResult.jobId, {
+      const result = await client.ocr.waitUntilDone(uploadResult.jobId, {
         pollInterval: 2000,
         maxWait: 60000,
       });
@@ -214,14 +214,14 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     it("should track progress during polling", async () => {
       if (!testPDFPath) throw new Error("No test PDF");
 
-      const uploadResult = await client.ocr.uploadFile(testPDFPath, {
+      const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
       });
 
       const progressUpdates: string[] = [];
 
-      await client.ocr.waitForCompletion(uploadResult.jobId, {
+      await client.ocr.waitUntilDone(uploadResult.jobId, {
         pollInterval: 2000,
         maxWait: 60000,
         onProgress: (status) => {
@@ -237,12 +237,12 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     it("should get job results after completion", async () => {
       if (!testPDFPath) throw new Error("No test PDF");
 
-      const uploadResult = await client.ocr.uploadFile(testPDFPath, {
+      const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
       });
 
-      await client.ocr.waitForCompletion(uploadResult.jobId, {
+      await client.ocr.waitUntilDone(uploadResult.jobId, {
         pollInterval: 2000,
         maxWait: 60000,
       });
@@ -260,12 +260,12 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     it("should support pagination", async () => {
       if (!testPDFPath) throw new Error("No test PDF");
 
-      const uploadResult = await client.ocr.uploadFile(testPDFPath, {
+      const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
       });
 
-      await client.ocr.waitForCompletion(uploadResult.jobId, {
+      await client.ocr.waitUntilDone(uploadResult.jobId, {
         pollInterval: 2000,
         maxWait: 60000,
       });
@@ -279,81 +279,36 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     }, 70000);
   });
 
-  describe("Process File (Upload + Wait)", () => {
-    it("should process file end-to-end", async () => {
-      if (!testPDFPath) throw new Error("No test PDF");
-
-      const result = await client.ocr.processFile(
-        testPDFPath,
-        {
-          format: "markdown",
-          model: "standard-v1",
-        },
-        {
-          pollInterval: 2000,
-          maxWait: 60000,
-        },
-      );
-
-      expect(result.status).toBe("completed");
-      expect(result.pages).toBeDefined();
-    }, 70000);
-
-    it("should process file with progress tracking", async () => {
-      if (!testPDFPath) throw new Error("No test PDF");
-
-      const progressUpdates: string[] = [];
-
-      const result = await client.ocr.processFile(
-        testPDFPath,
-        {
-          format: "markdown",
-          model: "standard-v1",
-        },
-        {
-          pollInterval: 2000,
-          maxWait: 60000,
-          onProgress: (status) => {
-            progressUpdates.push(status.status);
-          },
-        },
-      );
-
-      expect(result.status).toMatch(/completed|failed/);
-      expect(progressUpdates.length).toBeGreaterThan(0);
-    }, 70000);
-  });
-
   describe("Error Handling", () => {
     it("should handle invalid file type", async () => {
       const txtPath = join(TEST_DIR, "test.txt");
       writeFileSync(txtPath, "Text content");
 
-      await expect(client.ocr.uploadFile(txtPath)).rejects.toThrow(
+      await expect(client.ocr.processFile(txtPath)).rejects.toThrow(
         "not supported",
       );
     });
 
     it("should handle non-existent file", async () => {
       await expect(
-        client.ocr.uploadFile(join(TEST_DIR, "nonexistent.pdf")),
+        client.ocr.processFile(join(TEST_DIR, "nonexistent.pdf")),
       ).rejects.toThrow("File not found");
     });
 
     it("should handle invalid URL", async () => {
-      await expect(client.ocr.uploadFromURL("not-a-url")).rejects.toThrow();
+      await expect(client.ocr.processURL("not-a-url")).rejects.toThrow();
     });
 
     it("should timeout on long-running job", async () => {
       if (!testPDFPath) throw new Error("No test PDF");
 
-      const uploadResult = await client.ocr.uploadFile(testPDFPath, {
+      const uploadResult = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
         model: "standard-v1",
       });
 
       await expect(
-        client.ocr.waitForCompletion(uploadResult.jobId, {
+        client.ocr.waitUntilDone(uploadResult.jobId, {
           pollInterval: 100,
           maxWait: 500, // Very short timeout
         }),
@@ -366,15 +321,15 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
       if (!testPDFPath) throw new Error("No test PDF");
 
       const uploads = await Promise.all([
-        client.ocr.uploadFile(testPDFPath, {
+        client.ocr.processFile(testPDFPath, {
           format: "markdown",
           model: "standard-v1",
         }),
-        client.ocr.uploadFile(testPDFPath, {
+        client.ocr.processFile(testPDFPath, {
           format: "markdown",
           model: "standard-v1",
         }),
-        client.ocr.uploadFile(testPDFPath, {
+        client.ocr.processFile(testPDFPath, {
           format: "markdown",
           model: "standard-v1",
         }),

@@ -21,9 +21,6 @@ export type {
   UploadResult,
   PaginationInfo,
   ResultMetadata,
-  FileData,
-  BatchOptions,
-  BatchResult,
 } from "./types/index.js";
 
 // Errors

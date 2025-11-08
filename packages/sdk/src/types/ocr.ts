@@ -1,9 +1,28 @@
 /**
- * OCR-related type definitions
+ * OCR-related type definitions for the LeapOCR SDK.
+ *
+ * @packageDocumentation
  */
 
 /**
- * Available OCR models
+ * Available OCR models with their characteristics and credit costs.
+ *
+ * Each model has different accuracy levels and credit costs per page:
+ * - **standard-v1**: Baseline model suitable for most documents (1 credit/page)
+ * - **english-pro-v1**: Enhanced accuracy for English-only documents (2 credits/page)
+ * - **pro-v1**: Highest quality model for complex layouts and critical accuracy needs (5 credits/page)
+ *
+ * The type also accepts custom strings for future models while providing
+ * autocomplete suggestions for known models.
+ *
+ * @example
+ * ```typescript
+ * // Known models get autocomplete
+ * const model: OCRModel = 'standard-v1';
+ *
+ * // Custom models are also accepted
+ * const futureModel: OCRModel = 'experimental-v2';
+ * ```
  */
 export type OCRModel =
   | "standard-v1" // Baseline model, handles all cases (1 credit/page)
@@ -12,7 +31,23 @@ export type OCRModel =
   | (string & {}); // Allow any string while preserving autocomplete
 
 /**
- * Upload options
+ * Configuration options for uploading and processing documents.
+ *
+ * @example
+ * ```typescript
+ * const options: UploadOptions = {
+ *   format: 'structured',
+ *   model: 'pro-v1',
+ *   instructions: 'Extract invoice details',
+ *   schema: {
+ *     type: 'object',
+ *     properties: {
+ *       invoice_number: { type: 'string' },
+ *       total: { type: 'number' },
+ *     },
+ *   },
+ * };
+ * ```
  */
 export interface UploadOptions {
   /**
@@ -42,7 +77,20 @@ export interface UploadOptions {
 }
 
 /**
- * Polling options
+ * Configuration options for polling job status until completion.
+ *
+ * Controls how frequently to check job status and how long to wait before timing out.
+ *
+ * @example
+ * ```typescript
+ * const pollOptions: PollOptions = {
+ *   pollInterval: 2000,  // Check every 2 seconds
+ *   maxWait: 600000,     // Wait up to 10 minutes
+ *   onProgress: (status) => {
+ *     console.log(`Progress: ${status.progress}%`);
+ *   },
+ * };
+ * ```
  */
 export interface PollOptions {
   /** Polling interval in ms. Default: 2000 */
@@ -106,28 +154,4 @@ export interface ResultMetadata {
   totalPages: number;
   model: string;
   processingTime: number; // milliseconds
-}
-
-/**
- * File data for batch processing
- */
-export interface FileData {
-  data: Buffer;
-  fileName: string;
-}
-
-/**
- * Batch processing options
- */
-export interface BatchOptions extends UploadOptions {
-  /** Maximum concurrent uploads. Default: 5 */
-  concurrency?: number;
-}
-
-/**
- * Batch result
- */
-export interface BatchResult {
-  jobs: UploadResult[];
-  totalFiles: number;
 }

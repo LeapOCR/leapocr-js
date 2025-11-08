@@ -59,7 +59,7 @@ async function customConfigExample(apiKey: string) {
 
   try {
     // Example URL processing with custom options
-    const job = await client.ocr.uploadFromURL(
+    const job = await client.ocr.processURL(
       "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
       {
         format: "structured",
@@ -102,7 +102,7 @@ async function batchProcessingExample(apiKey: string) {
       try {
         console.log(`Starting processing for file ${index + 1}: ${url}`);
 
-        const job = await client.ocr.uploadFromURL(url, {
+        const job = await client.ocr.processURL(url, {
           format: "structured",
           model: "standard-v1",
           instructions: `Process document ${index + 1}`,
@@ -111,7 +111,7 @@ async function batchProcessingExample(apiKey: string) {
         console.log(`File ${index + 1} uploaded - Job ID: ${job.jobId}`);
 
         // Wait for completion
-        const result = await client.ocr.waitForCompletion(job.jobId, {
+        const result = await client.ocr.waitUntilDone(job.jobId, {
           pollInterval: 2000,
           maxWait: 300000, // 5 minutes
           onProgress: (status) => {
@@ -231,7 +231,7 @@ async function schemaExtractionExample(apiKey: string) {
   console.log(`Processing invoice with custom schema: ${invoiceURL}`);
 
   try {
-    const job = await client.ocr.uploadFromURL(invoiceURL, {
+    const job = await client.ocr.processURL(invoiceURL, {
       format: "structured",
       model: "pro-v1", // Use highest quality model for best accuracy
       schema: invoiceSchema,
@@ -242,7 +242,7 @@ async function schemaExtractionExample(apiKey: string) {
     console.log(`Job created with ID: ${job.jobId}`);
 
     // Wait for completion
-    const result = await client.ocr.waitForCompletion(job.jobId, {
+    const result = await client.ocr.waitUntilDone(job.jobId, {
       pollInterval: 2000,
       maxWait: 300000,
     });

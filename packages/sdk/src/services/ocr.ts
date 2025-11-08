@@ -19,7 +19,23 @@ import { FileError, JobFailedError, TimeoutError } from "../errors/index.js";
 import { DEFAULT_POLL_INTERVAL, DEFAULT_MAX_WAIT } from "../utils/constants.js";
 
 /**
- * OCR Service for document processing
+ * OCR Service for document processing operations.
+ *
+ * Handles document upload, job management, and result retrieval for OCR operations.
+ * Supports multiple upload methods (file, buffer, stream, URL) and provides
+ * convenient methods for job polling and batch processing.
+ *
+ * @example
+ * ```typescript
+ * const client = new LeapOCR({ apiKey: 'your-key' });
+ *
+ * // Upload and process a file
+ * const result = await client.ocr.processFile('./invoice.pdf', {
+ *   format: 'structured',
+ *   model: 'pro-v1',
+ *   instructions: 'Extract invoice details',
+ * });
+ * ```
  */
 export class OCRService {
   private readonly client = getOcr();
@@ -27,12 +43,44 @@ export class OCRService {
   constructor(private readonly config: Required<ClientConfig>) {}
 
   /**
-   * Upload a file from local filesystem
+   * Process a PDF file from the local filesystem.
    *
-   * This initiates a multipart upload, uploads the file to presigned URL(s),
-   * and completes the upload.
+   * This method:
+   * 1. Validates the file (extension, size, existence)
+   * 2. Initiates a multipart upload to get presigned URL(s)
+   * 3. Uploads the file directly to S3
+   * 4. Completes the upload and starts OCR processing
+   *
+   * **Supported formats:** PDF only (currently)
+   * **Maximum file size:** 100MB
+   *
+   * @param filePath - Absolute or relative path to the PDF file
+   * @param options - Processing configuration options
+   * @param options.format - Output format: `markdown` (page-by-page OCR), `structured` (data extraction), or `per_page_structured`
+   * @param options.model - OCR model: `standard-v1` (1 credit/page), `english-pro-v1` (2 credits/page), or `pro-v1` (5 credits/page)
+   * @param options.instructions - Instructions for structured extraction (max 100 chars)
+   * @param options.schema - JSON schema for structured data extraction
+   * @param options.templateId - Template ID for reusable extraction schemas
+   * @returns Job information with job ID and initial status
+   * @throws {FileError} If file doesn't exist, is too large, or is not a PDF
+   * @throws {ValidationError} If request parameters are invalid
+   * @throws {AuthenticationError} If API key is invalid
+   * @throws {NetworkError} If upload fails due to network issues
+   *
+   * @example
+   * ```typescript
+   * // Basic processing
+   * const job = await client.ocr.processFile('./document.pdf');
+   *
+   * // With structured extraction
+   * const job = await client.ocr.processFile('./invoice.pdf', {
+   *   format: 'structured',
+   *   model: 'pro-v1',
+   *   instructions: 'Extract invoice number, date, and total amount',
+   * });
+   * ```
    */
-  async uploadFile(
+  async processFile(
     filePath: string,
     options: UploadOptions = {},
   ): Promise<UploadResult> {
@@ -46,18 +94,18 @@ export class OCRService {
     const fileName = basename(filePath);
     const fileBuffer = readFileSync(filePath);
 
-    return this.uploadFileBuffer(fileBuffer, fileName, options);
+    return this.processFileBuffer(fileBuffer, fileName, options);
   }
 
   /**
-   * Upload a file from Buffer
+   * Process a file from Buffer
    *
    * This follows the multipart upload flow:
    * 1. Initiate upload (get presigned URLs)
    * 2. Upload file parts to S3
    * 3. Complete the upload
    */
-  async uploadFileBuffer(
+  async processFileBuffer(
     buffer: Buffer,
     fileName: string,
     options: UploadOptions = {},
@@ -195,11 +243,11 @@ export class OCRService {
   }
 
   /**
-   * Upload a file from Stream
+   * Process a file from Stream
    *
    * Note: Streams need to be converted to Buffer for multipart upload
    */
-  async uploadFileStream(
+  async processFileStream(
     stream: Readable,
     fileName: string,
     options: UploadOptions = {},
@@ -211,13 +259,40 @@ export class OCRService {
     }
     const buffer = Buffer.concat(chunks);
 
-    return this.uploadFileBuffer(buffer, fileName, options);
+    return this.processFileBuffer(buffer, fileName, options);
   }
 
   /**
-   * Upload a file from URL
+   * Process a PDF file from a remote URL.
+   *
+   * The LeapOCR API will fetch the file from the provided URL and process it.
+   * The URL must be publicly accessible from the API servers.
+   *
+   * @param url - Public URL of the PDF document to process (must be accessible via HTTP/HTTPS)
+   * @param options - Processing configuration options
+   * @param options.format - Output format: `markdown` (page-by-page OCR), `structured` (data extraction), or `per_page_structured`
+   * @param options.model - OCR model: `standard-v1` (1 credit/page), `english-pro-v1` (2 credits/page), or `pro-v1` (5 credits/page)
+   * @param options.instructions - Instructions for structured extraction (max 100 chars)
+   * @param options.schema - JSON schema for structured data extraction
+   * @param options.templateId - Template ID for reusable extraction schemas
+   * @returns Job information with job ID and initial status
+   * @throws {ValidationError} If URL is invalid or request parameters are invalid
+   * @throws {AuthenticationError} If API key is invalid
+   * @throws {NetworkError} If the API cannot fetch the URL
+   *
+   * @example
+   * ```typescript
+   * const job = await client.ocr.processURL(
+   *   'https://example.com/invoice.pdf',
+   *   {
+   *     format: 'structured',
+   *     model: 'standard-v1',
+   *     instructions: 'Extract invoice number, date, and total amount',
+   *   }
+   * );
+   * ```
    */
-  async uploadFromURL(
+  async processURL(
     url: string,
     options: UploadOptions = {},
   ): Promise<UploadResult> {
@@ -246,7 +321,32 @@ export class OCRService {
   }
 
   /**
-   * Get job status
+   * Retrieve the current processing status and progress of an OCR job.
+   *
+   * Use this to check job status, monitor progress, and detect completion or errors.
+   * Status will be one of: `pending`, `processing`, `completed`, or `failed`.
+   *
+   * @param jobId - The unique job identifier (UUID format)
+   * @param signal - Optional AbortSignal to cancel the request
+   * @returns Job status including progress percentage and estimated completion time
+   * @throws {ValidationError} If job ID format is invalid
+   * @throws {AuthenticationError} If API key is invalid
+   * @throws {AuthorizationError} If job belongs to a different user
+   * @throws {APIError} If job is not found (404) or other API errors occur
+   *
+   * @example
+   * ```typescript
+   * const status = await client.ocr.getJobStatus(jobId);
+   *
+   * console.log(`Status: ${status.status}`);
+   * if (status.progress) {
+   *   console.log(`Progress: ${status.progress}%`);
+   * }
+   * if (status.status === 'completed') {
+   *   // Fetch results
+   *   const result = await client.ocr.getJobResult(jobId);
+   * }
+   * ```
    */
   async getJobStatus(jobId: string, signal?: AbortSignal): Promise<JobStatus> {
     const response = await withRetry(() => this.client.getJobStatus(jobId), {
@@ -259,9 +359,46 @@ export class OCRService {
   }
 
   /**
-   * Wait for job completion by polling
+   * Wait for job completion by repeatedly polling the job status.
+   *
+   * This method will poll the job status at regular intervals until the job
+   * reaches a terminal state (`completed` or `failed`) or the maximum wait
+   * time is exceeded.
+   *
+   * @param jobId - The unique job identifier (UUID format)
+   * @param options - Polling configuration options
+   * @param options.pollInterval - Time between status checks in milliseconds (default: 2000ms)
+   * @param options.maxWait - Maximum time to wait in milliseconds (default: 300000ms / 5 minutes)
+   * @param options.onProgress - Callback function called on each status update
+   * @param options.signal - Optional AbortSignal to cancel polling
+   * @returns Final job status (either `completed` or `failed`)
+   * @throws {TimeoutError} If job doesn't complete within maxWait period
+   * @throws {Error} If AbortSignal is triggered
+   *
+   * @example
+   * ```typescript
+   * // Basic usage
+   * const result = await client.ocr.waitUntilDone(job.jobId);
+   *
+   * // With progress tracking
+   * const result = await client.ocr.waitUntilDone(job.jobId, {
+   *   pollInterval: 2000,
+   *   maxWait: 600000, // 10 minutes
+   *   onProgress: (status) => {
+   *     console.log(`${status.status}: ${status.progress}%`);
+   *   },
+   * });
+   *
+   * // With cancellation
+   * const controller = new AbortController();
+   * setTimeout(() => controller.abort(), 30000); // Cancel after 30s
+   *
+   * const result = await client.ocr.waitUntilDone(job.jobId, {
+   *   signal: controller.signal,
+   * });
+   * ```
    */
-  async waitForCompletion(
+  async waitUntilDone(
     jobId: string,
     options: PollOptions = {},
   ): Promise<JobStatus> {
@@ -328,80 +465,6 @@ export class OCRService {
     );
 
     return response;
-  }
-
-  /**
-   * Process file and wait for completion (convenience method)
-   */
-  async processFile(
-    filePath: string,
-    uploadOptions: UploadOptions = {},
-    pollOptions: PollOptions = {},
-  ): Promise<any> {
-    // Upload file
-    const uploadResult = await this.uploadFile(filePath, uploadOptions);
-
-    // Poll until complete
-    await pollUntil(
-      () => this.getJobStatus(uploadResult.jobId, pollOptions.signal),
-      (status) => status.status === "completed" || status.status === "failed",
-      {
-        pollInterval: pollOptions.pollInterval || DEFAULT_POLL_INTERVAL,
-        maxWait: pollOptions.maxWait || DEFAULT_MAX_WAIT,
-        signal: pollOptions.signal,
-        onProgress: pollOptions.onProgress,
-      },
-    ).catch((error) => {
-      if (error.message?.includes("timeout")) {
-        throw new TimeoutError(
-          uploadResult.jobId,
-          pollOptions.maxWait || DEFAULT_MAX_WAIT,
-        );
-      }
-      throw error;
-    });
-
-    // Get full results
-    return this.getJobResult(uploadResult.jobId, {
-      signal: pollOptions.signal,
-    });
-  }
-
-  /**
-   * Process multiple files in batch
-   */
-  async processBatch(
-    files: (string | FileData)[],
-    options: BatchOptions = {},
-  ): Promise<BatchResult> {
-    const concurrency = options.concurrency || 5;
-    const results: UploadResult[] = [];
-
-    // Process in batches with concurrency limit
-    for (let i = 0; i < files.length; i += concurrency) {
-      const batch = files.slice(i, i + concurrency);
-      const batchPromises = batch.map((file) => {
-        if (typeof file === "string") {
-          return this.uploadFile(file, options);
-        } else {
-          return this.uploadFileBuffer(file.data, file.fileName, options);
-        }
-      });
-
-      const batchResults = await Promise.allSettled(batchPromises);
-
-      // Collect successful uploads
-      batchResults.forEach((result) => {
-        if (result.status === "fulfilled") {
-          results.push(result.value);
-        }
-      });
-    }
-
-    return {
-      jobs: results,
-      totalFiles: files.length,
-    };
   }
 
   /**
