@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import { basename } from "path";
 import type { Readable } from "stream";
 import { FileError, TimeoutError } from "../errors/index.js";
+import { getJobs } from "../generated/jobs/jobs.js";
 import { getOcr } from "../generated/ocr/ocr.js";
 import type { ClientConfig } from "../types/config.js";
 import type {
@@ -36,6 +37,7 @@ import { validateBuffer, validateFile } from "../utils/validation.js";
  */
 export class OCRService {
   private readonly client = getOcr();
+  private readonly jobsClient = getJobs();
 
   constructor(private readonly config: Required<ClientConfig>) {}
 
@@ -57,7 +59,7 @@ export class OCRService {
    * @param options.model - OCR model: `standard-v1` (1 credit/page), `english-pro-v1` (2 credits/page), or `pro-v1` (5 credits/page)
    * @param options.instructions - Instructions for structured extraction (max 100 chars)
    * @param options.schema - JSON schema for structured data extraction
-   * @param options.templateId - Template ID for reusable extraction schemas
+   * @param options.templateSlug - Template slug for reusable extraction schemas
    * @returns Job information with job ID and initial status
    * @throws {FileError} If file doesn't exist, is too large, or is not a PDF
    * @throws {ValidationError} If request parameters are invalid
@@ -124,7 +126,7 @@ export class OCRService {
           ...(options.format && { format: options.format }),
           ...(options.instructions && { instructions: options.instructions }),
           ...(options.schema && { schema: options.schema as any }),
-          ...(options.templateId && { template_id: options.templateId }),
+          ...(options.templateSlug && { template_slug: options.templateSlug }),
         }),
       {
         maxRetries: this.config.maxRetries,
@@ -271,7 +273,7 @@ export class OCRService {
    * @param options.model - OCR model: `standard-v1` (1 credit/page), `english-pro-v1` (2 credits/page), or `pro-v1` (5 credits/page)
    * @param options.instructions - Instructions for structured extraction (max 100 chars)
    * @param options.schema - JSON schema for structured data extraction
-   * @param options.templateId - Template ID for reusable extraction schemas
+   * @param options.templateSlug - Template slug for reusable extraction schemas
    * @returns Job information with job ID and initial status
    * @throws {ValidationError} If URL is invalid or request parameters are invalid
    * @throws {AuthenticationError} If API key is invalid
@@ -301,7 +303,7 @@ export class OCRService {
           ...(options.format && { format: options.format }),
           ...(options.instructions && { instructions: options.instructions }),
           ...(options.schema && { schema: options.schema as any }),
-          ...(options.templateId && { template_id: options.templateId }),
+          ...(options.templateSlug && { template_slug: options.templateSlug }),
         }),
       {
         maxRetries: this.config.maxRetries,
@@ -345,7 +347,7 @@ export class OCRService {
    * }
    * ```
    */
-  async getJobStatus(jobId: string, signal?: AbortSignal): Promise<JobStatus> {
+  async getJobStatus(jobId: string, _signal?: AbortSignal): Promise<JobStatus> {
     const response = await withRetry(() => this.client.getJobStatus(jobId), {
       maxRetries: this.config.maxRetries,
       initialDelay: this.config.retryDelay,
@@ -462,6 +464,33 @@ export class OCRService {
     );
 
     return response;
+  }
+
+  /**
+   * Delete an OCR job.
+   *
+   * Permanently deletes a job and all associated data including uploaded files,
+   * processing results, and metadata. This operation cannot be undone.
+   *
+   * @param jobId - The unique job identifier (UUID format)
+   * @returns Confirmation of deletion
+   * @throws {ValidationError} If job ID format is invalid
+   * @throws {AuthenticationError} If API key is invalid
+   * @throws {AuthorizationError} If job belongs to a different user
+   * @throws {APIError} If job is not found (404) or other API errors occur
+   *
+   * @example
+   * ```typescript
+   * await client.ocr.deleteJob(jobId);
+   * console.log('Job deleted successfully');
+   * ```
+   */
+  async deleteJob(jobId: string): Promise<void> {
+    await withRetry(() => this.jobsClient.deleteJob(jobId, {}), {
+      maxRetries: this.config.maxRetries,
+      initialDelay: this.config.retryDelay,
+      multiplier: this.config.retryMultiplier,
+    });
   }
 
   /**

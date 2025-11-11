@@ -278,4 +278,79 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
       expect(uniqueJobIds.size).toBe(3);
     }, 30000);
   });
+
+  describe("Job Deletion", () => {
+    it("should delete a job successfully", async () => {
+      const uploadResult = await client.ocr.processFile(testPDFPath, {
+        format: "markdown",
+        model: "standard-v1",
+      });
+
+      expect(uploadResult.jobId).toBeDefined();
+
+      // Wait for completion
+      await client.ocr.waitUntilDone(uploadResult.jobId, {
+        pollInterval: 2000,
+        maxWait: 60000,
+      });
+
+      // Delete the job
+      await expect(
+        client.ocr.deleteJob(uploadResult.jobId),
+      ).resolves.not.toThrow();
+
+      // Verify job is deleted by attempting to get status
+      await expect(
+        client.ocr.getJobStatus(uploadResult.jobId),
+      ).rejects.toThrow();
+    }, 70000);
+
+    it("should handle deleting non-existent job", async () => {
+      await expect(
+        client.ocr.deleteJob("non-existent-job-id"),
+      ).rejects.toThrow();
+    }, 30000);
+
+    it("should delete job immediately after creation", async () => {
+      const uploadResult = await client.ocr.processFile(testPDFPath, {
+        format: "markdown",
+        model: "standard-v1",
+      });
+
+      // Delete immediately without waiting for completion
+      await expect(
+        client.ocr.deleteJob(uploadResult.jobId),
+      ).resolves.not.toThrow();
+
+      // Verify deletion
+      await expect(
+        client.ocr.getJobStatus(uploadResult.jobId),
+      ).rejects.toThrow();
+    }, 30000);
+  });
+
+  describe("Template Slug", () => {
+    it("should process with template slug", async () => {
+      const result = await client.ocr.processFile(testPDFPath, {
+        templateSlug: "test-template",
+        model: "standard-v1",
+      });
+
+      expect(result.jobId).toBeDefined();
+      expect(result.status).toBe("pending");
+    }, 30000);
+
+    it("should process URL with template slug", async () => {
+      const url =
+        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+
+      const result = await client.ocr.processURL(url, {
+        templateSlug: "invoice-template",
+        model: "pro-v1",
+      });
+
+      expect(result.jobId).toBeDefined();
+      expect(result.status).toBe("pending");
+    }, 30000);
+  });
 });

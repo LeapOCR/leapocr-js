@@ -69,8 +69,8 @@ export interface UploadOptions {
   /** Schema for structured data extraction */
   schema?: Record<string, unknown>;
 
-  /** Template ID for using existing template */
-  templateId?: string;
+  /** Template slug for using existing template */
+  templateSlug?: string;
 
   /** AbortSignal for cancellation */
   signal?: AbortSignal;

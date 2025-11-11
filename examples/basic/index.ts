@@ -31,6 +31,20 @@ async function main() {
   } catch (error) {
     console.error("Failed to process URL:", error);
   }
+
+  // Example: Process with template slug
+  try {
+    await processWithTemplate(apiKey);
+  } catch (error) {
+    console.error("Failed to process with template:", error);
+  }
+
+  // Example: Delete a job
+  try {
+    await deleteJobExample(apiKey);
+  } catch (error) {
+    console.error("Failed to delete job:", error);
+  }
 }
 
 async function processLocalFile(apiKey: string) {
@@ -161,6 +175,96 @@ async function processFileFromURL(apiKey: string) {
     throw new Error("Polling timeout: processing took too long");
   } catch (error) {
     console.error("Error during URL processing:", error);
+  }
+
+  console.log();
+}
+
+async function processWithTemplate(apiKey: string) {
+  console.log("=== Processing with Template Slug ===");
+
+  const client = new LeapOCR({
+    apiKey,
+    baseURL: process.env.LEAPOCR_BASE_URL,
+  });
+
+  const fileURL =
+    "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+
+  try {
+    console.log("Processing document with template slug...");
+    const job = await client.ocr.processURL(fileURL, {
+      templateSlug: "invoice-template", // Use predefined template
+      model: "pro-v1",
+    });
+
+    console.log(`Job created with ID: ${job.jobId}`);
+    console.log("Using template slug: invoice-template");
+
+    const result = await client.ocr.waitUntilDone(job.jobId, {
+      pollInterval: 2000,
+      maxWait: 300000,
+    });
+
+    if (result.status === "completed") {
+      const fullResult = await client.ocr.getJobResult(job.jobId);
+      console.log("Template-based extraction completed!");
+      console.log(`Credits used: ${fullResult.credits_used}`);
+      console.log("Extracted data follows template schema");
+    }
+  } catch (error) {
+    console.log(`Template processing: ${error}`);
+    console.log(
+      "Note: Templates must be created in your LeapOCR dashboard first",
+    );
+  }
+
+  console.log();
+}
+
+async function deleteJobExample(apiKey: string) {
+  console.log("=== Delete Job Example ===");
+
+  const client = new LeapOCR({
+    apiKey,
+    baseURL: process.env.LEAPOCR_BASE_URL,
+  });
+
+  const fileURL =
+    "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+
+  try {
+    // Create a job
+    console.log("Creating a job to delete...");
+    const job = await client.ocr.processURL(fileURL, {
+      format: "markdown",
+      model: "standard-v1",
+    });
+
+    console.log(`Job created with ID: ${job.jobId}`);
+
+    // Wait for completion
+    const result = await client.ocr.waitUntilDone(job.jobId, {
+      pollInterval: 2000,
+      maxWait: 300000,
+    });
+
+    console.log(`Job status: ${result.status}`);
+
+    // Delete the job
+    console.log("Deleting job...");
+    await client.ocr.deleteJob(job.jobId);
+    console.log("Job deleted successfully!");
+
+    // Verify deletion
+    try {
+      await client.ocr.getJobStatus(job.jobId);
+      console.log("[FAIL] Job should have been deleted");
+    } catch (error) {
+      console.log("[PASS] Job no longer exists after deletion");
+    }
+  } catch (error) {
+    console.log(`Delete job example: ${error}`);
   }
 
   console.log();

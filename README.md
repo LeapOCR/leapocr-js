@@ -176,6 +176,27 @@ while (attempts < maxAttempts) {
 }
 ```
 
+### Using Template Slugs
+
+```typescript
+// Process a document using a predefined template
+const job = await client.ocr.processFile("./invoice.pdf", {
+  templateSlug: "my-invoice-template",
+  model: "pro-v1",
+});
+
+const result = await client.ocr.waitUntilDone(job.jobId);
+console.log("Extracted data:", result.data);
+```
+
+### Deleting Jobs
+
+```typescript
+// Delete a completed job to free up resources
+await client.ocr.deleteJob(job.jobId);
+console.log("Job deleted successfully");
+```
+
 For more examples, see the [`examples/`](./examples) directory.
 
 ## Configuration
@@ -262,6 +283,7 @@ client.ocr.processBuffer(buffer: Buffer, filename: string, options?: UploadOptio
 client.ocr.getJobStatus(jobId: string): Promise<JobStatus>
 client.ocr.getJobResult(jobId: string): Promise<OCRResult>
 client.ocr.waitUntilDone(jobId: string, options?: PollOptions): Promise<OCRResult>
+client.ocr.deleteJob(jobId: string): Promise<void>
 ```
 
 ### Processing Options
@@ -272,7 +294,7 @@ interface UploadOptions {
   model?: OCRModel;
   schema?: Record<string, any>;
   instructions?: string;
-  categoryId?: string;
+  templateSlug?: string;
 }
 ```
 

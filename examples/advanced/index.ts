@@ -41,6 +41,20 @@ async function main() {
   } catch (error) {
     console.error("Schema extraction example failed:", error);
   }
+
+  // Example: Template slug with batch processing
+  try {
+    await templateBatchProcessingExample(apiKey);
+  } catch (error) {
+    console.error("Template batch processing example failed:", error);
+  }
+
+  // Example: Job lifecycle management
+  try {
+    await jobLifecycleExample(apiKey);
+  } catch (error) {
+    console.error("Job lifecycle example failed:", error);
+  }
 }
 
 async function customConfigExample(apiKey: string) {
@@ -272,6 +286,187 @@ async function schemaExtractionExample(apiKey: string) {
     console.log("- Vendor name");
     console.log("- Due date");
     console.log("- Line items with quantities and prices");
+  }
+
+  console.log();
+}
+
+async function templateBatchProcessingExample(apiKey: string) {
+  console.log("=== Template Batch Processing Example ===");
+
+  const client = new LeapOCR({
+    apiKey,
+    baseURL: process.env.LEAPOCR_BASE_URL,
+  });
+
+  // Different document types with different templates
+  const documents = [
+    {
+      url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      templateSlug: "invoice-template",
+      type: "invoice",
+    },
+    {
+      url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      templateSlug: "receipt-template",
+      type: "receipt",
+    },
+    {
+      url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      templateSlug: "contract-template",
+      type: "contract",
+    },
+  ];
+
+  try {
+    console.log(
+      `Processing ${documents.length} documents with different templates...`,
+    );
+
+    // Process all documents in parallel using their respective templates
+    const jobs = await Promise.all(
+      documents.map(async (doc) => {
+        try {
+          const job = await client.ocr.processURL(doc.url, {
+            templateSlug: doc.templateSlug,
+            model: "pro-v1",
+          });
+
+          console.log(
+            `${doc.type}: Job ${job.jobId} created with template "${doc.templateSlug}"`,
+          );
+
+          return { ...job, type: doc.type, templateSlug: doc.templateSlug };
+        } catch (error) {
+          console.error(`Failed to create job for ${doc.type}:`, error);
+          return null;
+        }
+      }),
+    );
+
+    // Wait for all jobs to complete
+    const results = await Promise.all(
+      jobs
+        .filter((job) => job !== null)
+        .map(async (job) => {
+          try {
+            const result = await client.ocr.waitUntilDone(job.jobId, {
+              pollInterval: 2000,
+              maxWait: 300000,
+              onProgress: (status) => {
+                if (status.progress) {
+                  console.log(
+                    `${job.type} (${job.templateSlug}): ${status.progress.toFixed(1)}%`,
+                  );
+                }
+              },
+            });
+
+            return {
+              type: job.type,
+              templateSlug: job.templateSlug,
+              status: result.status,
+              jobId: job.jobId,
+            };
+          } catch (error) {
+            console.error(`Failed to process ${job.type}:`, error);
+            return {
+              type: job.type,
+              templateSlug: job.templateSlug,
+              status: "failed",
+              error: String(error),
+            };
+          }
+        }),
+    );
+
+    console.log("\nTemplate-based batch processing complete:");
+    results.forEach((result) => {
+      const status = result.status === "completed" ? "✓" : "✗";
+      console.log(
+        `  ${status} ${result.type} (${result.templateSlug}): ${result.status}`,
+      );
+    });
+  } catch (error) {
+    console.log(`Template batch processing: ${error}`);
+    console.log("Note: Templates must be created in your dashboard first");
+  }
+
+  console.log();
+}
+
+async function jobLifecycleExample(apiKey: string) {
+  console.log("=== Job Lifecycle Management Example ===");
+
+  const client = new LeapOCR({
+    apiKey,
+    baseURL: process.env.LEAPOCR_BASE_URL,
+  });
+
+  const fileURL =
+    "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+
+  try {
+    // 1. Create job
+    console.log("1. Creating job...");
+    const job = await client.ocr.processURL(fileURL, {
+      format: "structured",
+      model: "standard-v1",
+      instructions: "Extract all text content",
+    });
+    console.log(`   Job created: ${job.jobId}`);
+
+    // 2. Monitor status
+    console.log("2. Monitoring job status...");
+    let attempts = 0;
+    const maxAttempts = 5;
+
+    while (attempts < maxAttempts) {
+      const status = await client.ocr.getJobStatus(job.jobId);
+      console.log(
+        `   Status check ${attempts + 1}: ${status.status} (${status.progress?.toFixed(1) || 0}%)`,
+      );
+
+      if (status.status === "completed" || status.status === "failed") {
+        break;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      attempts++;
+    }
+
+    // 3. Retrieve results
+    console.log("3. Retrieving results...");
+    const result = await client.ocr.getJobResult(job.jobId);
+    console.log(`   Status: ${result.status}`);
+    console.log(`   Credits used: ${result.credits_used || 0}`);
+    console.log(`   Pages processed: ${result.pages?.length || 0}`);
+
+    // 4. Clean up - delete job
+    console.log("4. Cleaning up job...");
+    await client.ocr.deleteJob(job.jobId);
+    console.log("   Job deleted successfully");
+
+    // 5. Verify deletion
+    console.log("5. Verifying deletion...");
+    try {
+      await client.ocr.getJobStatus(job.jobId);
+      console.log("   [FAIL] Job still exists");
+    } catch {
+      console.log("   [PASS] Job successfully deleted");
+    }
+
+    console.log("\nComplete job lifecycle demonstrated:");
+    console.log("  ✓ Create job");
+    console.log("  ✓ Monitor progress");
+    console.log("  ✓ Retrieve results");
+    console.log("  ✓ Delete job");
+    console.log("  ✓ Verify cleanup");
+  } catch (error) {
+    console.log(`Job lifecycle example: ${error}`);
+    console.log(
+      "This example shows proper resource management with job deletion",
+    );
   }
 
   console.log();
