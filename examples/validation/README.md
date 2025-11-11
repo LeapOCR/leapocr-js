@@ -77,7 +77,7 @@ import {
   ValidationError,
   TimeoutError,
   SDKError,
-} from "@leapocr/sdk";
+} from "leapocr";
 
 try {
   await client.ocr.uploadFromURL(invalidURL);

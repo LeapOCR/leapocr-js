@@ -1,4 +1,4 @@
-import { LeapOCR } from "@leapocr/sdk";
+import { LeapOCR } from "leapocr";
 import { access } from "fs/promises";
 
 /**
@@ -56,7 +56,7 @@ async function processLocalFile(apiKey: string) {
     await access(filePath);
   } catch {
     console.log(
-      `Sample file ${filePath} not found, skipping local file example`,
+      `Sample file ${filePath} not found, skipping local file example`
     );
     return;
   }
@@ -215,7 +215,7 @@ async function processWithTemplate(apiKey: string) {
   } catch (error) {
     console.log(`Template processing: ${error}`);
     console.log(
-      "Note: Templates must be created in your LeapOCR dashboard first",
+      "Note: Templates must be created in your LeapOCR dashboard first"
     );
   }
 

@@ -8,7 +8,7 @@
     "dev": "tsx watch index.ts"
   },
   "dependencies": {
-    "@leapocr/sdk": "workspace:*"
+    "leapocr": "workspace:*"
   },
   "devDependencies": {
     "tsx": "^4.20.6",

@@ -12,8 +12,8 @@
   "devDependencies": {
     "patch-package": "^8.0.1",
     "prettier": "^3.6.2",
-    "turbo": "^2.6.0",
+    "turbo": "^2.6.1",
     "typescript": "5.9.3"
   },
-  "packageManager": "pnpm@10.20.0"
+  "packageManager": "pnpm@10.21.0"
 }

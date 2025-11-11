@@ -94,7 +94,7 @@ example-name/
 ### Processing a Local File
 
 ```typescript
-import { LeapOCR } from "@leapocr/sdk";
+import { LeapOCR } from "leapocr";
 
 const client = new LeapOCR({
   apiKey: process.env.LEAPOCR_API_KEY,
@@ -219,7 +219,7 @@ import {
   AuthenticationError,
   ValidationError,
   TimeoutError,
-} from "@leapocr/sdk";
+} from "leapocr";
 
 try {
   const result = await client.ocr.processFile("file.pdf");

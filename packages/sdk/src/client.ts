@@ -21,7 +21,7 @@ const DEFAULT_TIMEOUT = 30000;
  *
  * @example
  * ```typescript
- * import { LeapOCR } from '@leapocr/sdk';
+ * import { LeapOCR } from 'leapocr';
  *
  * // Initialize with API key
  * const client = new LeapOCR({
@@ -87,7 +87,7 @@ export class LeapOCR {
         (error) => {
           console.error("[LeapOCR] Request Error:", error);
           return Promise.reject(error);
-        },
+        }
       );
     }
 
@@ -108,7 +108,7 @@ export class LeapOCR {
           console.error("[LeapOCR] Response Error:", sdkError);
         }
         return Promise.reject(sdkError);
-      },
+      }
     );
   }
 
@@ -137,7 +137,7 @@ export class LeapOCR {
     if (!status) {
       return new NetworkError(
         `Network error: ${error.message}`,
-        error as Error,
+        error as Error
       );
     }
 
