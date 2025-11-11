@@ -111,7 +111,7 @@ const result = await client.ocr.processFile(
   {
     pollInterval: 2000,
     maxWait: 300000,
-  },
+  }
 );
 
 console.log(result.pages);
@@ -138,14 +138,14 @@ const uploadPromises = files.map((file) =>
   client.ocr.uploadFile(file, {
     format: "structured",
     model: "standard-v1",
-  }),
+  })
 );
 
 const jobs = await Promise.all(uploadPromises);
 
 // Wait for all to complete
 const results = await Promise.all(
-  jobs.map((job) => client.ocr.waitForCompletion(job.jobId)),
+  jobs.map((job) => client.ocr.waitForCompletion(job.jobId))
 );
 ```
 
@@ -200,14 +200,6 @@ const client = new LeapOCR({
   signal: abortController.signal,
 }
 ```
-
-## Available Models
-
-| Model            | Description          | Use Case                                           |
-| ---------------- | -------------------- | -------------------------------------------------- |
-| `standard-v1`    | Standard OCR model   | General documents                                  |
-| `english-pro-v1` | Enhanced English OCR | English-only documents requiring high accuracy     |
-| `pro-v1`         | Highest quality OCR  | Complex layouts, multi-language, critical accuracy |
 
 ## Available Formats
 

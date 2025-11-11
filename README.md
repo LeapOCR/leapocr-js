@@ -59,14 +59,6 @@ console.log("Extracted data:", result.data);
 - **Universal Runtime** - Works in Node.js and modern browsers
 - **Direct File Upload** - Efficient multipart uploads for local files
 
-## Processing Models
-
-| Model            | Use Case                           | Credits/Page | Priority |
-| ---------------- | ---------------------------------- | ------------ | -------- |
-| `standard-v1`    | General purpose (default)          | 1            | 1        |
-| `english-pro-v1` | English documents, premium quality | 2            | 4        |
-| `pro-v1`         | Highest quality, all languages     | 5            | 5        |
-
 Specify a model in the processing options. Defaults to `standard-v1`.
 
 ## Usage Examples
@@ -162,7 +154,7 @@ while (attempts < maxAttempts) {
   const status = await client.ocr.getJobStatus(job.jobId);
 
   console.log(
-    `Status: ${status.status} (${status.progress?.toFixed(1)}% complete)`,
+    `Status: ${status.status} (${status.progress?.toFixed(1)}% complete)`
   );
 
   if (status.status === "completed") {
