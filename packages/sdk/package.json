@@ -7,13 +7,13 @@
   "description": "Official JavaScript/TypeScript SDK for LeapOCR API",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://github.com/leapocr/leapocr-js#readme",
+  "homepage": "https://github.com/LeapOCR/leapocr-js#readme",
   "bugs": {
-    "url": "https://github.com/leapocr/leapocr-js/issues"
+    "url": "https://github.com/LeapOCR/leapocr-js/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leapocr/leapocr-js.git"
+    "url": "https://github.com/LeapOCR/leapocr-js"
   },
   "author": "LeapOCR <support@leapocr.com>",
   "files": [
