@@ -1,7 +1,7 @@
 # LeapOCR JavaScript SDK
 
 [![npm version](https://img.shields.io/npm/v/leapocr.svg)](https://www.npmjs.com/package/leapocr)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
 Official JavaScript/TypeScript SDK for [LeapOCR](https://www.leapocr.com/) - Transform documents into structured data using AI-powered OCR.
