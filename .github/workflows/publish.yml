@@ -39,7 +39,7 @@ jobs:
         run: pnpm --filter leapocr build
 
       - name: Publish to npm
-        run: pnpm --filter leapocr publish --no-git-checks
+        run: cd packages/sdk && npm publish
 
   release:
     name: Create GitHub Release
