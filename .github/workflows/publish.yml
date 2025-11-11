@@ -76,8 +76,71 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          # Extract version from tag (remove 'v' prefix)
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          # Get previous tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          # Generate changelog content
+          if [ -z "$PREV_TAG" ]; then
+            echo "# Changelog" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            echo "## [$VERSION] - $(date +%Y-%m-%d)" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            git log --pretty=format:"- %s (%h)" >> CHANGELOG.md
+          else
+            # If CHANGELOG.md exists, prepend new version
+            if [ -f CHANGELOG.md ]; then
+              cp CHANGELOG.md CHANGELOG.md.old
+              echo "# Changelog" > CHANGELOG.md
+              echo "" >> CHANGELOG.md
+              echo "## [$VERSION] - $(date +%Y-%m-%d)" >> CHANGELOG.md
+              echo "" >> CHANGELOG.md
+              git log --pretty=format:"- %s (%h)" $PREV_TAG..HEAD >> CHANGELOG.md
+              echo "" >> CHANGELOG.md
+              echo "" >> CHANGELOG.md
+              tail -n +2 CHANGELOG.md.old >> CHANGELOG.md
+              rm CHANGELOG.md.old
+            else
+              echo "# Changelog" > CHANGELOG.md
+              echo "" >> CHANGELOG.md
+              echo "## [$VERSION] - $(date +%Y-%m-%d)" >> CHANGELOG.md
+              echo "" >> CHANGELOG.md
+              git log --pretty=format:"- %s (%h)" $PREV_TAG..HEAD >> CHANGELOG.md
+            fi
+          fi
+
+          # Save changelog body for release
+          if [ -z "$PREV_TAG" ]; then
+            git log --pretty=format:"- %s (%h)" > /tmp/release_notes.md
+          else
+            git log --pretty=format:"- %s (%h)" $PREV_TAG..HEAD > /tmp/release_notes.md
+          fi
+
+      - name: Commit and Push Changelog
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add CHANGELOG.md
+          git commit -m "docs: update CHANGELOG.md for v${{ steps.changelog.outputs.version }}" || echo "No changes to commit"
+          git push origin HEAD:main || echo "No changes to push"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          body_path: /tmp/release_notes.md
+          generate_release_notes: false
