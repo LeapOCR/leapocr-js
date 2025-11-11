@@ -12,4 +12,5 @@ export interface ModelsListModelResponse {
   display_name?: string;
   name?: string;
   priority?: number;
+  surcharge_per_page?: number;
 }

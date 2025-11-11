@@ -24,7 +24,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 export const getAnalytics = () => {
   /**
-   * Returns comprehensive credit analytics including snapshot data, timeseries trends, and tier usage breakdown
+   * Returns comprehensive credit analytics including snapshot data, timeseries trends, and model usage breakdown
    * @summary Get credit usage analytics
    */
   const getAnalyticsCreditsUsage = (

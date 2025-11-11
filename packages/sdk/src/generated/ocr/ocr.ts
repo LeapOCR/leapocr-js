@@ -71,10 +71,10 @@ export const getOcr = () => {
   /**
  * Create a job and generate presigned URLs for direct file upload to S3. Uses multipart upload for all files (1 part for small files, multiple parts for large files ≥50MB).
 **Output Types:**
-- `structured`: Structured data extraction. Requires one of: category_id (with schema & instructions)
+- `structured`: Structured data extraction. Requires either template_slug OR format (with schema & instructions)
 - `markdown`: Page-by-page OCR. All configuration fields are optional
 - `per_page_structured`: Per-page structured extraction (future or hybrid mode)
-**Note:** Only one of category_id, schema, or instruction can be provided per request
+**Note:** Only one of template_slug or format can be provided per request
  * @summary Direct upload
  */
   const directUpload = (
@@ -96,10 +96,10 @@ export const getOcr = () => {
   /**
  * Create a job and start processing from a remote URL. Supported format: PDF (.pdf) only.
 **Output Types:**
-- `structured`: Structured data extraction. Requires one of: category_id (with schema & instructions)
+- `structured`: Structured data extraction. Requires either template_slug OR format (with schema & instructions)
 - `markdown`: Page-by-page OCR. All configuration fields are optional
 - `per_page_structured`: Per-page structured extraction (future or hybrid mode)
-**Note:** Only one of category_id, schema, or instruction can be provided per request
+**Note:** Only one of template_slug or format can be provided per request
  * @summary Remote URL upload
  */
   const uploadFromRemoteURL = (

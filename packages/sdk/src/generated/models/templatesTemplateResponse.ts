@@ -21,6 +21,7 @@ export interface TemplatesTemplateResponse {
   name?: string;
   /** JSON schema definition */
   schema?: TemplatesTemplateResponseSchema;
+  slug?: string;
   tags?: string[];
   team_id?: string;
   updated_at?: string;

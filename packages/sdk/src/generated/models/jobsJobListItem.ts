@@ -11,9 +11,12 @@ export interface JobsJobListItem {
   completed_at?: string;
   created_at?: string;
   credits_used?: number;
+  deleted_at?: string;
   duration_seconds?: number;
   file_name?: string;
   id?: string;
+  /** Computed field for API convenience: true if DeletedAt != nil */
+  is_deleted?: boolean;
   processed_pages?: number;
   processing_time?: number;
   result_format?: string;

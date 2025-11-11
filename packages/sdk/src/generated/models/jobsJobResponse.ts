@@ -11,6 +11,7 @@ export interface JobsJobResponse {
   completed_at?: string;
   created_at?: string;
   credits_used?: number;
+  deleted_at?: string;
   error_message?: string;
   file_name?: string;
   file_size?: number;

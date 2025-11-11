@@ -58,4 +58,8 @@ export type GetJobsListParams = {
    * Filter jobs created before this date
    */
   created_before?: string;
+  /**
+   * Include soft-deleted jobs in results
+   */
+  include_deleted?: boolean;
 };

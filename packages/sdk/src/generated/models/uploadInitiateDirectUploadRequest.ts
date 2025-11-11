@@ -26,6 +26,6 @@ export interface UploadInitiateDirectUploadRequest {
   instructions?: string;
   model?: string;
   schema?: UploadInitiateDirectUploadRequestSchema;
-  /** Option 1: Use existing template */
-  template_id?: string;
+  /** Option 1: Use existing template by slug */
+  template_slug?: string;
 }

@@ -20,8 +20,8 @@ export interface UploadRemoteURLUploadRequest {
   instructions?: string;
   model?: string;
   schema?: UploadRemoteURLUploadRequestSchema;
-  /** Option 1: Use existing template */
-  template_id?: string;
+  /** Option 1: Use existing template by slug */
+  template_slug?: string;
   /** @maxLength 2000 */
   url: string;
 }

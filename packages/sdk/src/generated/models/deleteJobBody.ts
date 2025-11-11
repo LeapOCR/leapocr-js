@@ -6,10 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-export interface AnalyticsModelUsageStat {
-  credits_consumed?: number;
-  jobs_processed?: number;
-  model?: string;
-  transactions?: number;
-  user_id?: string;
-}
+export type DeleteJobBody = { [key: string]: unknown };

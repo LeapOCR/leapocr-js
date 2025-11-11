@@ -7,6 +7,7 @@
  */
 import type {
   CancelJobBody,
+  DeleteJobBody,
   GetJobStatusSimpleParams,
   GetJobsListParams,
   JobsJobManagementResponse,
@@ -107,7 +108,33 @@ export const getJobs = () => {
       options,
     );
   };
-  return { getJobsList, cancelJob, restartJob, retryJob, getJobStatusSimple };
+  /**
+   * Delets a job
+   * @summary Delete OCR job
+   */
+  const deleteJob = (
+    jobId: string,
+    deleteJobBody: BodyType<DeleteJobBody>,
+    options?: SecondParameter<typeof customInstance<JobsJobResponse>>,
+  ) => {
+    return customInstance<JobsJobResponse>(
+      {
+        url: `/ocr/delete/${jobId}`,
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        data: deleteJobBody,
+      },
+      options,
+    );
+  };
+  return {
+    getJobsList,
+    cancelJob,
+    restartJob,
+    retryJob,
+    getJobStatusSimple,
+    deleteJob,
+  };
 };
 export type GetJobsListResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getJobs>["getJobsList"]>>
@@ -123,4 +150,7 @@ export type RetryJobResult = NonNullable<
 >;
 export type GetJobStatusSimpleResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getJobs>["getJobStatusSimple"]>>
+>;
+export type DeleteJobResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getJobs>["deleteJob"]>>
 >;

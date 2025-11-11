@@ -5,7 +5,6 @@
  * Provide your JWT token via the `Authorization` header. Example: Authorization: Bearer <token>
  * OpenAPI spec version: v1
  */
-import type { GetCreditTransactionsByTeamIDTier } from "./getCreditTransactionsByTeamIDTier";
 import type { GetCreditTransactionsByTeamIDSortBy } from "./getCreditTransactionsByTeamIDSortBy";
 
 export type GetCreditTransactionsByTeamIDParams = {
@@ -21,13 +20,13 @@ export type GetCreditTransactionsByTeamIDParams = {
    */
   limit?: number;
   /**
-   * Search in description, file name, or tier
+   * Search in description, file name, or model
    */
   search?: string;
   /**
-   * Filter by tier
+   * Filter by model
    */
-  tier?: GetCreditTransactionsByTeamIDTier;
+  model?: string;
   /**
    * Sort by field
    */
