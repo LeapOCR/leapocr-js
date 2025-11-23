@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.5] - 2025-11-23
+
+- chore: bump version to 0.0.5
+
 ## [0.0.4] - 2025-11-11
 
 - chore: bump version to 0.0.4 and update pnpm setup in GitHub Actions (4d4445c)

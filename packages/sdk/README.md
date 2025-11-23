@@ -351,4 +351,4 @@ This project is licensed under the MIT License - see the [LICENSE](../../LICENSE
 
 ---
 
-**Version**: 0.0.2
+**Version**: 0.0.5
