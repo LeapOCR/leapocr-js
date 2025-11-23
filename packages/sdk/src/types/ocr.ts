@@ -31,6 +31,11 @@ export type OCRModel =
   | (string & {}); // Allow any string while preserving autocomplete
 
 /**
+ * Result format types
+ */
+export type ResultFormat = "markdown" | "structured" | "per_page_structured";
+
+/**
  * Configuration options for uploading and processing documents.
  *
  * @example
@@ -61,7 +66,7 @@ export interface UploadOptions {
   model?: OCRModel;
 
   /** Output format: markdown (page-by-page OCR), structured (data extraction), or per_page_structured */
-  format?: "markdown" | "structured" | "per_page_structured";
+  format?: ResultFormat;
 
   /** Instructions for structured extraction (max 100 chars) */
   instructions?: string;
@@ -154,4 +159,37 @@ export interface ResultMetadata {
   totalPages: number;
   model: string;
   processingTime: number; // milliseconds
+}
+
+/**
+ * Page result type - varies based on result format
+ * - `string` for markdown format
+ * - `Record<string, any>` for structured/per_page_structured formats
+ */
+export interface PageResult {
+  id?: string;
+  page_number?: number;
+  result?: string | Record<string, any>;
+}
+
+/**
+ * OCR Job Result Response
+ */
+export interface OCRJobResult {
+  completed_at?: string;
+  credits_used?: number;
+  file_name?: string;
+  job_id?: string;
+  model?: string;
+  pages?: PageResult[];
+  pagination?: {
+    current_page?: number;
+    page_size?: number;
+    total_pages?: number;
+    total_results?: number;
+  };
+  processed_pages?: number;
+  result_format?: string;
+  status?: string;
+  total_pages?: number;
 }

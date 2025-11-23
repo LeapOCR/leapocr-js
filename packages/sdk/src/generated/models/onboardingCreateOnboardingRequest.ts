@@ -6,9 +6,9 @@
  * OpenAPI spec version: v1
  */
 
-export interface JobsRestartJobRequest {
-  /** Force restart even for completed jobs */
-  force?: boolean;
-  /** Keep existing progress when restarting */
-  preserve_progress?: boolean;
+export interface OnboardingCreateOnboardingRequest {
+  entity_type?: string;
+  external_id?: string;
+  metadata?: unknown;
+  steps_completed?: string[];
 }

@@ -11,7 +11,7 @@ import { LeapOCR } from "../../src/client.js";
 
 const TEST_DIR = join(process.cwd(), "tests", "fixtures", "integration");
 const API_KEY = process.env.LEAPOCR_API_KEY || "";
-const BASE_URL = process.env.LEAPOCR_BASE_URL || "http://localhost:8080/api/v1";
+const BASE_URL = process.env.LEAPOCR_BASE_URL || "http://localhost:8443/api/v1";
 
 // Skip integration tests if API key is not set
 const runIntegrationTests = API_KEY.length > 0;

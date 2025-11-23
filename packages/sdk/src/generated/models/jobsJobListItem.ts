@@ -7,6 +7,7 @@
  */
 
 export interface JobsJobListItem {
+  base_credits?: number;
   category?: string;
   completed_at?: string;
   created_at?: string;
@@ -17,11 +18,13 @@ export interface JobsJobListItem {
   id?: string;
   /** Computed field for API convenience: true if DeletedAt != nil */
   is_deleted?: boolean;
+  model?: string;
   processed_pages?: number;
   processing_time?: number;
   result_format?: string;
   stage?: string;
   status?: string;
+  surcharge_credits?: number;
   template_id?: string;
   template_name?: string;
   total_pages?: number;

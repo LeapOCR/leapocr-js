@@ -121,7 +121,7 @@ async function errorHandlingExample(apiKey: string) {
       "https://nonexistent-domain-12345.com/fake.pdf",
       {
         format: "structured",
-      }
+      },
     );
     console.log("[FAIL] Should have failed with network error");
   } catch (error) {
@@ -162,7 +162,7 @@ async function errorHandlingExample(apiKey: string) {
 
     await invalidClient.ocr.processURL(
       "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-      { format: "markdown" }
+      { format: "markdown" },
     );
     console.log("[FAIL] Should have failed with authentication error");
   } catch (error) {
@@ -192,14 +192,14 @@ async function timeoutHandlingExample(apiKey: string) {
   try {
     await shortTimeoutClient.ocr.processURL(
       "https://httpbin.org/delay/2", // Delayed response
-      { format: "structured" }
+      { format: "structured" },
     );
     console.log("[FAIL] Expected timeout");
   } catch (error) {
     const duration = Date.now() - start;
     if (error instanceof NetworkError || error instanceof SDKError) {
       console.log(
-        `[PASS] Correctly timed out after ${duration}ms: ${error.message}`
+        `[PASS] Correctly timed out after ${duration}ms: ${error.message}`,
       );
     } else {
       console.log(`[PASS] Failed quickly (${duration}ms): ${error}`);
@@ -220,7 +220,7 @@ async function timeoutHandlingExample(apiKey: string) {
       {
         format: "markdown",
         model: "standard-v1",
-      }
+      },
     );
 
     console.log(`Job created: ${job.jobId}`);
@@ -258,7 +258,7 @@ async function timeoutHandlingExample(apiKey: string) {
         format: "markdown",
         model: "standard-v1",
         signal: controller.signal,
-      }
+      },
     );
 
     // Abort after 1 second

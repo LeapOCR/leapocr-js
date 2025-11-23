@@ -6,7 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-/**
- * Additional page metadata
- */
-export type ModelsPageMetadataExtra = { [key: string]: unknown };
+export type DeleteOnboardingExternalIdBody = { [key: string]: unknown };

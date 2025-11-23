@@ -6,4 +6,8 @@
  * OpenAPI spec version: v1
  */
 
-export type CancelJobBody = { [key: string]: unknown };
+export interface OnboardingUpdateOnboardingRequest {
+  completed_at?: string;
+  metadata?: unknown;
+  steps_completed?: string[];
+}

@@ -7,6 +7,7 @@ import { getOcr } from "../generated/ocr/ocr.js";
 import type { ClientConfig } from "../types/config.js";
 import type {
   JobStatus,
+  OCRJobResult,
   PollOptions,
   UploadOptions,
   UploadResult,
@@ -422,11 +423,30 @@ export class OCRService {
 
   /**
    * Get job result (alias for getResults with different signature for compatibility)
+   *
+   * Returns page results where each page.result is either:
+   * - `string` for markdown format
+   * - `Record<string, any>` for structured/per_page_structured formats
+   *
+   * @example
+   * ```typescript
+   * const result = await client.ocr.getJobResult(jobId);
+   *
+   * // For markdown format
+   * const text = result.pages?.[0]?.result as string;
+   *
+   * // For structured format - cast to your interface
+   * interface InvoiceData {
+   *   invoice_number: string;
+   *   total: number;
+   * }
+   * const data = result.pages?.[0]?.result as InvoiceData;
+   * ```
    */
   async getJobResult(
     jobId: string,
     options: { page?: number; pageSize?: number; signal?: AbortSignal } = {},
-  ): Promise<any> {
+  ): Promise<OCRJobResult> {
     const response = await withRetry(
       () =>
         this.client.getJobResult(jobId, {
@@ -440,7 +460,7 @@ export class OCRService {
       },
     );
 
-    return response;
+    return response as OCRJobResult;
   }
 
   /**
@@ -449,7 +469,7 @@ export class OCRService {
   async getResults(
     jobId: string,
     options: { page?: number; limit?: number; signal?: AbortSignal } = {},
-  ): Promise<any> {
+  ): Promise<OCRJobResult> {
     const response = await withRetry(
       () =>
         this.client.getJobResult(jobId, {
@@ -463,7 +483,7 @@ export class OCRService {
       },
     );
 
-    return response;
+    return response as OCRJobResult;
   }
 
   /**

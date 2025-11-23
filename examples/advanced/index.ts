@@ -63,7 +63,7 @@ async function customConfigExample(apiKey: string) {
   // Create custom configuration
   const client = new LeapOCR({
     apiKey,
-    baseURL: process.env.LEAPOCR_BASE_URL || "http://localhost:8080/api/v1",
+    baseURL: process.env.LEAPOCR_BASE_URL || "http://localhost:8443/api/v1",
     timeout: 60000, // 60 seconds
     maxRetries: 5,
     retryDelay: 2000,
@@ -149,7 +149,7 @@ async function batchProcessingExample(apiKey: string) {
             success: true,
             credits: fullResult.credits_used || 0,
             pages: fullResult.pages?.length || 0,
-          };
+          } as const;
         } else {
           throw new Error(`Processing failed with status: ${result.status}`);
         }
@@ -159,7 +159,7 @@ async function batchProcessingExample(apiKey: string) {
           index: index + 1,
           success: false,
           error: error instanceof Error ? error.message : String(error),
-        };
+        } as const;
       }
     });
 
@@ -168,7 +168,7 @@ async function batchProcessingExample(apiKey: string) {
     // Collect statistics
     const successCount = results.filter((r) => r.success).length;
     const totalCredits = results
-      .filter((r) => r.success)
+      .filter((r) => r.success && "credits" in r)
       .reduce((sum, r) => sum + (r.credits || 0), 0);
 
     console.log("\nBatch processing complete:");
@@ -178,11 +178,11 @@ async function batchProcessingExample(apiKey: string) {
     console.log(`  Total credits used: ${totalCredits}`);
 
     results.forEach((result) => {
-      if (result.success) {
+      if (result.success && "credits" in result) {
         console.log(
           `  [SUCCESS] File ${result.index} - Credits: ${result.credits}, Pages: ${result.pages}`
         );
-      } else {
+      } else if (!result.success && "error" in result) {
         console.log(`  [FAILED] File ${result.index} - Error: ${result.error}`);
       }
     });
@@ -270,14 +270,15 @@ async function schemaExtractionExample(apiKey: string) {
       if (fullResult.pages && fullResult.pages.length > 0) {
         console.log(
           "Extracted data:",
-          JSON.stringify(fullResult.pages[0], null, 2)
+          JSON.stringify(fullResult.pages[0].result, null, 2)
         );
       }
     } else {
       console.error(`Processing failed with status: ${result.status}`);
     }
-  } catch (error) {
-    console.log(`Expected failure with example URL: ${error}`);
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.log(`Expected failure with example URL: ${errorMsg}`);
     console.log(
       "In a real scenario, this would process the invoice and extract:"
     );

@@ -56,7 +56,7 @@ async function processLocalFile(apiKey: string) {
     await access(filePath);
   } catch {
     console.log(
-      `Sample file ${filePath} not found, skipping local file example`
+      `Sample file ${filePath} not found, skipping local file example`,
     );
     return;
   }
@@ -92,16 +92,21 @@ async function processLocalFile(apiKey: string) {
 
       console.log("Processing completed successfully!");
       console.log(`Credits used: ${fullResult.credits_used}`);
-      console.log(`Processing time: ${fullResult.processing_time_seconds}s`);
       console.log(`Pages processed: ${fullResult.pages?.length || 0}`);
+      console.log(`Total pages: ${fullResult.total_pages}`);
 
-      // Print first page text (truncated)
+      // Print first page result (truncated)
       if (fullResult.pages && fullResult.pages.length > 0) {
-        let text = fullResult.pages[0].text || "";
+        const pageResult = fullResult.pages[0].result;
+        const resultStr =
+          typeof pageResult === "string"
+            ? pageResult
+            : JSON.stringify(pageResult);
+        let text = resultStr || "";
         if (text.length > 200) {
           text = text.substring(0, 200) + "...";
         }
-        console.log(`First page text: ${text}`);
+        console.log(`First page result: ${text}`);
       }
     } else {
       console.error(`Processing failed with status: ${result.status}`);
@@ -155,11 +160,7 @@ async function processFileFromURL(apiKey: string) {
 
         console.log("Processing completed!");
         console.log(`Credits used: ${result.credits_used}`);
-
-        // Calculate total text length
-        const totalText =
-          result.pages?.map((p: any) => p.text || "").join("") || "";
-        console.log(`Text length: ${totalText.length} characters`);
+        console.log(`Pages processed: ${result.pages?.length || 0}`);
 
         return;
       } else if (status.status === "failed") {
@@ -215,7 +216,7 @@ async function processWithTemplate(apiKey: string) {
   } catch (error) {
     console.log(`Template processing: ${error}`);
     console.log(
-      "Note: Templates must be created in your LeapOCR dashboard first"
+      "Note: Templates must be created in your LeapOCR dashboard first",
     );
   }
 

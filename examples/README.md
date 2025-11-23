@@ -58,7 +58,7 @@ pnpm install
 export LEAPOCR_API_KEY="your-api-key-here"
 
 # 3. Optional: Set custom base URL (for local development)
-export LEAPOCR_BASE_URL="http://localhost:8080/api/v1"
+export LEAPOCR_BASE_URL="http://localhost:8443/api/v1"
 
 # 4. Run any example
 cd examples/basic
@@ -101,32 +101,36 @@ const client = new LeapOCR({
 });
 
 // Upload and wait for completion
-const result = await client.ocr.processFile(
-  "./document.pdf",
-  {
-    format: "structured",
-    model: "standard-v1",
-    instructions: "Extract invoice details",
-  },
-  {
-    pollInterval: 2000,
-    maxWait: 300000,
-  }
-);
+const job = await client.ocr.processFile("./document.pdf", {
+  format: "structured",
+  model: "standard-v1",
+  instructions: "Extract invoice details",
+});
 
-console.log(result.pages);
+const status = await client.ocr.waitUntilDone(job.jobId, {
+  pollInterval: 2000,
+  maxWait: 300000,
+});
+
+if (status.status === "completed") {
+  const result = await client.ocr.getJobResult(job.jobId);
+  console.log(result.pages);
+}
 ```
 
 ### Processing from URL
 
 ```typescript
-const job = await client.ocr.uploadFromURL("https://example.com/document.pdf", {
+const job = await client.ocr.processURL("https://example.com/document.pdf", {
   format: "markdown",
   model: "standard-v1",
 });
 
-const result = await client.ocr.waitForCompletion(job.jobId);
-const fullResult = await client.ocr.getJobResult(job.jobId);
+const status = await client.ocr.waitUntilDone(job.jobId);
+if (status.status === "completed") {
+  const result = await client.ocr.getJobResult(job.jobId);
+  console.log(result.pages);
+}
 ```
 
 ### Batch Processing
@@ -135,7 +139,7 @@ const fullResult = await client.ocr.getJobResult(job.jobId);
 const files = ["file1.pdf", "file2.pdf", "file3.pdf"];
 
 const uploadPromises = files.map((file) =>
-  client.ocr.uploadFile(file, {
+  client.ocr.processFile(file, {
     format: "structured",
     model: "standard-v1",
   })
@@ -144,8 +148,13 @@ const uploadPromises = files.map((file) =>
 const jobs = await Promise.all(uploadPromises);
 
 // Wait for all to complete
+const statuses = await Promise.all(
+  jobs.map((job) => client.ocr.waitUntilDone(job.jobId))
+);
+
+// Get results for completed jobs
 const results = await Promise.all(
-  jobs.map((job) => client.ocr.waitForCompletion(job.jobId))
+  jobs.map((job) => client.ocr.getJobResult(job.jobId))
 );
 ```
 
@@ -183,7 +192,7 @@ const client = new LeapOCR({
   model: "standard-v1" | "english-pro-v1" | "pro-v1",
   instructions: "Optional instructions for extraction",
   schema: { /* JSON Schema for structured extraction */ },
-  templateId: "template-id-for-reusable-schemas",
+  templateSlug: "template-slug-for-reusable-schemas",
   signal: abortController.signal,
 }
 ```

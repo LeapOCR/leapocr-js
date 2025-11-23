@@ -87,7 +87,7 @@ export class LeapOCR {
         (error) => {
           console.error("[LeapOCR] Request Error:", error);
           return Promise.reject(error);
-        }
+        },
       );
     }
 
@@ -108,7 +108,7 @@ export class LeapOCR {
           console.error("[LeapOCR] Response Error:", sdkError);
         }
         return Promise.reject(sdkError);
-      }
+      },
     );
   }
 
@@ -137,7 +137,7 @@ export class LeapOCR {
     if (!status) {
       return new NetworkError(
         `Network error: ${error.message}`,
-        error as Error
+        error as Error,
       );
     }
 
@@ -193,12 +193,5 @@ export class LeapOCR {
       this._ocr = new OCRService(this.config);
     }
     return this._ocr;
-  }
-
-  /**
-   * Close and cleanup resources
-   */
-  async close(): Promise<void> {
-    // Cleanup if needed
   }
 }

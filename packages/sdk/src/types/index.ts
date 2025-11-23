@@ -6,7 +6,9 @@ export type { ClientConfig } from "./config.js";
 export type {
   JobStatus,
   JobStatusType,
+  OCRJobResult,
   OCRModel,
+  PageResult,
   PaginationInfo,
   PollOptions,
   ResultMetadata,

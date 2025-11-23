@@ -18,7 +18,6 @@ export interface ModelsOCRResultResponse {
   pages?: ModelsPageResponse[];
   pagination?: ModelsPaginationResponse;
   processed_pages?: number;
-  processing_time_seconds?: number;
   result_format?: string;
   status?: ModelsJobStatus;
   total_pages?: number;

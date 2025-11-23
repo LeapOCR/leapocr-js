@@ -6,7 +6,6 @@
  * OpenAPI spec version: v1
  */
 import type {
-  CancelJobBody,
   DeleteJobBody,
   GetJobStatusSimpleParams,
   GetJobsListParams,
@@ -14,8 +13,7 @@ import type {
   JobsJobResponse,
   JobsJobStatusResponse,
   JobsJobsListResponse,
-  JobsRestartJobRequest,
-  JobsRetryJobRequest,
+  RetryJobBody,
 } from ".././models";
 
 import { customInstance } from "../../lib/custom-instance";
@@ -38,50 +36,12 @@ export const getJobs = () => {
     );
   };
   /**
-   * Cancel an OCR processing job that is currently in pending or processing status. Cannot cancel completed, failed, or already cancelled jobs
-   * @summary Cancel OCR job
-   */
-  const cancelJob = (
-    jobId: string,
-    cancelJobBody: BodyType<CancelJobBody>,
-    options?: SecondParameter<typeof customInstance<JobsJobResponse>>,
-  ) => {
-    return customInstance<JobsJobResponse>(
-      {
-        url: `/jobs/${jobId}/cancel`,
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        data: cancelJobBody,
-      },
-      options,
-    );
-  };
-  /**
-   * Restart an OCR job by canceling the current workflow (if running) and starting fresh. This is a more aggressive action than retry.
-   * @summary Restart OCR job
-   */
-  const restartJob = (
-    jobId: string,
-    jobsRestartJobRequest: BodyType<JobsRestartJobRequest>,
-    options?: SecondParameter<typeof customInstance<JobsJobManagementResponse>>,
-  ) => {
-    return customInstance<JobsJobManagementResponse>(
-      {
-        url: `/jobs/${jobId}/restart`,
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        data: jobsRestartJobRequest,
-      },
-      options,
-    );
-  };
-  /**
-   * Retry a failed OCR job or restart a stuck job that has been pending/processing for over 1 hour. Checks Temporal workflow status before retrying.
-   * @summary Retry OCR job
+   * Retry a failed OCR job. Only jobs with status 'failed' can be retried.
+   * @summary Retry failed OCR job
    */
   const retryJob = (
     jobId: string,
-    jobsRetryJobRequest: BodyType<JobsRetryJobRequest>,
+    retryJobBody: BodyType<RetryJobBody>,
     options?: SecondParameter<typeof customInstance<JobsJobManagementResponse>>,
   ) => {
     return customInstance<JobsJobManagementResponse>(
@@ -89,7 +49,7 @@ export const getJobs = () => {
         url: `/jobs/${jobId}/retry`,
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        data: jobsRetryJobRequest,
+        data: retryJobBody,
       },
       options,
     );
@@ -127,23 +87,10 @@ export const getJobs = () => {
       options,
     );
   };
-  return {
-    getJobsList,
-    cancelJob,
-    restartJob,
-    retryJob,
-    getJobStatusSimple,
-    deleteJob,
-  };
+  return { getJobsList, retryJob, getJobStatusSimple, deleteJob };
 };
 export type GetJobsListResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getJobs>["getJobsList"]>>
->;
-export type CancelJobResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getJobs>["cancelJob"]>>
->;
-export type RestartJobResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getJobs>["restartJob"]>>
 >;
 export type RetryJobResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getJobs>["retryJob"]>>

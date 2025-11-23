@@ -6,9 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-export interface JobsRetryJobRequest {
-  /** Force retry even if job appears active */
-  force?: boolean;
-  /** Reset page processing status */
-  reset_pages?: boolean;
-}
+export type RetryJobBody = { [key: string]: unknown };

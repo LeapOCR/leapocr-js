@@ -46,7 +46,9 @@ const job = await client.ocr.processURL("https://example.com/document.pdf", {
 // Wait for processing to complete
 const result = await client.ocr.waitUntilDone(job.jobId);
 
-console.log("Extracted data:", result.data);
+// Get the full results
+const fullResult = await client.ocr.getJobResult(job.jobId);
+console.log("Extracted data:", fullResult.pages);
 ```
 
 ## Key Features
@@ -76,11 +78,13 @@ const job = await client.ocr.processURL("https://example.com/invoice.pdf", {
   instructions: "Extract invoice number, date, and total amount",
 });
 
-const result = await client.ocr.waitUntilDone(job.jobId);
+const status = await client.ocr.waitUntilDone(job.jobId);
 
-console.log(`Processing completed in ${result.processing_time_seconds}s`);
-console.log(`Credits used: ${result.credits_used}`);
-console.log("Data:", result.data);
+if (status.status === "completed") {
+  const result = await client.ocr.getJobResult(job.jobId);
+  console.log(`Credits used: ${result.credits_used}`);
+  console.log("Data:", result.pages);
+}
 ```
 
 ### Processing Local Files
@@ -96,15 +100,21 @@ const job = await client.ocr.processFile("./invoice.pdf", {
   format: "structured",
   model: "pro-v1",
   schema: {
-    invoice_number: "string",
-    total_amount: "number",
-    invoice_date: "string",
-    vendor_name: "string",
+    type: "object",
+    properties: {
+      invoice_number: { type: "string" },
+      total_amount: { type: "number" },
+      invoice_date: { type: "string" },
+      vendor_name: { type: "string" },
+    },
   },
 });
 
-const result = await client.ocr.waitUntilDone(job.jobId);
-console.log("Extracted data:", result.data);
+const status = await client.ocr.waitUntilDone(job.jobId);
+if (status.status === "completed") {
+  const result = await client.ocr.getJobResult(job.jobId);
+  console.log("Extracted data:", result.pages);
+}
 ```
 
 ### Custom Schema Extraction
@@ -154,7 +164,7 @@ while (attempts < maxAttempts) {
   const status = await client.ocr.getJobStatus(job.jobId);
 
   console.log(
-    `Status: ${status.status} (${status.progress?.toFixed(1)}% complete)`
+    `Status: ${status.status} (${status.progress?.toFixed(1)}% complete)`,
   );
 
   if (status.status === "completed") {
@@ -269,12 +279,13 @@ new LeapOCR(config: ClientConfig)
 // Process documents
 client.ocr.processURL(url: string, options?: UploadOptions): Promise<UploadResult>
 client.ocr.processFile(filePath: string, options?: UploadOptions): Promise<UploadResult>
-client.ocr.processBuffer(buffer: Buffer, filename: string, options?: UploadOptions): Promise<UploadResult>
+client.ocr.processFileBuffer(buffer: Buffer, filename: string, options?: UploadOptions): Promise<UploadResult>
+client.ocr.processFileStream(stream: Readable, filename: string, options?: UploadOptions): Promise<UploadResult>
 
 // Job management
-client.ocr.getJobStatus(jobId: string): Promise<JobStatus>
-client.ocr.getJobResult(jobId: string): Promise<OCRResult>
-client.ocr.waitUntilDone(jobId: string, options?: PollOptions): Promise<OCRResult>
+client.ocr.getJobStatus(jobId: string, signal?: AbortSignal): Promise<JobStatus>
+client.ocr.getJobResult(jobId: string, options?: { page?: number; pageSize?: number; signal?: AbortSignal }): Promise<OCRJobResult>
+client.ocr.waitUntilDone(jobId: string, options?: PollOptions): Promise<JobStatus>
 client.ocr.deleteJob(jobId: string): Promise<void>
 ```
 

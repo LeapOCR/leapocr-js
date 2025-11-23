@@ -6,9 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-export interface ModelsPageResponse {
-  id?: string;
-  page_number?: number;
-  /** String for markdown, Object for structured formats. Type varies by job result_format. */
-  result?: unknown;
-}
+export type GetOnboardingExternalIdBody = { [key: string]: unknown };
