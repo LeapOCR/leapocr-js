@@ -41,6 +41,14 @@ const client = new LeapOCR({
 const job = await client.ocr.processURL("https://example.com/document.pdf", {
   format: "structured",
   model: "standard-v1",
+  schema: {
+    type: "object",
+    properties: {
+      title: { type: "string" },
+      total_pages: { type: "number" },
+    },
+    required: ["title"],
+  },
 });
 
 // Wait for processing to complete
@@ -54,7 +62,7 @@ console.log("Extracted data:", fullResult.pages);
 ## Key Features
 
 - **TypeScript First** - Full type safety with comprehensive TypeScript definitions
-- **Multiple Processing Formats** - Structured data extraction, markdown output, or per-page processing
+- **Multiple Processing Formats** - Structured data extraction or markdown output
 - **Flexible Model Selection** - Choose from standard, pro, or custom AI models
 - **Custom Schema Support** - Define extraction schemas for your specific use case
 - **Built-in Retry Logic** - Automatic handling of transient failures
@@ -75,7 +83,15 @@ const client = new LeapOCR({
 const job = await client.ocr.processURL("https://example.com/invoice.pdf", {
   format: "structured",
   model: "standard-v1",
-  instructions: "Extract invoice number, date, and total amount",
+  schema: {
+    type: "object",
+    properties: {
+      invoice_number: { type: "string" },
+      invoice_date: { type: "string" },
+      total_amount: { type: "number" },
+    },
+    required: ["invoice_number", "total_amount"],
+  },
 });
 
 const status = await client.ocr.waitUntilDone(job.jobId);
@@ -150,7 +166,6 @@ const job = await client.ocr.processFile("./medical-record.pdf", {
 | --------------------- | ------------------ | ---------------------------------------------- |
 | `structured`          | Single JSON object | Extract specific fields across entire document |
 | `markdown`            | Text per page      | Convert document to readable text              |
-| `per-page-structured` | JSON per page      | Extract fields from multi-section documents    |
 
 ### Monitoring Job Progress
 
@@ -184,11 +199,11 @@ while (attempts < maxAttempts) {
 // Process a document using a predefined template
 const job = await client.ocr.processFile("./invoice.pdf", {
   templateSlug: "my-invoice-template",
-  model: "pro-v1",
 });
 
 const result = await client.ocr.waitUntilDone(job.jobId);
-console.log("Extracted data:", result.data);
+const fullResult = await client.ocr.getJobResult(job.jobId);
+console.log("Extracted data:", fullResult.pages);
 ```
 
 ### Deleting Jobs
@@ -293,7 +308,7 @@ client.ocr.deleteJob(jobId: string): Promise<void>
 
 ```typescript
 interface UploadOptions {
-  format?: "structured" | "markdown" | "per-page-structured";
+  format?: "structured" | "markdown";
   model?: OCRModel;
   schema?: Record<string, any>;
   instructions?: string;

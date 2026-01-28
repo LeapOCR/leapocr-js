@@ -79,6 +79,13 @@ async function customConfigExample(apiKey: string) {
         format: "structured",
         model: "pro-v1",
         instructions: "Extract all data with high accuracy",
+        schema: {
+          type: "object",
+          properties: {
+            text: { type: "string" },
+          },
+          required: ["text"],
+        },
       }
     );
 
@@ -120,6 +127,13 @@ async function batchProcessingExample(apiKey: string) {
           format: "structured",
           model: "standard-v1",
           instructions: `Process document ${index + 1}`,
+          schema: {
+            type: "object",
+            properties: {
+              text: { type: "string" },
+            },
+            required: ["text"],
+          },
         });
 
         console.log(`File ${index + 1} uploaded - Job ID: ${job.jobId}`);
@@ -330,7 +344,6 @@ async function templateBatchProcessingExample(apiKey: string) {
         try {
           const job = await client.ocr.processURL(doc.url, {
             templateSlug: doc.templateSlug,
-            model: "pro-v1",
           });
 
           console.log(
@@ -414,6 +427,13 @@ async function jobLifecycleExample(apiKey: string) {
       format: "structured",
       model: "standard-v1",
       instructions: "Extract all text content",
+      schema: {
+        type: "object",
+        properties: {
+          text: { type: "string" },
+        },
+        required: ["text"],
+      },
     });
     console.log(`   Job created: ${job.jobId}`);
 

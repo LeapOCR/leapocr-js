@@ -12,9 +12,30 @@ import { LeapOCR } from "../../src/client.js";
 const TEST_DIR = join(process.cwd(), "tests", "fixtures", "integration");
 const API_KEY = process.env.LEAPOCR_API_KEY || "";
 const BASE_URL = process.env.LEAPOCR_BASE_URL || "http://localhost:8443/api/v1";
+const TEMPLATE_SLUG = process.env.LEAPOCR_TEMPLATE_SLUG || "";
 
 // Skip integration tests if API key is not set
 const runIntegrationTests = API_KEY.length > 0;
+const STRUCTURED_SCHEMA = {
+  type: "object",
+  properties: {
+    text: { type: "string" },
+  },
+  required: ["text"],
+};
+
+const defaultMarkdownOptions = TEMPLATE_SLUG
+  ? { templateSlug: TEMPLATE_SLUG }
+  : { format: "markdown", model: "standard-v1" };
+
+const defaultStructuredOptions = TEMPLATE_SLUG
+  ? { templateSlug: TEMPLATE_SLUG }
+  : {
+      format: "structured",
+      model: "standard-v1",
+      instructions: "Extract all text and identify key information",
+      schema: STRUCTURED_SCHEMA,
+    };
 
 describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
   let client: LeapOCR;
@@ -38,10 +59,10 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
   describe("File Upload", () => {
     it("should upload PDF file successfully", async () => {
-      const result = await client.ocr.processFile(testPDFPath, {
-        format: "markdown",
-        model: "standard-v1",
-      });
+      const result = await client.ocr.processFile(
+        testPDFPath,
+        defaultMarkdownOptions,
+      );
 
       expect(result.jobId).toBeDefined();
       expect(result.status).toBe("pending");
@@ -49,11 +70,10 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     }, 30000);
 
     it("should upload with structured format", async () => {
-      const result = await client.ocr.processFile(testPDFPath, {
-        format: "structured",
-        model: "standard-v1",
-        instructions: "Extract all text and identify key information",
-      });
+      const result = await client.ocr.processFile(
+        testPDFPath,
+        defaultStructuredOptions,
+      );
 
       expect(result.jobId).toBeDefined();
       expect(result.status).toBe("pending");
@@ -83,8 +103,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
       const buffer = require("fs").readFileSync(testPDFPath);
 
       const result = await client.ocr.processFileBuffer(buffer, "test.pdf", {
-        format: "markdown",
-        model: "standard-v1",
+        ...defaultMarkdownOptions,
       });
 
       expect(result.jobId).toBeDefined();
@@ -97,8 +116,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
       const stream = require("fs").createReadStream(testPDFPath);
 
       const result = await client.ocr.processFileStream(stream, "test.pdf", {
-        format: "markdown",
-        model: "standard-v1",
+        ...defaultMarkdownOptions,
       });
 
       expect(result.jobId).toBeDefined();
@@ -113,8 +131,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
         "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
 
       const result = await client.ocr.processURL(url, {
-        format: "markdown",
-        model: "standard-v1",
+        ...defaultMarkdownOptions,
       });
 
       expect(result.jobId).toBeDefined();
@@ -125,8 +142,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
   describe("Job Status", () => {
     it("should get job status", async () => {
       const uploadResult = await client.ocr.processFile(testPDFPath, {
-        format: "markdown",
-        model: "standard-v1",
+        ...defaultMarkdownOptions,
       });
 
       const status = await client.ocr.getJobStatus(uploadResult.jobId);
@@ -140,8 +156,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
   describe("Wait for Completion", () => {
     it("should wait for job completion", async () => {
       const uploadResult = await client.ocr.processFile(testPDFPath, {
-        format: "markdown",
-        model: "standard-v1",
+        ...defaultMarkdownOptions,
       });
 
       const result = await client.ocr.waitUntilDone(uploadResult.jobId, {
@@ -155,8 +170,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
     it("should track progress during polling", async () => {
       const uploadResult = await client.ocr.processFile(testPDFPath, {
-        format: "markdown",
-        model: "standard-v1",
+        ...defaultMarkdownOptions,
       });
 
       const progressUpdates: string[] = [];
@@ -176,8 +190,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
   describe("Get Results", () => {
     it("should get job results after completion", async () => {
       const uploadResult = await client.ocr.processFile(testPDFPath, {
-        format: "markdown",
-        model: "standard-v1",
+        ...defaultMarkdownOptions,
       });
 
       await client.ocr.waitUntilDone(uploadResult.jobId, {
@@ -191,14 +204,13 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
       expect(result.pages).toBeDefined();
       if (result.pages && result.pages.length > 0) {
         expect(result.pages[0]).toHaveProperty("page_number");
-        expect(result.pages[0]).toHaveProperty("text");
+        expect(result.pages[0]).toHaveProperty("result");
       }
     }, 70000);
 
     it("should support pagination", async () => {
       const uploadResult = await client.ocr.processFile(testPDFPath, {
-        format: "markdown",
-        model: "standard-v1",
+        ...defaultMarkdownOptions,
       });
 
       await client.ocr.waitUntilDone(uploadResult.jobId, {
@@ -237,8 +249,7 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
     it("should timeout on long-running job", async () => {
       const uploadResult = await client.ocr.processFile(testPDFPath, {
-        format: "markdown",
-        model: "standard-v1",
+        ...defaultMarkdownOptions,
       });
 
       await expect(
@@ -253,18 +264,9 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
   describe("Concurrent Operations", () => {
     it("should handle multiple concurrent uploads", async () => {
       const uploads = await Promise.all([
-        client.ocr.processFile(testPDFPath, {
-          format: "markdown",
-          model: "standard-v1",
-        }),
-        client.ocr.processFile(testPDFPath, {
-          format: "markdown",
-          model: "standard-v1",
-        }),
-        client.ocr.processFile(testPDFPath, {
-          format: "markdown",
-          model: "standard-v1",
-        }),
+        client.ocr.processFile(testPDFPath, defaultMarkdownOptions),
+        client.ocr.processFile(testPDFPath, defaultMarkdownOptions),
+        client.ocr.processFile(testPDFPath, defaultMarkdownOptions),
       ]);
 
       expect(uploads).toHaveLength(3);
@@ -281,10 +283,10 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
 
   describe("Job Deletion", () => {
     it("should delete a job successfully", async () => {
-      const uploadResult = await client.ocr.processFile(testPDFPath, {
-        format: "markdown",
-        model: "standard-v1",
-      });
+      const uploadResult = await client.ocr.processFile(
+        testPDFPath,
+        defaultMarkdownOptions,
+      );
 
       expect(uploadResult.jobId).toBeDefined();
 
@@ -312,10 +314,10 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
     }, 30000);
 
     it("should delete job immediately after creation", async () => {
-      const uploadResult = await client.ocr.processFile(testPDFPath, {
-        format: "markdown",
-        model: "standard-v1",
-      });
+      const uploadResult = await client.ocr.processFile(
+        testPDFPath,
+        defaultMarkdownOptions,
+      );
 
       // Delete immediately without waiting for completion
       await expect(
@@ -330,27 +332,33 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
   });
 
   describe("Template Slug", () => {
-    it("should process with template slug", async () => {
-      const result = await client.ocr.processFile(testPDFPath, {
-        templateSlug: "test-template",
-        model: "standard-v1",
-      });
+    it.skipIf(!TEMPLATE_SLUG)(
+      "should process with template slug",
+      async () => {
+        const result = await client.ocr.processFile(testPDFPath, {
+          templateSlug: TEMPLATE_SLUG,
+        });
 
-      expect(result.jobId).toBeDefined();
-      expect(result.status).toBe("pending");
-    }, 30000);
+        expect(result.jobId).toBeDefined();
+        expect(result.status).toBe("pending");
+      },
+      30000,
+    );
 
-    it("should process URL with template slug", async () => {
-      const url =
-        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+    it.skipIf(!TEMPLATE_SLUG)(
+      "should process URL with template slug",
+      async () => {
+        const url =
+          "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
 
-      const result = await client.ocr.processURL(url, {
-        templateSlug: "invoice-template",
-        model: "pro-v1",
-      });
+        const result = await client.ocr.processURL(url, {
+          templateSlug: TEMPLATE_SLUG,
+        });
 
-      expect(result.jobId).toBeDefined();
-      expect(result.status).toBe("pending");
-    }, 30000);
+        expect(result.jobId).toBeDefined();
+        expect(result.status).toBe("pending");
+      },
+      30000,
+    );
   });
 });

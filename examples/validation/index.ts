@@ -75,7 +75,7 @@ async function inputValidationExample(apiKey: string) {
     console.log("3. Testing invalid URL...");
     try {
       await client.ocr.processURL("not-a-valid-url", {
-        format: "structured",
+        format: "markdown",
       });
       console.log("[FAIL] Should have rejected invalid URL");
     } catch (error) {
@@ -121,6 +121,13 @@ async function errorHandlingExample(apiKey: string) {
       "https://nonexistent-domain-12345.com/fake.pdf",
       {
         format: "structured",
+        schema: {
+          type: "object",
+          properties: {
+            title: { type: "string" },
+          },
+          required: ["title"],
+        },
       },
     );
     console.log("[FAIL] Should have failed with network error");
@@ -192,7 +199,16 @@ async function timeoutHandlingExample(apiKey: string) {
   try {
     await shortTimeoutClient.ocr.processURL(
       "https://httpbin.org/delay/2", // Delayed response
-      { format: "structured" },
+      {
+        format: "structured",
+        schema: {
+          type: "object",
+          properties: {
+            title: { type: "string" },
+          },
+          required: ["title"],
+        },
+      },
     );
     console.log("[FAIL] Expected timeout");
   } catch (error) {

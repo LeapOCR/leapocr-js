@@ -47,13 +47,20 @@ const client = new LeapOCR({
   apiKey: process.env.LEAPOCR_API_KEY,
 });
 
-const job = await client.ocr.uploadFile("./document.pdf", {
+const job = await client.ocr.processFile("./document.pdf", {
   format: "structured",
   model: "standard-v1",
-  instructions: "Extract invoice details",
+  schema: {
+    type: "object",
+    properties: {
+      invoice_number: { type: "string" },
+      total_amount: { type: "number" },
+    },
+    required: ["invoice_number", "total_amount"],
+  },
 });
 
-const result = await client.ocr.waitForCompletion(job.jobId);
+const result = await client.ocr.waitUntilDone(job.jobId);
 const fullResult = await client.ocr.getJobResult(job.jobId);
 console.log(fullResult.pages);
 ```
@@ -61,7 +68,7 @@ console.log(fullResult.pages);
 ### Processing a File from URL
 
 ```typescript
-const job = await client.ocr.uploadFromURL("https://example.com/document.pdf", {
+const job = await client.ocr.processURL("https://example.com/document.pdf", {
   format: "markdown",
   model: "standard-v1",
 });
@@ -87,7 +94,6 @@ while (true) {
 
 - `markdown` - Page-by-page OCR output
 - `structured` - Structured data extraction
-- `per_page_structured` - Per-page structured extraction
 
 ## See Also
 

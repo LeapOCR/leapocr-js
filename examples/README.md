@@ -188,11 +188,11 @@ const client = new LeapOCR({
 
 ```typescript
 {
-  format: "markdown" | "structured" | "per_page_structured",
+  format: "markdown" | "structured",
   model: "standard-v1" | "english-pro-v1" | "pro-v1",
-  instructions: "Optional instructions for extraction",
-  schema: { /* JSON Schema for structured extraction */ },
-  templateSlug: "template-slug-for-reusable-schemas",
+  instructions: "Optional instructions for structured extraction",
+  schema: { /* JSON Schema for structured extraction (required for structured) */ },
+  templateSlug: "template-slug-for-reusable-schemas (handles format/model/schema/instructions)",
   signal: abortController.signal,
 }
 ```
@@ -216,7 +216,6 @@ const client = new LeapOCR({
 | --------------------- | ------------------------------ | -------------------------------------- |
 | `markdown`            | Page-by-page OCR               | Plain text per page                    |
 | `structured`          | Structured data extraction     | JSON data based on schema/instructions |
-| `per_page_structured` | Per-page structured extraction | Structured data for each page          |
 
 ## Error Handling
 

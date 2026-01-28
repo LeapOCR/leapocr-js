@@ -33,7 +33,7 @@ export type OCRModel =
 /**
  * Result format types
  */
-export type ResultFormat = "markdown" | "structured" | "per_page_structured";
+export type ResultFormat = "markdown" | "structured";
 
 /**
  * Configuration options for uploading and processing documents.
@@ -43,13 +43,13 @@ export type ResultFormat = "markdown" | "structured" | "per_page_structured";
  * const options: UploadOptions = {
  *   format: 'structured',
  *   model: 'pro-v1',
- *   instructions: 'Extract invoice details',
  *   schema: {
  *     type: 'object',
  *     properties: {
  *       invoice_number: { type: 'string' },
  *       total: { type: 'number' },
  *     },
+ *     required: ['invoice_number', 'total'],
  *   },
  * };
  * ```
@@ -65,16 +65,16 @@ export interface UploadOptions {
    */
   model?: OCRModel;
 
-  /** Output format: markdown (page-by-page OCR), structured (data extraction), or per_page_structured */
+  /** Output format: markdown (page-by-page OCR) or structured (data extraction) */
   format?: ResultFormat;
 
-  /** Instructions for structured extraction (max 100 chars) */
+  /** Instructions for structured extraction (max 100 chars). Only valid with structured format. */
   instructions?: string;
 
-  /** Schema for structured data extraction */
+  /** JSON Schema for structured data extraction. Required when format is structured (unless using templateSlug). */
   schema?: Record<string, unknown>;
 
-  /** Template slug for using existing template */
+  /** Template slug for using existing template. When provided, format/model/instructions/schema are handled by the template. */
   templateSlug?: string;
 
   /** AbortSignal for cancellation */
@@ -164,12 +164,16 @@ export interface ResultMetadata {
 /**
  * Page result type - varies based on result format
  * - `string` for markdown format
- * - `Record<string, any>` for structured/per_page_structured formats
+ * - `Record<string, any>` for structured format
  */
 export interface PageResult {
   id?: string;
   page_number?: number;
   result?: string | Record<string, any>;
+  confidence?: number;
+  bounding_boxes?: Array<Record<string, unknown>>;
+  dimensions?: Record<string, unknown>;
+  has_bounding_boxes?: boolean;
 }
 
 /**

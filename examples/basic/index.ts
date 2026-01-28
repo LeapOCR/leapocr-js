@@ -75,6 +75,16 @@ async function processLocalFile(apiKey: string) {
       model: "standard-v1",
       instructions:
         "Extract all invoice details including amounts, dates, and vendor information",
+      schema: {
+        type: "object",
+        properties: {
+          invoice_number: { type: "string" },
+          invoice_date: { type: "string" },
+          total_amount: { type: "number" },
+          vendor_name: { type: "string" },
+        },
+        required: ["invoice_number", "total_amount"],
+      },
     });
 
     console.log(`Job created with ID: ${job.jobId}`);
@@ -136,7 +146,6 @@ async function processFileFromURL(apiKey: string) {
     const job = await client.ocr.processURL(fileURL, {
       format: "markdown",
       model: "standard-v1",
-      instructions: "Extract key financial information",
     });
 
     console.log(`Job created with ID: ${job.jobId}`);
@@ -196,7 +205,6 @@ async function processWithTemplate(apiKey: string) {
     console.log("Processing document with template slug...");
     const job = await client.ocr.processURL(fileURL, {
       templateSlug: "invoice-template", // Use predefined template
-      model: "pro-v1",
     });
 
     console.log(`Job created with ID: ${job.jobId}`);

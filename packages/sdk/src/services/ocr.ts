@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { basename } from "path";
 import type { Readable } from "stream";
-import { FileError, TimeoutError } from "../errors/index.js";
+import { FileError, TimeoutError, ValidationError } from "../errors/index.js";
 import { getJobs } from "../generated/jobs/jobs.js";
 import { getOcr } from "../generated/ocr/ocr.js";
 import type { ClientConfig } from "../types/config.js";
@@ -56,11 +56,11 @@ export class OCRService {
    *
    * @param filePath - Absolute or relative path to the PDF file
    * @param options - Processing configuration options
-   * @param options.format - Output format: `markdown` (page-by-page OCR), `structured` (data extraction), or `per_page_structured`
-   * @param options.model - OCR model: `standard-v1` (1 credit/page), `english-pro-v1` (2 credits/page), or `pro-v1` (5 credits/page)
+   * @param options.format - Output format: `markdown` or `structured`
+   * @param options.model - OCR model: `standard-v1` (1 credit/page), `english-pro-v1` (2 credits/page), or `pro-v1` (3 credits/page)
    * @param options.instructions - Instructions for structured extraction (max 100 chars)
-   * @param options.schema - JSON schema for structured data extraction
-   * @param options.templateSlug - Template slug for reusable extraction schemas
+   * @param options.schema - JSON schema for structured data extraction (required for structured format unless using templateSlug)
+   * @param options.templateSlug - Template slug for reusable extraction schemas (handles format/model/schema/instructions)
    * @returns Job information with job ID and initial status
    * @throws {FileError} If file doesn't exist, is too large, or is not a PDF
    * @throws {ValidationError} If request parameters are invalid
@@ -76,7 +76,15 @@ export class OCRService {
    * const job = await client.ocr.processFile('./invoice.pdf', {
    *   format: 'structured',
    *   model: 'pro-v1',
-   *   instructions: 'Extract invoice number, date, and total amount',
+   *   schema: {
+   *     type: 'object',
+   *     properties: {
+   *       invoice_number: { type: 'string' },
+   *       invoice_date: { type: 'string' },
+   *       total_amount: { type: 'number' },
+   *     },
+   *     required: ['invoice_number', 'total_amount'],
+   *   },
    * });
    * ```
    */
@@ -123,11 +131,7 @@ export class OCRService {
           file_name: fileName,
           file_size: buffer.length,
           content_type: this.getContentType(fileName),
-          ...(options.model && { model: options.model }),
-          ...(options.format && { format: options.format }),
-          ...(options.instructions && { instructions: options.instructions }),
-          ...(options.schema && { schema: options.schema as any }),
-          ...(options.templateSlug && { template_slug: options.templateSlug }),
+          ...this.buildUploadPayload(options),
         }),
       {
         maxRetries: this.config.maxRetries,
@@ -270,11 +274,11 @@ export class OCRService {
    *
    * @param url - Public URL of the PDF document to process (must be accessible via HTTP/HTTPS)
    * @param options - Processing configuration options
-   * @param options.format - Output format: `markdown` (page-by-page OCR), `structured` (data extraction), or `per_page_structured`
+   * @param options.format - Output format: `markdown` (page-by-page OCR) or `structured` (data extraction)
    * @param options.model - OCR model: `standard-v1` (1 credit/page), `english-pro-v1` (2 credits/page), or `pro-v1` (5 credits/page)
    * @param options.instructions - Instructions for structured extraction (max 100 chars)
-   * @param options.schema - JSON schema for structured data extraction
-   * @param options.templateSlug - Template slug for reusable extraction schemas
+   * @param options.schema - JSON schema for structured data extraction (required for structured format unless using templateSlug)
+   * @param options.templateSlug - Template slug for reusable extraction schemas (handles format/model/schema/instructions)
    * @returns Job information with job ID and initial status
    * @throws {ValidationError} If URL is invalid or request parameters are invalid
    * @throws {AuthenticationError} If API key is invalid
@@ -287,7 +291,15 @@ export class OCRService {
    *   {
    *     format: 'structured',
    *     model: 'standard-v1',
-   *     instructions: 'Extract invoice number, date, and total amount',
+   *     schema: {
+   *       type: 'object',
+   *       properties: {
+   *         invoice_number: { type: 'string' },
+   *         invoice_date: { type: 'string' },
+   *         total_amount: { type: 'number' },
+   *       },
+   *       required: ['invoice_number', 'total_amount'],
+   *     },
    *   }
    * );
    * ```
@@ -300,11 +312,7 @@ export class OCRService {
       () =>
         this.client.uploadFromRemoteURL({
           url,
-          ...(options.model && { model: options.model }),
-          ...(options.format && { format: options.format }),
-          ...(options.instructions && { instructions: options.instructions }),
-          ...(options.schema && { schema: options.schema as any }),
-          ...(options.templateSlug && { template_slug: options.templateSlug }),
+          ...this.buildUploadPayload(options),
         }),
       {
         maxRetries: this.config.maxRetries,
@@ -426,7 +434,7 @@ export class OCRService {
    *
    * Returns page results where each page.result is either:
    * - `string` for markdown format
-   * - `Record<string, any>` for structured/per_page_structured formats
+   * - `Record<string, any>` for structured format
    *
    * @example
    * ```typescript
@@ -506,11 +514,14 @@ export class OCRService {
    * ```
    */
   async deleteJob(jobId: string): Promise<void> {
-    await withRetry(() => this.jobsClient.deleteJob(jobId, {}), {
-      maxRetries: this.config.maxRetries,
-      initialDelay: this.config.retryDelay,
-      multiplier: this.config.retryMultiplier,
-    });
+    await withRetry(
+      () => this.config.httpClient.delete(`/ocr/delete/${jobId}`),
+      {
+        maxRetries: this.config.maxRetries,
+        initialDelay: this.config.retryDelay,
+        multiplier: this.config.retryMultiplier,
+      },
+    );
   }
 
   /**
@@ -527,6 +538,59 @@ export class OCRService {
       error: data.error,
       createdAt: data.created_at ? new Date(data.created_at) : new Date(),
       updatedAt: data.updated_at ? new Date(data.updated_at) : new Date(),
+    };
+  }
+
+  private buildUploadPayload(options: UploadOptions): Record<string, unknown> {
+    const { format, model, instructions, schema, templateSlug } = options;
+
+    if (templateSlug) {
+      const conflicts = [
+        format ? "format" : null,
+        model ? "model" : null,
+        instructions ? "instructions" : null,
+        schema ? "schema" : null,
+      ].filter(Boolean);
+
+      if (conflicts.length > 0) {
+        throw new ValidationError(
+          `templateSlug cannot be combined with ${conflicts.join(", ")}`,
+        );
+      }
+
+      return { template_slug: templateSlug };
+    }
+
+    if (schema && format !== "structured") {
+      throw new ValidationError(
+        "schema can only be used with structured format",
+      );
+    }
+
+    if (instructions && format !== "structured") {
+      throw new ValidationError(
+        "instructions can only be used with structured format",
+      );
+    }
+
+    if (format === "structured") {
+      if (!schema || typeof schema !== "object" || Array.isArray(schema)) {
+        throw new ValidationError(
+          "schema is required for structured format and must be a JSON object",
+        );
+      }
+      if (Object.keys(schema).length === 0) {
+        throw new ValidationError(
+          "schema is required for structured format and cannot be empty",
+        );
+      }
+    }
+
+    return {
+      ...(model && { model }),
+      ...(format && { format }),
+      ...(instructions && { instructions }),
+      ...(schema && { schema: schema as any }),
     };
   }
 }

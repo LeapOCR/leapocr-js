@@ -144,11 +144,10 @@ const job = await client.ocr.processFile("./medical-record.pdf", {
 
 ### Output Formats
 
-| Format                | Description        | Use Case                                       |
-| --------------------- | ------------------ | ---------------------------------------------- |
-| `structured`          | Single JSON object | Extract specific fields across entire document |
-| `markdown`            | Text per page      | Convert document to readable text              |
-| `per-page-structured` | JSON per page      | Extract fields from multi-section documents    |
+| Format       | Description        | Use Case                                       |
+| ------------ | ------------------ | ---------------------------------------------- |
+| `structured` | Single JSON object | Extract specific fields across entire document |
+| `markdown`   | Text per page      | Convert document to readable text              |
 
 ### Monitoring Job Progress
 
@@ -182,11 +181,11 @@ while (attempts < maxAttempts) {
 // Process a document using a predefined template
 const job = await client.ocr.processFile("./invoice.pdf", {
   templateSlug: "my-invoice-template",
-  model: "pro-v1",
 });
 
-const result = await client.ocr.waitUntilDone(job.jobId);
-console.log("Extracted data:", result.data);
+await client.ocr.waitUntilDone(job.jobId);
+const result = await client.ocr.getJobResult(job.jobId);
+console.log("Extracted data:", result.pages);
 ```
 
 ### Deleting Jobs
@@ -277,12 +276,12 @@ new LeapOCR(config: ClientConfig)
 // Process documents
 client.ocr.processURL(url: string, options?: UploadOptions): Promise<UploadResult>
 client.ocr.processFile(filePath: string, options?: UploadOptions): Promise<UploadResult>
-client.ocr.processBuffer(buffer: Buffer, filename: string, options?: UploadOptions): Promise<UploadResult>
+client.ocr.processFileBuffer(buffer: Buffer, filename: string, options?: UploadOptions): Promise<UploadResult>
 
 // Job management
 client.ocr.getJobStatus(jobId: string): Promise<JobStatus>
-client.ocr.getJobResult(jobId: string): Promise<OCRResult>
-client.ocr.waitUntilDone(jobId: string, options?: PollOptions): Promise<OCRResult>
+client.ocr.getJobResult(jobId: string): Promise<OCRJobResult>
+client.ocr.waitUntilDone(jobId: string, options?: PollOptions): Promise<JobStatus>
 client.ocr.deleteJob(jobId: string): Promise<void>
 ```
 
@@ -290,7 +289,7 @@ client.ocr.deleteJob(jobId: string): Promise<void>
 
 ```typescript
 interface UploadOptions {
-  format?: "structured" | "markdown" | "per-page-structured";
+  format?: "structured" | "markdown";
   model?: OCRModel;
   schema?: Record<string, any>;
   instructions?: string;

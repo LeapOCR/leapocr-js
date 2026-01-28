@@ -64,12 +64,19 @@ const fileURLs = [
 ];
 
 const uploadPromises = fileURLs.map(async (url, index) => {
-  const job = await client.ocr.uploadFromURL(url, {
+  const job = await client.ocr.processURL(url, {
     format: "structured",
     model: "standard-v1",
+    schema: {
+      type: "object",
+      properties: {
+        title: { type: "string" },
+      },
+      required: ["title"],
+    },
   });
 
-  return client.ocr.waitForCompletion(job.jobId, {
+  return client.ocr.waitUntilDone(job.jobId, {
     pollInterval: 2000,
     maxWait: 300000,
     onProgress: (status) => {
@@ -114,11 +121,10 @@ const invoiceSchema = {
   required: ["invoice_number", "total_amount"],
 };
 
-const job = await client.ocr.uploadFromURL(invoiceURL, {
+const job = await client.ocr.processURL(invoiceURL, {
   format: "structured",
   model: "pro-v1",
   schema: invoiceSchema,
-  instructions: "Extract invoice data according to schema",
 });
 ```
 
@@ -129,7 +135,7 @@ const job = await client.ocr.uploadFromURL(invoiceURL, {
 Track processing progress with callbacks:
 
 ```typescript
-await client.ocr.waitForCompletion(jobId, {
+await client.ocr.waitUntilDone(jobId, {
   pollInterval: 2000,
   maxWait: 300000,
   onProgress: (status) => {

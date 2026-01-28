@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.0.0] - 2026-01-28
+
+### Changed
+
+- BREAKING: Removed per-page structured format; only `markdown` and `structured` remain
+- BREAKING: Structured requests now require a non-empty JSON schema (unless using templateSlug)
+- BREAKING: templateSlug is now exclusive and cannot be combined with format/model/instructions/schema
+- Updated examples and docs to reflect schema requirements and template behavior
+- Regenerated SDK from the latest OpenAPI spec
+
 ## [0.0.5] - 2025-11-23
 
 - chore: bump version to 0.0.5 (a132f67)
