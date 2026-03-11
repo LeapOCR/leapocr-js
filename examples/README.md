@@ -103,7 +103,7 @@ const client = new LeapOCR({
 // Upload and wait for completion
 const job = await client.ocr.processFile("./document.pdf", {
   format: "structured",
-  model: "standard-v1",
+  model: "standard-v2",
   instructions: "Extract invoice details",
 });
 
@@ -123,7 +123,7 @@ if (status.status === "completed") {
 ```typescript
 const job = await client.ocr.processURL("https://example.com/document.pdf", {
   format: "markdown",
-  model: "standard-v1",
+  model: "standard-v2",
 });
 
 const status = await client.ocr.waitUntilDone(job.jobId);
@@ -141,7 +141,7 @@ const files = ["file1.pdf", "file2.pdf", "file3.pdf"];
 const uploadPromises = files.map((file) =>
   client.ocr.processFile(file, {
     format: "structured",
-    model: "standard-v1",
+    model: "standard-v2",
   })
 );
 
@@ -189,7 +189,7 @@ const client = new LeapOCR({
 ```typescript
 {
   format: "markdown" | "structured",
-  model: "standard-v1" | "english-pro-v1" | "pro-v1",
+  model: "standard-v2" | "pro-v2",
   instructions: "Optional instructions for structured extraction",
   schema: { /* JSON Schema for structured extraction (required for structured) */ },
   templateSlug: "template-slug-for-reusable-schemas (handles format/model/schema/instructions)",

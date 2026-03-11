@@ -7,61 +7,46 @@
  */
 import type {
   TeamSettingsTeamSettingsResponse,
-  UpdateTeamSettingsBody,
-} from ".././models";
+  UpdateTeamSettingsBody
+} from '.././models';
 
-import { customInstance } from "../../lib/custom-instance";
-import type { BodyType } from "../../lib/custom-instance";
+import { customInstance } from '../../lib/custom-instance';
+import type { BodyType } from '../../lib/custom-instance';
+
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-export const getTeamSettings = () => {
-  /**
-   * Retrieve auto-delete and retention settings for a team
-   * @summary Get team settings
-   */
-  const getTeamSettings = (
+
+  export const getTeamSettings = () => {
+/**
+ * Retrieve auto-delete and retention settings for a team
+ * @summary Get team settings
+ */
+const getTeamSettings = (
     organizationId: string,
     teamId: string,
-    options?: SecondParameter<
-      typeof customInstance<TeamSettingsTeamSettingsResponse>
-    >,
-  ) => {
-    return customInstance<TeamSettingsTeamSettingsResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/settings`,
-        method: "GET",
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<TeamSettingsTeamSettingsResponse>>,) => {
+      return customInstance<TeamSettingsTeamSettingsResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/settings`, method: 'GET'
+    },
+      options);
+    }
   /**
-   * Update auto-delete and retention settings for a team
-   * @summary Update team settings
-   */
-  const updateTeamSettings = (
+ * Update auto-delete and retention settings for a team
+ * @summary Update team settings
+ */
+const updateTeamSettings = (
     organizationId: string,
     teamId: string,
     updateTeamSettingsBody: BodyType<UpdateTeamSettingsBody>,
-    options?: SecondParameter<
-      typeof customInstance<TeamSettingsTeamSettingsResponse>
-    >,
-  ) => {
-    return customInstance<TeamSettingsTeamSettingsResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/settings`,
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        data: updateTeamSettingsBody,
-      },
-      options,
-    );
-  };
-  return { getTeamSettings, updateTeamSettings };
-};
-export type GetTeamSettingsResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getTeamSettings>["getTeamSettings"]>>
->;
-export type UpdateTeamSettingsResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getTeamSettings>["updateTeamSettings"]>>
->;
+ options?: SecondParameter<typeof customInstance<TeamSettingsTeamSettingsResponse>>,) => {
+      return customInstance<TeamSettingsTeamSettingsResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/settings`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateTeamSettingsBody
+    },
+      options);
+    }
+  return {getTeamSettings,updateTeamSettings}};
+export type GetTeamSettingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTeamSettings>['getTeamSettings']>>>
+export type UpdateTeamSettingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTeamSettings>['updateTeamSettings']>>>

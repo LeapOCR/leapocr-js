@@ -7,8 +7,8 @@
  */
 
 export type GetTeamJobStatusParams = {
-  /**
-   * Include Temporal workflow details
-   */
-  include_workflow?: boolean;
+/**
+ * Include Temporal workflow details
+ */
+include_workflow?: boolean;
 };

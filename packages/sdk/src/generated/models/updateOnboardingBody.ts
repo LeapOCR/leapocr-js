@@ -5,9 +5,7 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { UpdateOnboardingBodyOneOf } from "./updateOnboardingBodyOneOf";
-import type { OnboardingUpdateOnboardingRequest } from "./onboardingUpdateOnboardingRequest";
+import type { UpdateOnboardingBodyOneOf } from './updateOnboardingBodyOneOf';
+import type { OnboardingUpdateOnboardingRequest } from './onboardingUpdateOnboardingRequest';
 
-export type UpdateOnboardingBody =
-  | UpdateOnboardingBodyOneOf
-  | OnboardingUpdateOnboardingRequest;
+export type UpdateOnboardingBody = UpdateOnboardingBodyOneOf | OnboardingUpdateOnboardingRequest;

@@ -5,29 +5,29 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { GetErrorTimeseriesRange } from "./getErrorTimeseriesRange";
-import type { GetErrorTimeseriesBucket } from "./getErrorTimeseriesBucket";
-import type { GetErrorTimeseriesGranularity } from "./getErrorTimeseriesGranularity";
+import type { GetErrorTimeseriesRange } from './getErrorTimeseriesRange';
+import type { GetErrorTimeseriesBucket } from './getErrorTimeseriesBucket';
+import type { GetErrorTimeseriesGranularity } from './getErrorTimeseriesGranularity';
 
 export type GetErrorTimeseriesParams = {
-  /**
-   * Time range preset
-   */
-  range?: GetErrorTimeseriesRange;
-  /**
-   * Start date (RFC3339 or YYYY-MM-DD format)
-   */
-  start?: string;
-  /**
-   * End date (RFC3339 or YYYY-MM-DD format)
-   */
-  end?: string;
-  /**
-   * Time bucket granularity
-   */
-  bucket?: GetErrorTimeseriesBucket;
-  /**
-   * Alias for bucket parameter
-   */
-  granularity?: GetErrorTimeseriesGranularity;
+/**
+ * Time range preset
+ */
+range?: GetErrorTimeseriesRange;
+/**
+ * Start date (RFC3339 or YYYY-MM-DD format)
+ */
+start?: string;
+/**
+ * End date (RFC3339 or YYYY-MM-DD format)
+ */
+end?: string;
+/**
+ * Time bucket granularity
+ */
+bucket?: GetErrorTimeseriesBucket;
+/**
+ * Alias for bucket parameter
+ */
+granularity?: GetErrorTimeseriesGranularity;
 };

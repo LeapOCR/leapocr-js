@@ -6,14 +6,14 @@
  * OpenAPI spec version: v1
  */
 
-export type ListJobsCursorStatus =
-  (typeof ListJobsCursorStatus)[keyof typeof ListJobsCursorStatus];
+export type ListJobsCursorStatus = typeof ListJobsCursorStatus[keyof typeof ListJobsCursorStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListJobsCursorStatus = {
-  pending: "pending",
-  processing: "processing",
-  completed: "completed",
-  partially_done: "partially_done",
-  failed: "failed",
+  pending: 'pending',
+  processing: 'processing',
+  completed: 'completed',
+  partially_done: 'partially_done',
+  failed: 'failed',
 } as const;

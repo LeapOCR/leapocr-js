@@ -26,13 +26,13 @@ const STRUCTURED_SCHEMA = {
 
 const defaultMarkdownOptions = TEMPLATE_SLUG
   ? { templateSlug: TEMPLATE_SLUG }
-  : { format: "markdown", model: "standard-v1" };
+  : { format: "markdown", model: "standard-v2" };
 
 const defaultStructuredOptions = TEMPLATE_SLUG
   ? { templateSlug: TEMPLATE_SLUG }
   : {
       format: "structured",
-      model: "standard-v1",
+      model: "standard-v2",
       instructions: "Extract all text and identify key information",
       schema: STRUCTURED_SCHEMA,
     };
@@ -79,19 +79,10 @@ describe.skipIf(!runIntegrationTests)("OCR Integration Tests", () => {
       expect(result.status).toBe("pending");
     }, 30000);
 
-    it("should upload with pro model", async () => {
+    it("should upload with pro-v2 model", async () => {
       const result = await client.ocr.processFile(testPDFPath, {
         format: "markdown",
-        model: "pro-v1",
-      });
-
-      expect(result.jobId).toBeDefined();
-    }, 30000);
-
-    it("should upload with english-pro model", async () => {
-      const result = await client.ocr.processFile(testPDFPath, {
-        format: "markdown",
-        model: "english-pro-v1",
+        model: "pro-v2",
       });
 
       expect(result.jobId).toBeDefined();

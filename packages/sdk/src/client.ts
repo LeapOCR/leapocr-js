@@ -32,7 +32,7 @@ const DEFAULT_TIMEOUT = 30000;
  * // Process a document
  * const result = await client.ocr.processFile('./document.pdf', {
  *   format: 'markdown',
- *   model: 'standard-v1',
+ *   model: 'standard-v2',
  * });
  * ```
  *
@@ -181,7 +181,7 @@ export class LeapOCR {
    * // Upload a file
    * const job = await client.ocr.uploadFile('./document.pdf', {
    *   format: 'markdown',
-   *   model: 'standard-v1',
+ *   model: 'standard-v2',
    * });
    *
    * // Wait for completion

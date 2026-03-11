@@ -66,7 +66,7 @@ const fileURLs = [
 const uploadPromises = fileURLs.map(async (url, index) => {
   const job = await client.ocr.processURL(url, {
     format: "structured",
-    model: "standard-v1",
+    model: "standard-v2",
     schema: {
       type: "object",
       properties: {
@@ -123,7 +123,7 @@ const invoiceSchema = {
 
 const job = await client.ocr.processURL(invoiceURL, {
   format: "structured",
-  model: "pro-v1",
+  model: "pro-v2",
   schema: invoiceSchema,
 });
 ```

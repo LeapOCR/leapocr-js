@@ -72,7 +72,7 @@ async function processLocalFile(apiKey: string) {
     console.log(`Starting OCR processing for ${filePath}...`);
     const job = await client.ocr.processFile(filePath, {
       format: "structured",
-      model: "standard-v1",
+      model: "standard-v2",
       instructions:
         "Extract all invoice details including amounts, dates, and vendor information",
       schema: {
@@ -145,7 +145,7 @@ async function processFileFromURL(apiKey: string) {
     console.log(`Starting OCR processing for URL: ${fileURL}...`);
     const job = await client.ocr.processURL(fileURL, {
       format: "markdown",
-      model: "standard-v1",
+      model: "standard-v2",
     });
 
     console.log(`Job created with ID: ${job.jobId}`);
@@ -247,7 +247,7 @@ async function deleteJobExample(apiKey: string) {
     console.log("Creating a job to delete...");
     const job = await client.ocr.processURL(fileURL, {
       format: "markdown",
-      model: "standard-v1",
+      model: "standard-v2",
     });
 
     console.log(`Job created with ID: ${job.jobId}`);

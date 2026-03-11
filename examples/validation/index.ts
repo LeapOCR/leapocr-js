@@ -235,7 +235,7 @@ async function timeoutHandlingExample(apiKey: string) {
       "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
       {
         format: "markdown",
-        model: "standard-v1",
+        model: "standard-v2",
       },
     );
 
@@ -272,7 +272,7 @@ async function timeoutHandlingExample(apiKey: string) {
       "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
       {
         format: "markdown",
-        model: "standard-v1",
+        model: "standard-v2",
         signal: controller.signal,
       },
     );

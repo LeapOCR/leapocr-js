@@ -77,7 +77,7 @@ async function customConfigExample(apiKey: string) {
       "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
       {
         format: "structured",
-        model: "pro-v1",
+        model: "pro-v2",
         instructions: "Extract all data with high accuracy",
         schema: {
           type: "object",
@@ -125,7 +125,7 @@ async function batchProcessingExample(apiKey: string) {
 
         const job = await client.ocr.processURL(url, {
           format: "structured",
-          model: "standard-v1",
+          model: "standard-v2",
           instructions: `Process document ${index + 1}`,
           schema: {
             type: "object",
@@ -261,7 +261,7 @@ async function schemaExtractionExample(apiKey: string) {
   try {
     const job = await client.ocr.processURL(invoiceURL, {
       format: "structured",
-      model: "pro-v1", // Use highest quality model for best accuracy
+      model: "pro-v2", // Use highest quality model for best accuracy
       schema: invoiceSchema,
       instructions:
         "Extract invoice data according to the provided schema. Be precise with numbers and dates.",
@@ -425,7 +425,7 @@ async function jobLifecycleExample(apiKey: string) {
     console.log("1. Creating job...");
     const job = await client.ocr.processURL(fileURL, {
       format: "structured",
-      model: "standard-v1",
+      model: "standard-v2",
       instructions: "Extract all text content",
       schema: {
         type: "object",

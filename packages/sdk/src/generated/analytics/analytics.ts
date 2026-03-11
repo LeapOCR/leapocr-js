@@ -33,358 +33,238 @@ import type {
   GetPeriodComparisonParams,
   GetTopTemplatesParams,
   GetTopUsersParams,
-  GetUserActivityParams,
-} from ".././models";
+  GetUserActivityParams
+} from '.././models';
 
-import { customInstance } from "../../lib/custom-instance";
+import { customInstance } from '../../lib/custom-instance';
+
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-export const getAnalytics = () => {
-  /**
-   * Returns comparison between current period and previous period of equal duration with change percentages
-   * @summary Get period comparison analytics
-   */
-  const getPeriodComparison = (
+
+  export const getAnalytics = () => {
+/**
+ * Returns comparison between current period and previous period of equal duration with change percentages
+ * @summary Get period comparison analytics
+ */
+const getPeriodComparison = (
     organizationId: string,
     teamId: string,
     params?: GetPeriodComparisonParams,
-    options?: SecondParameter<
-      typeof customInstance<AnalyticsPeriodComparisonResponse>
-    >,
-  ) => {
-    return customInstance<AnalyticsPeriodComparisonResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/compare`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsPeriodComparisonResponse>>,) => {
+      return customInstance<AnalyticsPeriodComparisonResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/compare`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns confidence score analytics including confidence distribution and summary statistics
-   * @summary Get confidence metrics analytics
-   */
-  const getConfidenceMetrics = (
+ * Returns confidence score analytics including confidence distribution and summary statistics
+ * @summary Get confidence metrics analytics
+ */
+const getConfidenceMetrics = (
     organizationId: string,
     teamId: string,
     params?: GetConfidenceMetricsParams,
-    options?: SecondParameter<
-      typeof customInstance<AnalyticsConfidenceMetricsResponse>
-    >,
-  ) => {
-    return customInstance<AnalyticsConfidenceMetricsResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/confidence`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsConfidenceMetricsResponse>>,) => {
+      return customInstance<AnalyticsConfidenceMetricsResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/confidence`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns confidence score trends aggregated by time buckets
-   * @summary Get confidence metrics timeseries
-   */
-  const getConfidenceTimeseries = (
+ * Returns confidence score trends aggregated by time buckets
+ * @summary Get confidence metrics timeseries
+ */
+const getConfidenceTimeseries = (
     organizationId: string,
     teamId: string,
     params?: GetConfidenceTimeseriesParams,
-    options?: SecondParameter<
-      typeof customInstance<AnalyticsConfidenceTimeseriesResponse>
-    >,
-  ) => {
-    return customInstance<AnalyticsConfidenceTimeseriesResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/confidence/timeseries`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsConfidenceTimeseriesResponse>>,) => {
+      return customInstance<AnalyticsConfidenceTimeseriesResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/confidence/timeseries`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns comprehensive credit analytics including snapshot data, timeseries trends, and model usage breakdown
-   * @summary Get credit usage analytics
-   */
-  const getCreditUsage = (
+ * Returns comprehensive credit analytics including snapshot data, timeseries trends, and model usage breakdown
+ * @summary Get credit usage analytics
+ */
+const getCreditUsage = (
     organizationId: string,
     teamId: string,
     params?: GetCreditUsageParams,
-    options?: SecondParameter<
-      typeof customInstance<AnalyticsCreditsUsageResponse>
-    >,
-  ) => {
-    return customInstance<AnalyticsCreditsUsageResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/credits/usage`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsCreditsUsageResponse>>,) => {
+      return customInstance<AnalyticsCreditsUsageResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/credits/usage`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns document-level analytics including file size statistics and page count distribution
-   * @summary Get document analytics
-   */
-  const getDocumentStats = (
+ * Returns document-level analytics including file size statistics and page count distribution
+ * @summary Get document analytics
+ */
+const getDocumentStats = (
     organizationId: string,
     teamId: string,
     params?: GetDocumentStatsParams,
-    options?: SecondParameter<
-      typeof customInstance<AnalyticsDocumentStatsResponse>
-    >,
-  ) => {
-    return customInstance<AnalyticsDocumentStatsResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/documents`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsDocumentStatsResponse>>,) => {
+      return customInstance<AnalyticsDocumentStatsResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/documents`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns document type distribution by file extension
-   * @summary Get file type breakdown
-   */
-  const getFileTypeBreakdown = (
+ * Returns document type distribution by file extension
+ * @summary Get file type breakdown
+ */
+const getFileTypeBreakdown = (
     organizationId: string,
     teamId: string,
     params?: GetFileTypeBreakdownParams,
-    options?: SecondParameter<
-      typeof customInstance<AnalyticsFileTypeBreakdownResponse>
-    >,
-  ) => {
-    return customInstance<AnalyticsFileTypeBreakdownResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/documents/filetypes`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsFileTypeBreakdownResponse>>,) => {
+      return customInstance<AnalyticsFileTypeBreakdownResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/documents/filetypes`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns error analysis including failure rates and error patterns
-   * @summary Get error analytics
-   */
-  const getErrorAnalysis = (
+ * Returns error analysis including failure rates and error patterns
+ * @summary Get error analytics
+ */
+const getErrorAnalysis = (
     organizationId: string,
     teamId: string,
     params?: GetErrorAnalysisParams,
-    options?: SecondParameter<
-      typeof customInstance<AnalyticsErrorAnalysisResponse>
-    >,
-  ) => {
-    return customInstance<AnalyticsErrorAnalysisResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/errors`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsErrorAnalysisResponse>>,) => {
+      return customInstance<AnalyticsErrorAnalysisResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/errors`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns error trends aggregated by time buckets including failure rates
-   * @summary Get error analytics timeseries
-   */
-  const getErrorTimeseries = (
+ * Returns error trends aggregated by time buckets including failure rates
+ * @summary Get error analytics timeseries
+ */
+const getErrorTimeseries = (
     organizationId: string,
     teamId: string,
     params?: GetErrorTimeseriesParams,
-    options?: SecondParameter<
-      typeof customInstance<AnalyticsErrorTimeseriesResponse>
-    >,
-  ) => {
-    return customInstance<AnalyticsErrorTimeseriesResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/errors/timeseries`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsErrorTimeseriesResponse>>,) => {
+      return customInstance<AnalyticsErrorTimeseriesResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/errors/timeseries`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns job metrics aggregated by time buckets including total jobs, completed jobs, failed jobs, active jobs, pages processed, and credits consumed
-   * @summary Get job analytics timeseries
-   */
-  const getJobTimeseries = (
+ * Returns job metrics aggregated by time buckets including total jobs, completed jobs, failed jobs, active jobs, pages processed, and credits consumed
+ * @summary Get job analytics timeseries
+ */
+const getJobTimeseries = (
     organizationId: string,
     teamId: string,
     params?: GetJobTimeseriesParams,
-    options?: SecondParameter<typeof customInstance<GetJobTimeseries200>>,
-  ) => {
-    return customInstance<GetJobTimeseries200>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/jobs/timeseries`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<GetJobTimeseries200>>,) => {
+      return customInstance<GetJobTimeseries200>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/jobs/timeseries`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns high-level analytics insights including job statistics, page outcomes, credit usage, and webhook metrics for the specified time range
-   * @summary Get analytics overview
-   */
-  const getOverview = (
+ * Returns high-level analytics insights including job statistics, page outcomes, credit usage, and webhook metrics for the specified time range
+ * @summary Get analytics overview
+ */
+const getOverview = (
     organizationId: string,
     teamId: string,
     params?: GetOverviewParams,
-    options?: SecondParameter<typeof customInstance<AnalyticsOverviewResponse>>,
-  ) => {
-    return customInstance<AnalyticsOverviewResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/overview`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsOverviewResponse>>,) => {
+      return customInstance<AnalyticsOverviewResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/overview`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns page outcomes aggregated by time buckets including totals, completion, failure, and token counts
-   * @summary Get page analytics timeseries
-   */
-  const getPageTimeseries = (
+ * Returns page outcomes aggregated by time buckets including totals, completion, failure, and token counts
+ * @summary Get page analytics timeseries
+ */
+const getPageTimeseries = (
     organizationId: string,
     teamId: string,
     params?: GetPageTimeseriesParams,
-    options?: SecondParameter<typeof customInstance<GetPageTimeseries200>>,
-  ) => {
-    return customInstance<GetPageTimeseries200>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/pages/timeseries`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<GetPageTimeseries200>>,) => {
+      return customInstance<GetPageTimeseries200>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/pages/timeseries`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns the most frequently used templates ranked by job count, usage count, and credits consumed
-   * @summary Get top templates analytics
-   */
-  const getTopTemplates = (
+ * Returns the most frequently used templates ranked by job count, usage count, and credits consumed
+ * @summary Get top templates analytics
+ */
+const getTopTemplates = (
     organizationId: string,
     teamId: string,
     params?: GetTopTemplatesParams,
-    options?: SecondParameter<
-      typeof customInstance<AnalyticsTopTemplatesResponse>
-    >,
-  ) => {
-    return customInstance<AnalyticsTopTemplatesResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/templates/top`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsTopTemplatesResponse>>,) => {
+      return customInstance<AnalyticsTopTemplatesResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/templates/top`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns per-user usage patterns including jobs, pages, credits consumed, and activity metrics
-   * @summary Get user activity analytics
-   */
-  const getUserActivity = (
+ * Returns per-user usage patterns including jobs, pages, credits consumed, and activity metrics
+ * @summary Get user activity analytics
+ */
+const getUserActivity = (
     organizationId: string,
     teamId: string,
     params?: GetUserActivityParams,
-    options?: SecondParameter<
-      typeof customInstance<AnalyticsUserActivityResponse>
-    >,
-  ) => {
-    return customInstance<AnalyticsUserActivityResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/users/activity`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<AnalyticsUserActivityResponse>>,) => {
+      return customInstance<AnalyticsUserActivityResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/users/activity`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Returns ranked users by job count and credits consumed
-   * @summary Get top users analytics
-   */
-  const getTopUsers = (
+ * Returns ranked users by job count and credits consumed
+ * @summary Get top users analytics
+ */
+const getTopUsers = (
     organizationId: string,
     teamId: string,
     params?: GetTopUsersParams,
-    options?: SecondParameter<typeof customInstance<AnalyticsTopUsersResponse>>,
-  ) => {
-    return customInstance<AnalyticsTopUsersResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/analytics/users/top`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
-  return {
-    getPeriodComparison,
-    getConfidenceMetrics,
-    getConfidenceTimeseries,
-    getCreditUsage,
-    getDocumentStats,
-    getFileTypeBreakdown,
-    getErrorAnalysis,
-    getErrorTimeseries,
-    getJobTimeseries,
-    getOverview,
-    getPageTimeseries,
-    getTopTemplates,
-    getUserActivity,
-    getTopUsers,
-  };
-};
-export type GetPeriodComparisonResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getPeriodComparison"]>>
->;
-export type GetConfidenceMetricsResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getConfidenceMetrics"]>>
->;
-export type GetConfidenceTimeseriesResult = NonNullable<
-  Awaited<
-    ReturnType<ReturnType<typeof getAnalytics>["getConfidenceTimeseries"]>
-  >
->;
-export type GetCreditUsageResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getCreditUsage"]>>
->;
-export type GetDocumentStatsResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getDocumentStats"]>>
->;
-export type GetFileTypeBreakdownResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getFileTypeBreakdown"]>>
->;
-export type GetErrorAnalysisResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getErrorAnalysis"]>>
->;
-export type GetErrorTimeseriesResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getErrorTimeseries"]>>
->;
-export type GetJobTimeseriesResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getJobTimeseries"]>>
->;
-export type GetOverviewResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getOverview"]>>
->;
-export type GetPageTimeseriesResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getPageTimeseries"]>>
->;
-export type GetTopTemplatesResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getTopTemplates"]>>
->;
-export type GetUserActivityResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getUserActivity"]>>
->;
-export type GetTopUsersResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getAnalytics>["getTopUsers"]>>
->;
+ options?: SecondParameter<typeof customInstance<AnalyticsTopUsersResponse>>,) => {
+      return customInstance<AnalyticsTopUsersResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/analytics/users/top`, method: 'GET',
+        params
+    },
+      options);
+    }
+  return {getPeriodComparison,getConfidenceMetrics,getConfidenceTimeseries,getCreditUsage,getDocumentStats,getFileTypeBreakdown,getErrorAnalysis,getErrorTimeseries,getJobTimeseries,getOverview,getPageTimeseries,getTopTemplates,getUserActivity,getTopUsers}};
+export type GetPeriodComparisonResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getPeriodComparison']>>>
+export type GetConfidenceMetricsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getConfidenceMetrics']>>>
+export type GetConfidenceTimeseriesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getConfidenceTimeseries']>>>
+export type GetCreditUsageResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getCreditUsage']>>>
+export type GetDocumentStatsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getDocumentStats']>>>
+export type GetFileTypeBreakdownResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getFileTypeBreakdown']>>>
+export type GetErrorAnalysisResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getErrorAnalysis']>>>
+export type GetErrorTimeseriesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getErrorTimeseries']>>>
+export type GetJobTimeseriesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getJobTimeseries']>>>
+export type GetOverviewResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getOverview']>>>
+export type GetPageTimeseriesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getPageTimeseries']>>>
+export type GetTopTemplatesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getTopTemplates']>>>
+export type GetUserActivityResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getUserActivity']>>>
+export type GetTopUsersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getAnalytics>['getTopUsers']>>>

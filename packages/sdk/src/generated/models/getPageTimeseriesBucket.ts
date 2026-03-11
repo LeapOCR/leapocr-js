@@ -6,13 +6,13 @@
  * OpenAPI spec version: v1
  */
 
-export type GetPageTimeseriesBucket =
-  (typeof GetPageTimeseriesBucket)[keyof typeof GetPageTimeseriesBucket];
+export type GetPageTimeseriesBucket = typeof GetPageTimeseriesBucket[keyof typeof GetPageTimeseriesBucket];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetPageTimeseriesBucket = {
-  hour: "hour",
-  day: "day",
-  week: "week",
-  month: "month",
+  hour: 'hour',
+  day: 'day',
+  week: 'week',
+  month: 'month',
 } as const;

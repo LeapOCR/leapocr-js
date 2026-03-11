@@ -49,7 +49,7 @@ const client = new LeapOCR({
 
 const job = await client.ocr.processFile("./document.pdf", {
   format: "structured",
-  model: "standard-v1",
+  model: "standard-v2",
   schema: {
     type: "object",
     properties: {
@@ -70,7 +70,7 @@ console.log(fullResult.pages);
 ```typescript
 const job = await client.ocr.processURL("https://example.com/document.pdf", {
   format: "markdown",
-  model: "standard-v1",
+  model: "standard-v2",
 });
 
 // Manual polling
@@ -86,9 +86,8 @@ while (true) {
 
 ## Available Models
 
-- `standard-v1` - Standard OCR model
-- `english-pro-v1` - Enhanced English OCR
-- `pro-v1` - Highest quality OCR
+- `standard-v2` - Standard OCR model
+- `pro-v2` - Highest quality OCR
 
 ## Available Formats
 

@@ -40,7 +40,7 @@ const client = new LeapOCR({
 // Submit a document for processing
 const job = await client.ocr.processURL("https://example.com/document.pdf", {
   format: "structured",
-  model: "standard-v1",
+  model: "standard-v2",
   schema: {
     type: "object",
     properties: {
@@ -69,7 +69,7 @@ console.log("Extracted data:", fullResult.pages);
 - **Universal Runtime** - Works in Node.js and modern browsers
 - **Direct File Upload** - Efficient multipart uploads for local files
 
-Specify a model in the processing options. Defaults to `standard-v1`.
+Specify a model in the processing options. Defaults to `standard-v2`.
 
 ## Usage Examples
 
@@ -82,7 +82,7 @@ const client = new LeapOCR({
 
 const job = await client.ocr.processURL("https://example.com/invoice.pdf", {
   format: "structured",
-  model: "standard-v1",
+  model: "standard-v2",
   schema: {
     type: "object",
     properties: {
@@ -114,7 +114,7 @@ const client = new LeapOCR({
 
 const job = await client.ocr.processFile("./invoice.pdf", {
   format: "structured",
-  model: "pro-v1",
+  model: "pro-v2",
   schema: {
     type: "object",
     properties: {

@@ -5,19 +5,19 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { GetPeriodComparisonRange } from "./getPeriodComparisonRange";
+import type { GetPeriodComparisonRange } from './getPeriodComparisonRange';
 
 export type GetPeriodComparisonParams = {
-  /**
-   * Time range preset
-   */
-  range?: GetPeriodComparisonRange;
-  /**
-   * Start date (RFC3339 or YYYY-MM-DD format)
-   */
-  start?: string;
-  /**
-   * End date (RFC3339 or YYYY-MM-DD format)
-   */
-  end?: string;
+/**
+ * Time range preset
+ */
+range?: GetPeriodComparisonRange;
+/**
+ * Start date (RFC3339 or YYYY-MM-DD format)
+ */
+start?: string;
+/**
+ * End date (RFC3339 or YYYY-MM-DD format)
+ */
+end?: string;
 };

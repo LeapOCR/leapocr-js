@@ -8,9 +8,8 @@
  * Available OCR models with their characteristics and credit costs.
  *
  * Each model has different accuracy levels and credit costs per page:
- * - **standard-v1**: Baseline model suitable for most documents (1 credit/page)
- * - **english-pro-v1**: Enhanced accuracy for English-only documents (2 credits/page)
- * - **pro-v1**: Highest quality model for complex layouts and critical accuracy needs (5 credits/page)
+ * - **standard-v2**: Baseline model suitable for most documents (1 credit/page)
+ * - **pro-v2**: Highest quality model for complex layouts and critical accuracy needs (3 credits/page)
  *
  * The type also accepts custom strings for future models while providing
  * autocomplete suggestions for known models.
@@ -18,16 +17,15 @@
  * @example
  * ```typescript
  * // Known models get autocomplete
- * const model: OCRModel = 'standard-v1';
+ * const model: OCRModel = 'standard-v2';
  *
  * // Custom models are also accepted
  * const futureModel: OCRModel = 'experimental-v2';
  * ```
  */
 export type OCRModel =
-  | "standard-v1" // Baseline model, handles all cases (1 credit/page)
-  | "english-pro-v1" // Premium quality, English documents only (2 credits/page)
-  | "pro-v1" // Highest quality, handles all cases (5 credits/page)
+  | "standard-v2" // Baseline model, handles all cases (1 credit/page)
+  | "pro-v2" // Highest quality, handles all cases (3 credits/page)
   | (string & {}); // Allow any string while preserving autocomplete
 
 /**
@@ -42,7 +40,7 @@ export type ResultFormat = "markdown" | "structured";
  * ```typescript
  * const options: UploadOptions = {
  *   format: 'structured',
- *   model: 'pro-v1',
+ *   model: 'pro-v2',
  *   schema: {
  *     type: 'object',
  *     properties: {
@@ -59,9 +57,8 @@ export interface UploadOptions {
    * OCR model to use
    *
    * Available models:
-   * - `standard-v1`: Baseline model, handles all cases (1 credit/page)
-   * - `english-pro-v1`: Premium quality, English documents only (2 credits/page)
-   * - `pro-v1`: Highest quality, handles all cases (5 credits/page)
+   * - `standard-v2`: Baseline model, handles all cases (1 credit/page)
+   * - `pro-v2`: Highest quality, handles all cases (3 credits/page)
    */
   model?: OCRModel;
 

@@ -11,6 +11,6 @@ export interface SubscriptionsUpdateWebhookSubscriptionRequest {
   description?: string;
   enabled?: boolean;
   /** @minItems 1 */
-  events?: string[];
+  events: string[];
   url?: string;
 }

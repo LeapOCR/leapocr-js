@@ -6,4 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-export type GrantedBenefitResponseProperties = { [key: string]: unknown };
+export type GrantedBenefitResponseProperties = {[key: string]: unknown};

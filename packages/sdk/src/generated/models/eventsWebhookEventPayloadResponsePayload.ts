@@ -6,6 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-export type EventsWebhookEventPayloadResponsePayload = {
-  [key: string]: unknown;
-};
+export type EventsWebhookEventPayloadResponsePayload = {[key: string]: unknown};

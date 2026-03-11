@@ -7,26 +7,26 @@
  */
 
 export type ListWebhookEventsCursorParams = {
-  /**
-   * Cursor for pagination
-   */
-  cursor?: string;
-  /**
-   * Number of items per page
-   * @minimum 1
-   * @maximum 100
-   */
-  limit?: number;
-  /**
-   * Filter by subscription ID
-   */
-  subscription_id: string;
-  /**
-   * Filter by event type
-   */
-  event_type?: string;
-  /**
-   * Filter by processing status
-   */
-  processing_status?: string;
+/**
+ * Cursor for pagination
+ */
+cursor?: string;
+/**
+ * Number of items per page
+ * @minimum 1
+ * @maximum 100
+ */
+limit?: number;
+/**
+ * Filter by subscription ID
+ */
+subscription_id: string;
+/**
+ * Filter by event type
+ */
+event_type?: string;
+/**
+ * Filter by processing status
+ */
+processing_status?: string;
 };

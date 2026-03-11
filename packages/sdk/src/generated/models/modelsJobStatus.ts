@@ -10,14 +10,14 @@
  * The current status of the job
 example: completed
  */
-export type ModelsJobStatus =
-  (typeof ModelsJobStatus)[keyof typeof ModelsJobStatus];
+export type ModelsJobStatus = typeof ModelsJobStatus[keyof typeof ModelsJobStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ModelsJobStatus = {
-  JobStatusPending: "pending",
-  JobStatusProcessing: "processing",
-  JobStatusCompleted: "completed",
-  JobStatusPartiallyDone: "partially_done",
-  JobStatusFailed: "failed",
+  JobStatusPending: 'pending',
+  JobStatusProcessing: 'processing',
+  JobStatusCompleted: 'completed',
+  JobStatusPartiallyDone: 'partially_done',
+  JobStatusFailed: 'failed',
 } as const;

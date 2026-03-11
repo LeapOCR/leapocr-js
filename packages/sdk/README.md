@@ -40,7 +40,7 @@ const client = new LeapOCR({
 // Submit a document for processing
 const job = await client.ocr.processURL("https://example.com/document.pdf", {
   format: "structured",
-  model: "standard-v1",
+  model: "standard-v2",
 });
 
 // Wait for processing to complete
@@ -63,11 +63,10 @@ console.log("Extracted data:", result.data);
 
 | Model            | Use Case                           | Credits/Page | Priority |
 | ---------------- | ---------------------------------- | ------------ | -------- |
-| `standard-v1`    | General purpose (default)          | 1            | 1        |
-| `english-pro-v1` | English documents, premium quality | 2            | 4        |
-| `pro-v1`         | Highest quality, all languages     | 5            | 5        |
+| `standard-v2`    | General purpose (default)      | 1            | 2        |
+| `pro-v2`         | Highest quality, all languages | 3            | 6        |
 
-Specify a model in the processing options. Defaults to `standard-v1`.
+Specify a model in the processing options. Defaults to `standard-v2`.
 
 ## Usage Examples
 
@@ -80,7 +79,7 @@ const client = new LeapOCR({
 
 const job = await client.ocr.processURL("https://example.com/invoice.pdf", {
   format: "structured",
-  model: "standard-v1",
+  model: "standard-v2",
   instructions: "Extract invoice number, date, and total amount",
 });
 
@@ -102,7 +101,7 @@ const client = new LeapOCR({
 
 const job = await client.ocr.processFile("./invoice.pdf", {
   format: "structured",
-  model: "pro-v1",
+  model: "pro-v2",
   schema: {
     invoice_number: "string",
     total_amount: "number",

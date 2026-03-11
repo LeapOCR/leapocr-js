@@ -5,8 +5,8 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { JobsJobResponse } from "./jobsJobResponse";
-import type { JobsWorkflowStatusInfo } from "./jobsWorkflowStatusInfo";
+import type { JobsJobResponse } from './jobsJobResponse';
+import type { JobsWorkflowStatusInfo } from './jobsWorkflowStatusInfo';
 
 export interface JobsJobStatusResponse {
   estimated_stuck?: boolean;

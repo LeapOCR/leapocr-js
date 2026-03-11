@@ -11,102 +11,77 @@ import type {
   JobsJobResponse,
   JobsJobStatusResponse,
   JobsJobsListCursorResponse,
-  ListJobsCursorParams,
-} from ".././models";
+  ListJobsCursorParams
+} from '.././models';
 
-import { customInstance } from "../../lib/custom-instance";
+import { customInstance } from '../../lib/custom-instance';
+
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-export const getJobs = () => {
-  /**
-   * Retrieve a cursor-paginated list of OCR jobs for a team
-   * @summary List jobs with cursor pagination
-   */
-  const listJobsCursor = (
+
+  export const getJobs = () => {
+/**
+ * Retrieve a cursor-paginated list of OCR jobs for a team
+ * @summary List jobs with cursor pagination
+ */
+const listJobsCursor = (
     organizationId: string,
     teamId: string,
     params?: ListJobsCursorParams,
-    options?: SecondParameter<
-      typeof customInstance<JobsJobsListCursorResponse>
-    >,
-  ) => {
-    return customInstance<JobsJobsListCursorResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/jobs`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<JobsJobsListCursorResponse>>,) => {
+      return customInstance<JobsJobsListCursorResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/jobs`, method: 'GET',
+        params
+    },
+      options);
+    }
   /**
-   * Permanently delete an OCR job and all associated data including pages, results, and metadata. This action cannot be undone
-   * @summary Delete OCR job
-   */
-  const deleteJob = (
+ * Permanently delete an OCR job and all associated data including pages, results, and metadata. This action cannot be undone
+ * @summary Delete OCR job
+ */
+const deleteJob = (
     organizationId: string,
     teamId: string,
     jobId: string,
-    options?: SecondParameter<typeof customInstance<JobsJobResponse>>,
-  ) => {
-    return customInstance<JobsJobResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/jobs/${jobId}`,
-        method: "DELETE",
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<JobsJobResponse>>,) => {
+      return customInstance<JobsJobResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/jobs/${jobId}`, method: 'DELETE'
+    },
+      options);
+    }
   /**
-   * Retry a failed OCR job using the original file. Only jobs with status 'failed' can be retried
-   * @summary Retry failed OCR job
-   */
-  const retryJob = (
+ * Retry a failed OCR job using the original file. Only jobs with status 'failed' can be retried
+ * @summary Retry failed OCR job
+ */
+const retryJob = (
     organizationId: string,
     teamId: string,
     jobId: string,
-    options?: SecondParameter<typeof customInstance<JobsJobManagementResponse>>,
-  ) => {
-    return customInstance<JobsJobManagementResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/jobs/${jobId}/retry`,
-        method: "POST",
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<JobsJobManagementResponse>>,) => {
+      return customInstance<JobsJobManagementResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/jobs/${jobId}/retry`, method: 'POST'
+    },
+      options);
+    }
   /**
-   * Get comprehensive job status including database state and Temporal workflow progress information
-   * @summary Get job status with workflow details
-   */
-  const getTeamJobStatus = (
+ * Get comprehensive job status including database state and Temporal workflow progress information
+ * @summary Get job status with workflow details
+ */
+const getTeamJobStatus = (
     organizationId: string,
     teamId: string,
     jobId: string,
     params?: GetTeamJobStatusParams,
-    options?: SecondParameter<typeof customInstance<JobsJobStatusResponse>>,
-  ) => {
-    return customInstance<JobsJobStatusResponse>(
-      {
-        url: `/organizations/${organizationId}/teams/${teamId}/jobs/${jobId}/status`,
-        method: "GET",
-        params,
-      },
-      options,
-    );
-  };
-  return { listJobsCursor, deleteJob, retryJob, getTeamJobStatus };
-};
-export type ListJobsCursorResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getJobs>["listJobsCursor"]>>
->;
-export type DeleteJobResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getJobs>["deleteJob"]>>
->;
-export type RetryJobResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getJobs>["retryJob"]>>
->;
-export type GetTeamJobStatusResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getJobs>["getTeamJobStatus"]>>
->;
+ options?: SecondParameter<typeof customInstance<JobsJobStatusResponse>>,) => {
+      return customInstance<JobsJobStatusResponse>(
+      {url: `/organizations/${organizationId}/teams/${teamId}/jobs/${jobId}/status`, method: 'GET',
+        params
+    },
+      options);
+    }
+  return {listJobsCursor,deleteJob,retryJob,getTeamJobStatus}};
+export type ListJobsCursorResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['listJobsCursor']>>>
+export type DeleteJobResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['deleteJob']>>>
+export type RetryJobResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['retryJob']>>>
+export type GetTeamJobStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getJobs>['getTeamJobStatus']>>>

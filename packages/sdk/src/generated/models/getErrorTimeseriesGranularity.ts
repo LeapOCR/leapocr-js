@@ -6,13 +6,13 @@
  * OpenAPI spec version: v1
  */
 
-export type GetErrorTimeseriesGranularity =
-  (typeof GetErrorTimeseriesGranularity)[keyof typeof GetErrorTimeseriesGranularity];
+export type GetErrorTimeseriesGranularity = typeof GetErrorTimeseriesGranularity[keyof typeof GetErrorTimeseriesGranularity];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetErrorTimeseriesGranularity = {
-  hour: "hour",
-  day: "day",
-  week: "week",
-  month: "month",
+  hour: 'hour',
+  day: 'day',
+  week: 'week',
+  month: 'month',
 } as const;

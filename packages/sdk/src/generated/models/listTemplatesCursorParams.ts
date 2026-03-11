@@ -5,29 +5,29 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { ListTemplatesCursorFormat } from "./listTemplatesCursorFormat";
+import type { ListTemplatesCursorFormat } from './listTemplatesCursorFormat';
 
 export type ListTemplatesCursorParams = {
-  /**
-   * Cursor for pagination
-   */
-  cursor?: string;
-  /**
-   * Number of items per page
-   * @minimum 1
-   * @maximum 100
-   */
-  limit?: number;
-  /**
-   * Filter by template format
-   */
-  format?: ListTemplatesCursorFormat;
-  /**
-   * Filter by favorite status
-   */
-  favorite?: boolean;
-  /**
-   * Search by template name
-   */
-  search?: string;
+/**
+ * Cursor for pagination
+ */
+cursor?: string;
+/**
+ * Number of items per page
+ * @minimum 1
+ * @maximum 100
+ */
+limit?: number;
+/**
+ * Filter by template format
+ */
+format?: ListTemplatesCursorFormat;
+/**
+ * Filter by favorite status
+ */
+favorite?: boolean;
+/**
+ * Search by template name
+ */
+search?: string;
 };

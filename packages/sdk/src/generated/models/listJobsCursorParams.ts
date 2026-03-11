@@ -5,38 +5,38 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { ListJobsCursorStatus } from "./listJobsCursorStatus";
-import type { ListJobsCursorResultFormat } from "./listJobsCursorResultFormat";
+import type { ListJobsCursorStatus } from './listJobsCursorStatus';
+import type { ListJobsCursorResultFormat } from './listJobsCursorResultFormat';
 
 export type ListJobsCursorParams = {
-  /**
-   * Cursor for pagination
-   */
-  cursor?: string;
-  /**
-   * Number of items per page
-   * @minimum 1
-   * @maximum 100
-   */
-  limit?: number;
-  /**
-   * Filter by job status
-   */
-  status?: ListJobsCursorStatus;
-  /**
-   * Filter by OCR model
-   */
-  model?: string;
-  /**
-   * Filter by result format
-   */
-  result_format?: ListJobsCursorResultFormat;
-  /**
-   * Filter by template UUID
-   */
-  template_id?: string;
-  /**
-   * Include soft-deleted jobs
-   */
-  include_deleted?: boolean;
+/**
+ * Cursor for pagination
+ */
+cursor?: string;
+/**
+ * Number of items per page
+ * @minimum 1
+ * @maximum 100
+ */
+limit?: number;
+/**
+ * Filter by job status
+ */
+status?: ListJobsCursorStatus;
+/**
+ * Filter by OCR model
+ */
+model?: string;
+/**
+ * Filter by result format
+ */
+result_format?: ListJobsCursorResultFormat;
+/**
+ * Filter by template UUID
+ */
+template_id?: string;
+/**
+ * Include soft-deleted jobs
+ */
+include_deleted?: boolean;
 };

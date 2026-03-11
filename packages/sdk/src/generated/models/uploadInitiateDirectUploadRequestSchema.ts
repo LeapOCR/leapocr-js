@@ -6,6 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-export type UploadInitiateDirectUploadRequestSchema = {
-  [key: string]: unknown;
-};
+export type UploadInitiateDirectUploadRequestSchema = {[key: string]: unknown};

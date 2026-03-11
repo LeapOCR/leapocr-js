@@ -7,18 +7,18 @@
  */
 
 export type ListWebhooksCursorParams = {
-  /**
-   * Cursor for pagination
-   */
-  cursor?: string;
-  /**
-   * Number of items per page
-   * @minimum 1
-   * @maximum 100
-   */
-  limit?: number;
-  /**
-   * Filter by enabled status
-   */
-  enabled?: boolean;
+/**
+ * Cursor for pagination
+ */
+cursor?: string;
+/**
+ * Number of items per page
+ * @minimum 1
+ * @maximum 100
+ */
+limit?: number;
+/**
+ * Filter by enabled status
+ */
+enabled?: boolean;
 };

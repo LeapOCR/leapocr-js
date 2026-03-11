@@ -5,23 +5,23 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { GetFileTypeBreakdownRange } from "./getFileTypeBreakdownRange";
+import type { GetFileTypeBreakdownRange } from './getFileTypeBreakdownRange';
 
 export type GetFileTypeBreakdownParams = {
-  /**
-   * Time range preset
-   */
-  range?: GetFileTypeBreakdownRange;
-  /**
-   * Start date (RFC3339 or YYYY-MM-DD format)
-   */
-  start?: string;
-  /**
-   * End date (RFC3339 or YYYY-MM-DD format)
-   */
-  end?: string;
-  /**
-   * Maximum number of file types to return (default: 50, max: 100)
-   */
-  limit?: number;
+/**
+ * Time range preset
+ */
+range?: GetFileTypeBreakdownRange;
+/**
+ * Start date (RFC3339 or YYYY-MM-DD format)
+ */
+start?: string;
+/**
+ * End date (RFC3339 or YYYY-MM-DD format)
+ */
+end?: string;
+/**
+ * Maximum number of file types to return (default: 50, max: 100)
+ */
+limit?: number;
 };

@@ -2,7 +2,6 @@ import { readFileSync } from "fs";
 import { basename } from "path";
 import type { Readable } from "stream";
 import { FileError, TimeoutError, ValidationError } from "../errors/index.js";
-import { getJobs } from "../generated/jobs/jobs.js";
 import { getOcr } from "../generated/ocr/ocr.js";
 import type { ClientConfig } from "../types/config.js";
 import type {
@@ -31,14 +30,13 @@ import { validateBuffer, validateFile } from "../utils/validation.js";
  * // Upload and process a file
  * const result = await client.ocr.processFile('./invoice.pdf', {
  *   format: 'structured',
- *   model: 'pro-v1',
+ *   model: 'pro-v2',
  *   instructions: 'Extract invoice details',
  * });
  * ```
  */
 export class OCRService {
   private readonly client = getOcr();
-  private readonly jobsClient = getJobs();
 
   constructor(private readonly config: Required<ClientConfig>) {}
 
@@ -57,7 +55,7 @@ export class OCRService {
    * @param filePath - Absolute or relative path to the PDF file
    * @param options - Processing configuration options
    * @param options.format - Output format: `markdown` or `structured`
-   * @param options.model - OCR model: `standard-v1` (1 credit/page), `english-pro-v1` (2 credits/page), or `pro-v1` (3 credits/page)
+   * @param options.model - OCR model: `standard-v2` (1 credit/page) or `pro-v2` (3 credits/page)
    * @param options.instructions - Instructions for structured extraction (max 100 chars)
    * @param options.schema - JSON schema for structured data extraction (required for structured format unless using templateSlug)
    * @param options.templateSlug - Template slug for reusable extraction schemas (handles format/model/schema/instructions)
@@ -75,7 +73,7 @@ export class OCRService {
    * // With structured extraction
    * const job = await client.ocr.processFile('./invoice.pdf', {
    *   format: 'structured',
-   *   model: 'pro-v1',
+   *   model: 'pro-v2',
    *   schema: {
    *     type: 'object',
    *     properties: {
@@ -275,7 +273,7 @@ export class OCRService {
    * @param url - Public URL of the PDF document to process (must be accessible via HTTP/HTTPS)
    * @param options - Processing configuration options
    * @param options.format - Output format: `markdown` (page-by-page OCR) or `structured` (data extraction)
-   * @param options.model - OCR model: `standard-v1` (1 credit/page), `english-pro-v1` (2 credits/page), or `pro-v1` (5 credits/page)
+   * @param options.model - OCR model: `standard-v2` (1 credit/page) or `pro-v2` (3 credits/page)
    * @param options.instructions - Instructions for structured extraction (max 100 chars)
    * @param options.schema - JSON schema for structured data extraction (required for structured format unless using templateSlug)
    * @param options.templateSlug - Template slug for reusable extraction schemas (handles format/model/schema/instructions)
@@ -290,7 +288,7 @@ export class OCRService {
    *   'https://example.com/invoice.pdf',
    *   {
    *     format: 'structured',
-   *     model: 'standard-v1',
+   *     model: 'standard-v2',
    *     schema: {
    *       type: 'object',
    *       properties: {

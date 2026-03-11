@@ -29,4 +29,4 @@ export const DEFAULT_MAX_WAIT = 300000;
 /**
  * SDK version
  */
-export const SDK_VERSION = "0.0.0";
+export const SDK_VERSION = "2.0.0";

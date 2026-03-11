@@ -6,11 +6,11 @@
  * OpenAPI spec version: v1
  */
 
-export type ListJobsCursorResultFormat =
-  (typeof ListJobsCursorResultFormat)[keyof typeof ListJobsCursorResultFormat];
+export type ListJobsCursorResultFormat = typeof ListJobsCursorResultFormat[keyof typeof ListJobsCursorResultFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListJobsCursorResultFormat = {
-  structured: "structured",
-  markdown: "markdown",
+  structured: 'structured',
+  markdown: 'markdown',
 } as const;

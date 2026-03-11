@@ -8,100 +8,72 @@
 import type {
   CreateOnboardingBody,
   OnboardingOnboardingStatus,
-  UpdateOnboardingBody,
-} from ".././models";
+  UpdateOnboardingBody
+} from '.././models';
 
-import { customInstance } from "../../lib/custom-instance";
-import type { BodyType } from "../../lib/custom-instance";
+import { customInstance } from '../../lib/custom-instance';
+import type { BodyType } from '../../lib/custom-instance';
+
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-export const getOnboarding = () => {
-  /**
-   * Create onboarding status for an entity
-   * @summary Create onboarding status
-   */
-  const createOnboarding = (
+
+  export const getOnboarding = () => {
+/**
+ * Create onboarding status for an entity
+ * @summary Create onboarding status
+ */
+const createOnboarding = (
     createOnboardingBody: BodyType<CreateOnboardingBody>,
-    options?: SecondParameter<
-      typeof customInstance<OnboardingOnboardingStatus>
-    >,
-  ) => {
-    return customInstance<OnboardingOnboardingStatus>(
-      {
-        url: `/onboarding`,
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        data: createOnboardingBody,
-      },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<OnboardingOnboardingStatus>>,) => {
+      return customInstance<OnboardingOnboardingStatus>(
+      {url: `/onboarding`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createOnboardingBody
+    },
+      options);
+    }
   /**
-   * Permanently delete onboarding status for an entity
-   * @summary Delete onboarding status
-   */
-  const deleteOnboarding = (
+ * Permanently delete onboarding status for an entity
+ * @summary Delete onboarding status
+ */
+const deleteOnboarding = (
     externalId: string,
-    options?: SecondParameter<typeof customInstance<void>>,
-  ) => {
-    return customInstance<void>(
-      { url: `/onboarding/${externalId}`, method: "DELETE" },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<void>>,) => {
+      return customInstance<void>(
+      {url: `/onboarding/${externalId}`, method: 'DELETE'
+    },
+      options);
+    }
   /**
-   * Get onboarding status for an entity by external ID
-   * @summary Get onboarding status
-   */
-  const getOnboarding = (
+ * Get onboarding status for an entity by external ID
+ * @summary Get onboarding status
+ */
+const getOnboarding = (
     externalId: string,
-    options?: SecondParameter<
-      typeof customInstance<OnboardingOnboardingStatus>
-    >,
-  ) => {
-    return customInstance<OnboardingOnboardingStatus>(
-      { url: `/onboarding/${externalId}`, method: "GET" },
-      options,
-    );
-  };
+ options?: SecondParameter<typeof customInstance<OnboardingOnboardingStatus>>,) => {
+      return customInstance<OnboardingOnboardingStatus>(
+      {url: `/onboarding/${externalId}`, method: 'GET'
+    },
+      options);
+    }
   /**
-   * Update onboarding steps and metadata for an entity
-   * @summary Update onboarding status
-   */
-  const updateOnboarding = (
+ * Update onboarding steps and metadata for an entity
+ * @summary Update onboarding status
+ */
+const updateOnboarding = (
     externalId: string,
     updateOnboardingBody: BodyType<UpdateOnboardingBody>,
-    options?: SecondParameter<
-      typeof customInstance<OnboardingOnboardingStatus>
-    >,
-  ) => {
-    return customInstance<OnboardingOnboardingStatus>(
-      {
-        url: `/onboarding/${externalId}`,
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        data: updateOnboardingBody,
-      },
-      options,
-    );
-  };
-  return {
-    createOnboarding,
-    deleteOnboarding,
-    getOnboarding,
-    updateOnboarding,
-  };
-};
-export type CreateOnboardingResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getOnboarding>["createOnboarding"]>>
->;
-export type DeleteOnboardingResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getOnboarding>["deleteOnboarding"]>>
->;
-export type GetOnboardingResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getOnboarding>["getOnboarding"]>>
->;
-export type UpdateOnboardingResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getOnboarding>["updateOnboarding"]>>
->;
+ options?: SecondParameter<typeof customInstance<OnboardingOnboardingStatus>>,) => {
+      return customInstance<OnboardingOnboardingStatus>(
+      {url: `/onboarding/${externalId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateOnboardingBody
+    },
+      options);
+    }
+  return {createOnboarding,deleteOnboarding,getOnboarding,updateOnboarding}};
+export type CreateOnboardingResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOnboarding>['createOnboarding']>>>
+export type DeleteOnboardingResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOnboarding>['deleteOnboarding']>>>
+export type GetOnboardingResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOnboarding>['getOnboarding']>>>
+export type UpdateOnboardingResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getOnboarding>['updateOnboarding']>>>
