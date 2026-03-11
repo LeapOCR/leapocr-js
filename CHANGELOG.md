@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0] - 2026-03-11
+
+- feat: prepare v2.0.0 release (4ca4cb9)
+- v2 (8966284)
+- docs: update CHANGELOG.md for v0.0.5 (8c807e1)
+
+
 ## [2.0.0] - 2026-01-28
 
 ### Changed
