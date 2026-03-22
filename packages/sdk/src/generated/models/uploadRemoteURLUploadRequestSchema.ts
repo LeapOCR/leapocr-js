@@ -6,4 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-export type UploadRemoteURLUploadRequestSchema = {[key: string]: unknown};
+export type UploadRemoteURLUploadRequestSchema = { [key: string]: unknown };

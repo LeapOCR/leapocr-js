@@ -19,215 +19,324 @@ import type {
   SubscriptionsWebhookSubscriptionResponse,
   SubscriptionsWebhooksListCursorResponse,
   TestWebhook200,
-  UpdateWebhookBody
-} from '.././models';
+  UpdateWebhookBody,
+} from ".././models";
 
-import { customInstance } from '../../lib/custom-instance';
-import type { BodyType } from '../../lib/custom-instance';
-
+import { customInstance } from "../../lib/custom-instance";
+import type { BodyType } from "../../lib/custom-instance";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-  export const getWebhooks = () => {
-/**
- * Retrieve a cursor-paginated list of webhook subscriptions for a team
- * @summary List webhook subscriptions with cursor pagination
- */
-const listWebhooksCursor = (
+export const getWebhooks = () => {
+  /**
+   * Retrieve a cursor-paginated list of webhook subscriptions for a team
+   * @summary List webhook subscriptions with cursor pagination
+   */
+  const listWebhooksCursor = (
     organizationId: string,
     teamId: string,
     params?: ListWebhooksCursorParams,
- options?: SecondParameter<typeof customInstance<SubscriptionsWebhooksListCursorResponse>>,) => {
-      return customInstance<SubscriptionsWebhooksListCursorResponse>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/webhooks`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<SubscriptionsWebhooksListCursorResponse>
+    >,
+  ) => {
+    return customInstance<SubscriptionsWebhooksListCursorResponse>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/webhooks`,
+        method: "GET",
+        params,
+      },
+      options,
+    );
+  };
   /**
- * Create a new webhook subscription to receive job events
- * @summary Create webhook subscription
- */
-const createWebhook = (
+   * Create a new webhook subscription to receive job events
+   * @summary Create webhook subscription
+   */
+  const createWebhook = (
     organizationId: string,
     teamId: string,
     createWebhookBody: BodyType<CreateWebhookBody>,
- options?: SecondParameter<typeof customInstance<SubscriptionsWebhookSubscriptionResponse>>,) => {
-      return customInstance<SubscriptionsWebhookSubscriptionResponse>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/webhooks`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createWebhookBody
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<SubscriptionsWebhookSubscriptionResponse>
+    >,
+  ) => {
+    return customInstance<SubscriptionsWebhookSubscriptionResponse>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/webhooks`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: createWebhookBody,
+      },
+      options,
+    );
+  };
   /**
- * Retrieve a cursor-paginated list of webhook delivery events for a team
- * @summary List webhook events with cursor pagination
- */
-const listWebhookEventsCursor = (
+   * Retrieve a cursor-paginated list of webhook delivery events for a team
+   * @summary List webhook events with cursor pagination
+   */
+  const listWebhookEventsCursor = (
     organizationId: string,
     teamId: string,
     params: ListWebhookEventsCursorParams,
- options?: SecondParameter<typeof customInstance<EventsWebhookEventsListCursorResponse>>,) => {
-      return customInstance<EventsWebhookEventsListCursorResponse>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/webhooks/events`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<EventsWebhookEventsListCursorResponse>
+    >,
+  ) => {
+    return customInstance<EventsWebhookEventsListCursorResponse>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/webhooks/events`,
+        method: "GET",
+        params,
+      },
+      options,
+    );
+  };
   /**
- * Get enriched payload data for an internal webhook event. For job events, includes current job data if available. Handles deleted resources gracefully.
- * @summary Get webhook event payload
- */
-const getWebhookEventPayload = (
+   * Get enriched payload data for an internal webhook event. For job events, includes current job data if available. Handles deleted resources gracefully.
+   * @summary Get webhook event payload
+   */
+  const getWebhookEventPayload = (
     organizationId: string,
     teamId: string,
     eventId: string,
- options?: SecondParameter<typeof customInstance<EventsWebhookEventPayloadResponse>>,) => {
-      return customInstance<EventsWebhookEventPayloadResponse>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/webhooks/events/${eventId}/payload`, method: 'GET'
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<EventsWebhookEventPayloadResponse>
+    >,
+  ) => {
+    return customInstance<EventsWebhookEventPayloadResponse>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/webhooks/events/${eventId}/payload`,
+        method: "GET",
+      },
+      options,
+    );
+  };
   /**
- * Permanently delete a webhook subscription. This will stop all webhook deliveries to the endpoint
- * @summary Delete webhook subscription
- */
-const deleteWebhook = (
+   * Permanently delete a webhook subscription. This will stop all webhook deliveries to the endpoint
+   * @summary Delete webhook subscription
+   */
+  const deleteWebhook = (
     organizationId: string,
     teamId: string,
     id: string,
- options?: SecondParameter<typeof customInstance<void>>,) => {
-      return customInstance<void>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}`, method: 'DELETE'
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<void>>,
+  ) => {
+    return customInstance<void>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}`,
+        method: "DELETE",
+      },
+      options,
+    );
+  };
   /**
- * Get details of a specific webhook subscription
- * @summary Get webhook subscription
- */
-const getWebhook = (
+   * Get details of a specific webhook subscription
+   * @summary Get webhook subscription
+   */
+  const getWebhook = (
     organizationId: string,
     teamId: string,
     id: string,
- options?: SecondParameter<typeof customInstance<SubscriptionsWebhookSubscriptionResponse>>,) => {
-      return customInstance<SubscriptionsWebhookSubscriptionResponse>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}`, method: 'GET'
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<SubscriptionsWebhookSubscriptionResponse>
+    >,
+  ) => {
+    return customInstance<SubscriptionsWebhookSubscriptionResponse>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}`,
+        method: "GET",
+      },
+      options,
+    );
+  };
   /**
- * Update an existing webhook subscription
- * @summary Update webhook subscription
- */
-const updateWebhook = (
+   * Update an existing webhook subscription
+   * @summary Update webhook subscription
+   */
+  const updateWebhook = (
     organizationId: string,
     teamId: string,
     id: string,
     updateWebhookBody: BodyType<UpdateWebhookBody>,
- options?: SecondParameter<typeof customInstance<SubscriptionsWebhookSubscriptionResponse>>,) => {
-      return customInstance<SubscriptionsWebhookSubscriptionResponse>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateWebhookBody
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<SubscriptionsWebhookSubscriptionResponse>
+    >,
+  ) => {
+    return customInstance<SubscriptionsWebhookSubscriptionResponse>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}`,
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        data: updateWebhookBody,
+      },
+      options,
+    );
+  };
   /**
- * Check if a webhook subscription endpoint is reachable and responding
- * @summary Health check webhook subscription
- */
-const healthCheckWebhook = (
+   * Check if a webhook subscription endpoint is reachable and responding
+   * @summary Health check webhook subscription
+   */
+  const healthCheckWebhook = (
     organizationId: string,
     teamId: string,
     id: string,
- options?: SecondParameter<typeof customInstance<HealthCheckWebhook200>>,) => {
-      return customInstance<HealthCheckWebhook200>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}/health`, method: 'GET'
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<HealthCheckWebhook200>>,
+  ) => {
+    return customInstance<HealthCheckWebhook200>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}/health`,
+        method: "GET",
+      },
+      options,
+    );
+  };
   /**
- * Generate a new secret for a webhook subscription. The old secret will immediately stop working
- * @summary Regenerate webhook secret
- */
-const regenerateWebhookSecret = (
+   * Generate a new secret for a webhook subscription. The old secret will immediately stop working
+   * @summary Regenerate webhook secret
+   */
+  const regenerateWebhookSecret = (
     organizationId: string,
     teamId: string,
     id: string,
- options?: SecondParameter<typeof customInstance<SubscriptionsWebhookSubscriptionResponse>>,) => {
-      return customInstance<SubscriptionsWebhookSubscriptionResponse>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}/regenerate-secret`, method: 'POST'
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<SubscriptionsWebhookSubscriptionResponse>
+    >,
+  ) => {
+    return customInstance<SubscriptionsWebhookSubscriptionResponse>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}/regenerate-secret`,
+        method: "POST",
+      },
+      options,
+    );
+  };
   /**
- * Send a test webhook event to verify the webhook endpoint is working correctly
- * @summary Test webhook subscription
- */
-const testWebhook = (
+   * Send a test webhook event to verify the webhook endpoint is working correctly
+   * @summary Test webhook subscription
+   */
+  const testWebhook = (
     organizationId: string,
     teamId: string,
     id: string,
- options?: SecondParameter<typeof customInstance<TestWebhook200>>,) => {
-      return customInstance<TestWebhook200>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}/test`, method: 'POST'
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<TestWebhook200>>,
+  ) => {
+    return customInstance<TestWebhook200>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/webhooks/${id}/test`,
+        method: "POST",
+      },
+      options,
+    );
+  };
   /**
- * Get a list of all supported webhook event types that can be subscribed to
- * @summary Get webhook event types
- */
-const getWebhookEventTypes = (
-    
- options?: SecondParameter<typeof customInstance<SubscriptionsWebhookEventTypesResponse>>,) => {
-      return customInstance<SubscriptionsWebhookEventTypesResponse>(
-      {url: `/webhooks/event-types`, method: 'GET'
-    },
-      options);
-    }
+   * Get a list of all supported webhook event types that can be subscribed to
+   * @summary Get webhook event types
+   */
+  const getWebhookEventTypes = (
+    options?: SecondParameter<
+      typeof customInstance<SubscriptionsWebhookEventTypesResponse>
+    >,
+  ) => {
+    return customInstance<SubscriptionsWebhookEventTypesResponse>(
+      { url: `/webhooks/event-types`, method: "GET" },
+      options,
+    );
+  };
   /**
- * Process webhook events from Polar billing system with signature verification
- * @summary Handle Polar webhooks
- */
-const handlePolarWebhook = (
+   * Process webhook events from Polar billing system with signature verification
+   * @summary Handle Polar webhooks
+   */
+  const handlePolarWebhook = (
     handlePolarWebhookBody: BodyType<HandlePolarWebhookBody>,
- options?: SecondParameter<typeof customInstance<string>>,) => {
-      return customInstance<string>(
-      {url: `/webhooks/polar`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: handlePolarWebhookBody
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<string>>,
+  ) => {
+    return customInstance<string>(
+      {
+        url: `/webhooks/polar`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: handlePolarWebhookBody,
+      },
+      options,
+    );
+  };
   /**
- * Receive notification from Cloudflare R2 when file upload is complete
- * @summary Handle R2 upload notification
- */
-const postWebhooksR2UploadNotification = (
+   * Receive notification from Cloudflare R2 when file upload is complete
+   * @summary Handle R2 upload notification
+   */
+  const postWebhooksR2UploadNotification = (
     postWebhooksR2UploadNotificationBody: BodyType<PostWebhooksR2UploadNotificationBody>,
- options?: SecondParameter<typeof customInstance<PostWebhooksR2UploadNotification200>>,) => {
-      return customInstance<PostWebhooksR2UploadNotification200>(
-      {url: `/webhooks/r2-upload-notification`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: postWebhooksR2UploadNotificationBody
-    },
-      options);
-    }
-  return {listWebhooksCursor,createWebhook,listWebhookEventsCursor,getWebhookEventPayload,deleteWebhook,getWebhook,updateWebhook,healthCheckWebhook,regenerateWebhookSecret,testWebhook,getWebhookEventTypes,handlePolarWebhook,postWebhooksR2UploadNotification}};
-export type ListWebhooksCursorResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['listWebhooksCursor']>>>
-export type CreateWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['createWebhook']>>>
-export type ListWebhookEventsCursorResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['listWebhookEventsCursor']>>>
-export type GetWebhookEventPayloadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['getWebhookEventPayload']>>>
-export type DeleteWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['deleteWebhook']>>>
-export type GetWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['getWebhook']>>>
-export type UpdateWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['updateWebhook']>>>
-export type HealthCheckWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['healthCheckWebhook']>>>
-export type RegenerateWebhookSecretResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['regenerateWebhookSecret']>>>
-export type TestWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['testWebhook']>>>
-export type GetWebhookEventTypesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['getWebhookEventTypes']>>>
-export type HandlePolarWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['handlePolarWebhook']>>>
-export type PostWebhooksR2UploadNotificationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getWebhooks>['postWebhooksR2UploadNotification']>>>
+    options?: SecondParameter<
+      typeof customInstance<PostWebhooksR2UploadNotification200>
+    >,
+  ) => {
+    return customInstance<PostWebhooksR2UploadNotification200>(
+      {
+        url: `/webhooks/r2-upload-notification`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        data: postWebhooksR2UploadNotificationBody,
+      },
+      options,
+    );
+  };
+  return {
+    listWebhooksCursor,
+    createWebhook,
+    listWebhookEventsCursor,
+    getWebhookEventPayload,
+    deleteWebhook,
+    getWebhook,
+    updateWebhook,
+    healthCheckWebhook,
+    regenerateWebhookSecret,
+    testWebhook,
+    getWebhookEventTypes,
+    handlePolarWebhook,
+    postWebhooksR2UploadNotification,
+  };
+};
+export type ListWebhooksCursorResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["listWebhooksCursor"]>>
+>;
+export type CreateWebhookResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["createWebhook"]>>
+>;
+export type ListWebhookEventsCursorResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["listWebhookEventsCursor"]>>
+>;
+export type GetWebhookEventPayloadResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["getWebhookEventPayload"]>>
+>;
+export type DeleteWebhookResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["deleteWebhook"]>>
+>;
+export type GetWebhookResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["getWebhook"]>>
+>;
+export type UpdateWebhookResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["updateWebhook"]>>
+>;
+export type HealthCheckWebhookResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["healthCheckWebhook"]>>
+>;
+export type RegenerateWebhookSecretResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["regenerateWebhookSecret"]>>
+>;
+export type TestWebhookResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["testWebhook"]>>
+>;
+export type GetWebhookEventTypesResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["getWebhookEventTypes"]>>
+>;
+export type HandlePolarWebhookResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getWebhooks>["handlePolarWebhook"]>>
+>;
+export type PostWebhooksR2UploadNotificationResult = NonNullable<
+  Awaited<
+    ReturnType<
+      ReturnType<typeof getWebhooks>["postWebhooksR2UploadNotification"]
+    >
+  >
+>;

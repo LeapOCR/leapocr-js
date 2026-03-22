@@ -6,7 +6,6 @@
 - v2 (8966284)
 - docs: update CHANGELOG.md for v0.0.5 (8c807e1)
 
-
 ## [2.0.0] - 2026-01-28
 
 ### Changed
@@ -24,7 +23,6 @@
 - refactor: update README and examples to improve job result handling and API endpoint configuration (c22bde1)
 - docs: update CHANGELOG.md for v0.0.4 (3f349d3)
 
-
 ## [0.0.5] - 2025-11-23
 
 - chore: bump version to 0.0.5
@@ -32,7 +30,6 @@
 ## [0.0.4] - 2025-11-11
 
 - chore: bump version to 0.0.4 and update pnpm setup in GitHub Actions (4d4445c)
-
 
 ## [0.0.3] - 2025-11-11
 

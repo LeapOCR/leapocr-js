@@ -6,11 +6,11 @@
  * OpenAPI spec version: v1
  */
 
-export type SqlcResultFormatEnum = typeof SqlcResultFormatEnum[keyof typeof SqlcResultFormatEnum];
-
+export type SqlcResultFormatEnum =
+  (typeof SqlcResultFormatEnum)[keyof typeof SqlcResultFormatEnum];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SqlcResultFormatEnum = {
-  ResultFormatEnumMarkdown: 'markdown',
-  ResultFormatEnumStructured: 'structured',
+  ResultFormatEnumMarkdown: "markdown",
+  ResultFormatEnumStructured: "structured",
 } as const;

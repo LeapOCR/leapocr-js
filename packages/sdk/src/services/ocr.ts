@@ -41,7 +41,7 @@ export class OCRService {
   constructor(private readonly config: Required<ClientConfig>) {}
 
   /**
-   * Process a PDF file from the local filesystem.
+   * Process a document file from the local filesystem.
    *
    * This method:
    * 1. Validates the file (extension, size, existence)
@@ -49,10 +49,10 @@ export class OCRService {
    * 3. Uploads the file directly to S3
    * 4. Completes the upload and starts OCR processing
    *
-   * **Supported formats:** PDF only (currently)
+   * **Supported formats:** PDF, PNG, JPEG, TIFF, WebP
    * **Maximum file size:** 100MB
    *
-   * @param filePath - Absolute or relative path to the PDF file
+   * @param filePath - Absolute or relative path to the document file
    * @param options - Processing configuration options
    * @param options.format - Output format: `markdown` or `structured`
    * @param options.model - OCR model: `standard-v2` (1 credit/page) or `pro-v2` (3 credits/page)
@@ -60,7 +60,7 @@ export class OCRService {
    * @param options.schema - JSON schema for structured data extraction (required for structured format unless using templateSlug)
    * @param options.templateSlug - Template slug for reusable extraction schemas (handles format/model/schema/instructions)
    * @returns Job information with job ID and initial status
-   * @throws {FileError} If file doesn't exist, is too large, or is not a PDF
+   * @throws {FileError} If file doesn't exist, is too large, or has an unsupported extension
    * @throws {ValidationError} If request parameters are invalid
    * @throws {AuthenticationError} If API key is invalid
    * @throws {NetworkError} If upload fails due to network issues
@@ -265,12 +265,13 @@ export class OCRService {
   }
 
   /**
-   * Process a PDF file from a remote URL.
+   * Process a document from a remote URL.
    *
    * The LeapOCR API will fetch the file from the provided URL and process it.
    * The URL must be publicly accessible from the API servers.
+   * Supports PDF, PNG, JPEG, TIFF, WebP and other document/image types.
    *
-   * @param url - Public URL of the PDF document to process (must be accessible via HTTP/HTTPS)
+   * @param url - Public URL of the document to process (must be accessible via HTTP/HTTPS)
    * @param options - Processing configuration options
    * @param options.format - Output format: `markdown` (page-by-page OCR) or `structured` (data extraction)
    * @param options.model - OCR model: `standard-v2` (1 credit/page) or `pro-v2` (3 credits/page)
@@ -568,6 +569,12 @@ export class OCRService {
     if (instructions && format !== "structured") {
       throw new ValidationError(
         "instructions can only be used with structured format",
+      );
+    }
+
+    if (format && !model) {
+      throw new ValidationError(
+        "model is required when specifying format directly (use templateSlug to inherit model from template)",
       );
     }
 

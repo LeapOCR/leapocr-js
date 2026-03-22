@@ -5,8 +5,8 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { SqlcResultFormatEnum } from './sqlcResultFormatEnum';
-import type { TemplatesUpdateTemplateRequestSchema } from './templatesUpdateTemplateRequestSchema';
+import type { SqlcResultFormatEnum } from "./sqlcResultFormatEnum";
+import type { TemplatesUpdateTemplateRequestSchema } from "./templatesUpdateTemplateRequestSchema";
 
 export interface TemplatesUpdateTemplateRequest {
   color?: string;
@@ -18,6 +18,7 @@ export interface TemplatesUpdateTemplateRequest {
   format: SqlcResultFormatEnum;
   /** @maxLength 2000 */
   instructions?: string;
+  model?: string;
   /**
    * @minLength 1
    * @maxLength 255

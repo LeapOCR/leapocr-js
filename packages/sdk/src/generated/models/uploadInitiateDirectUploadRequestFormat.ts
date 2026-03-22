@@ -6,11 +6,11 @@
  * OpenAPI spec version: v1
  */
 
-export type UploadInitiateDirectUploadRequestFormat = typeof UploadInitiateDirectUploadRequestFormat[keyof typeof UploadInitiateDirectUploadRequestFormat];
-
+export type UploadInitiateDirectUploadRequestFormat =
+  (typeof UploadInitiateDirectUploadRequestFormat)[keyof typeof UploadInitiateDirectUploadRequestFormat];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UploadInitiateDirectUploadRequestFormat = {
-  markdown: 'markdown',
-  structured: 'structured',
+  markdown: "markdown",
+  structured: "structured",
 } as const;

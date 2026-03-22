@@ -58,13 +58,14 @@ console.log("Extracted data:", result.data);
 - **Built-in Retry Logic** - Automatic handling of transient failures
 - **Universal Runtime** - Works in Node.js and modern browsers
 - **Direct File Upload** - Efficient multipart uploads for local files
+- **Webhook Verification Helper** - Verify incoming `X-R2-Signature` headers with the raw request body
 
 ## Processing Models
 
-| Model            | Use Case                           | Credits/Page | Priority |
-| ---------------- | ---------------------------------- | ------------ | -------- |
-| `standard-v2`    | General purpose (default)      | 1            | 2        |
-| `pro-v2`         | Highest quality, all languages | 3            | 6        |
+| Model         | Use Case                       | Credits/Page | Priority |
+| ------------- | ------------------------------ | ------------ | -------- |
+| `standard-v2` | General purpose (default)      | 1            | 2        |
+| `pro-v2`      | Highest quality, all languages | 3            | 6        |
 
 Specify a model in the processing options. Defaults to `standard-v2`.
 
@@ -261,6 +262,36 @@ try {
 - `TimeoutError` - Operation timeouts
 - `NetworkError` - Network/connectivity issues (retryable)
 - `APIError` - General API errors
+
+## Webhook Signature Verification
+
+Use `verifyWebhookSignature()` with the raw request body exactly as received. LeapOCR sends customer webhooks with `X-Webhook-Signature` and `X-Webhook-Timestamp`, and signs `timestamp + "." + rawBody` with your webhook secret.
+
+```typescript
+import { verifyWebhookSignature } from "leapocr";
+
+export async function POST(request: Request): Promise<Response> {
+  const rawBody = await request.text();
+  const signature = request.headers.get("x-webhook-signature") ?? "";
+  const timestamp = request.headers.get("x-webhook-timestamp") ?? "";
+
+  const isValid = await verifyWebhookSignature(
+    rawBody,
+    signature,
+    timestamp,
+    process.env.LEAPOCR_WEBHOOK_SECRET!,
+  );
+
+  if (!isValid) {
+    return new Response("Invalid signature", { status: 401 });
+  }
+
+  const payload = JSON.parse(rawBody);
+  return Response.json({ ok: true, objectKey: payload.object_key });
+}
+```
+
+Do not verify against `JSON.stringify(parsedBody)`. Use the original request text or bytes and the timestamp header.
 
 ## API Reference
 

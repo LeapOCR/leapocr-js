@@ -142,19 +142,19 @@ const uploadPromises = files.map((file) =>
   client.ocr.processFile(file, {
     format: "structured",
     model: "standard-v2",
-  })
+  }),
 );
 
 const jobs = await Promise.all(uploadPromises);
 
 // Wait for all to complete
 const statuses = await Promise.all(
-  jobs.map((job) => client.ocr.waitUntilDone(job.jobId))
+  jobs.map((job) => client.ocr.waitUntilDone(job.jobId)),
 );
 
 // Get results for completed jobs
 const results = await Promise.all(
-  jobs.map((job) => client.ocr.getJobResult(job.jobId))
+  jobs.map((job) => client.ocr.getJobResult(job.jobId)),
 );
 ```
 
@@ -212,10 +212,10 @@ const client = new LeapOCR({
 
 ## Available Formats
 
-| Format                | Description                    | Output                                 |
-| --------------------- | ------------------------------ | -------------------------------------- |
-| `markdown`            | Page-by-page OCR               | Plain text per page                    |
-| `structured`          | Structured data extraction     | JSON data based on schema/instructions |
+| Format       | Description                | Output                                 |
+| ------------ | -------------------------- | -------------------------------------- |
+| `markdown`   | Page-by-page OCR           | Plain text per page                    |
+| `structured` | Structured data extraction | JSON data based on schema/instructions |
 
 ## Error Handling
 

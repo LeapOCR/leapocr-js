@@ -86,7 +86,7 @@ async function customConfigExample(apiKey: string) {
           },
           required: ["text"],
         },
-      }
+      },
     );
 
     console.log(`Job created with custom config: ${job.jobId}`);
@@ -116,7 +116,7 @@ async function batchProcessingExample(apiKey: string) {
   try {
     // Process files concurrently
     console.log(
-      `Starting concurrent processing of ${fileURLs.length} files...`
+      `Starting concurrent processing of ${fileURLs.length} files...`,
     );
 
     const uploadPromises = fileURLs.map(async (url, index) => {
@@ -145,7 +145,7 @@ async function batchProcessingExample(apiKey: string) {
           onProgress: (status) => {
             if (status.progress) {
               console.log(
-                `File ${index + 1} - ${status.status}: ${status.progress.toFixed(1)}%`
+                `File ${index + 1} - ${status.status}: ${status.progress.toFixed(1)}%`,
               );
             }
           },
@@ -154,7 +154,7 @@ async function batchProcessingExample(apiKey: string) {
         if (result.status === "completed") {
           const fullResult = await client.ocr.getJobResult(job.jobId);
           console.log(
-            `Completed processing file ${index + 1} (Job ID: ${job.jobId})`
+            `Completed processing file ${index + 1} (Job ID: ${job.jobId})`,
           );
 
           return {
@@ -187,14 +187,14 @@ async function batchProcessingExample(apiKey: string) {
 
     console.log("\nBatch processing complete:");
     console.log(
-      `  Successfully processed: ${successCount}/${fileURLs.length} files`
+      `  Successfully processed: ${successCount}/${fileURLs.length} files`,
     );
     console.log(`  Total credits used: ${totalCredits}`);
 
     results.forEach((result) => {
       if (result.success && "credits" in result) {
         console.log(
-          `  [SUCCESS] File ${result.index} - Credits: ${result.credits}, Pages: ${result.pages}`
+          `  [SUCCESS] File ${result.index} - Credits: ${result.credits}, Pages: ${result.pages}`,
         );
       } else if (!result.success && "error" in result) {
         console.log(`  [FAILED] File ${result.index} - Error: ${result.error}`);
@@ -284,7 +284,7 @@ async function schemaExtractionExample(apiKey: string) {
       if (fullResult.pages && fullResult.pages.length > 0) {
         console.log(
           "Extracted data:",
-          JSON.stringify(fullResult.pages[0].result, null, 2)
+          JSON.stringify(fullResult.pages[0].result, null, 2),
         );
       }
     } else {
@@ -294,7 +294,7 @@ async function schemaExtractionExample(apiKey: string) {
     const errorMsg = error instanceof Error ? error.message : String(error);
     console.log(`Expected failure with example URL: ${errorMsg}`);
     console.log(
-      "In a real scenario, this would process the invoice and extract:"
+      "In a real scenario, this would process the invoice and extract:",
     );
     console.log("- Invoice number");
     console.log("- Total amount");
@@ -335,7 +335,7 @@ async function templateBatchProcessingExample(apiKey: string) {
 
   try {
     console.log(
-      `Processing ${documents.length} documents with different templates...`
+      `Processing ${documents.length} documents with different templates...`,
     );
 
     // Process all documents in parallel using their respective templates
@@ -347,7 +347,7 @@ async function templateBatchProcessingExample(apiKey: string) {
           });
 
           console.log(
-            `${doc.type}: Job ${job.jobId} created with template "${doc.templateSlug}"`
+            `${doc.type}: Job ${job.jobId} created with template "${doc.templateSlug}"`,
           );
 
           return { ...job, type: doc.type, templateSlug: doc.templateSlug };
@@ -355,7 +355,7 @@ async function templateBatchProcessingExample(apiKey: string) {
           console.error(`Failed to create job for ${doc.type}:`, error);
           return null;
         }
-      })
+      }),
     );
 
     // Wait for all jobs to complete
@@ -370,7 +370,7 @@ async function templateBatchProcessingExample(apiKey: string) {
               onProgress: (status) => {
                 if (status.progress) {
                   console.log(
-                    `${job.type} (${job.templateSlug}): ${status.progress.toFixed(1)}%`
+                    `${job.type} (${job.templateSlug}): ${status.progress.toFixed(1)}%`,
                   );
                 }
               },
@@ -391,14 +391,14 @@ async function templateBatchProcessingExample(apiKey: string) {
               error: String(error),
             };
           }
-        })
+        }),
     );
 
     console.log("\nTemplate-based batch processing complete:");
     results.forEach((result) => {
       const status = result.status === "completed" ? "✓" : "✗";
       console.log(
-        `  ${status} ${result.type} (${result.templateSlug}): ${result.status}`
+        `  ${status} ${result.type} (${result.templateSlug}): ${result.status}`,
       );
     });
   } catch (error) {
@@ -445,7 +445,7 @@ async function jobLifecycleExample(apiKey: string) {
     while (attempts < maxAttempts) {
       const status = await client.ocr.getJobStatus(job.jobId);
       console.log(
-        `   Status check ${attempts + 1}: ${status.status} (${status.progress?.toFixed(1) || 0}%)`
+        `   Status check ${attempts + 1}: ${status.status} (${status.progress?.toFixed(1) || 0}%)`,
       );
 
       if (status.status === "completed" || status.status === "failed") {
@@ -486,7 +486,7 @@ async function jobLifecycleExample(apiKey: string) {
   } catch (error) {
     console.log(`Job lifecycle example: ${error}`);
     console.log(
-      "This example shows proper resource management with job deletion"
+      "This example shows proper resource management with job deletion",
     );
   }
 

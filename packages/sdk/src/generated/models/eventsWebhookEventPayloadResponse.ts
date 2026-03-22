@@ -5,7 +5,7 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { EventsWebhookEventPayloadResponsePayload } from './eventsWebhookEventPayloadResponsePayload';
+import type { EventsWebhookEventPayloadResponsePayload } from "./eventsWebhookEventPayloadResponsePayload";
 
 export interface EventsWebhookEventPayloadResponse {
   /** Whether payload was enriched with current data */

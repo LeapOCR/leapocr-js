@@ -28,6 +28,7 @@ export interface JobsJobListItem {
   status?: string;
   surcharge_credits?: number;
   template_id?: string;
+  template_internal?: boolean;
   template_name?: string;
   total_pages?: number;
 }

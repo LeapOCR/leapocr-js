@@ -5,8 +5,8 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { UploadInitiateDirectUploadRequestFormat } from './uploadInitiateDirectUploadRequestFormat';
-import type { UploadInitiateDirectUploadRequestSchema } from './uploadInitiateDirectUploadRequestSchema';
+import type { UploadInitiateDirectUploadRequestFormat } from "./uploadInitiateDirectUploadRequestFormat";
+import type { UploadInitiateDirectUploadRequestSchema } from "./uploadInitiateDirectUploadRequestSchema";
 
 export interface UploadInitiateDirectUploadRequest {
   content_type: string;
@@ -21,7 +21,7 @@ export interface UploadInitiateDirectUploadRequest {
    * @minimum 1
    * @maximum 1073741824
    */
-  file_size?: number;
+  file_size: number;
   format?: UploadInitiateDirectUploadRequestFormat;
   /** @maxLength 100 */
   instructions?: string;

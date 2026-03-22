@@ -6,13 +6,13 @@
  * OpenAPI spec version: v1
  */
 
-export type GetErrorTimeseriesBucket = typeof GetErrorTimeseriesBucket[keyof typeof GetErrorTimeseriesBucket];
-
+export type GetErrorTimeseriesBucket =
+  (typeof GetErrorTimeseriesBucket)[keyof typeof GetErrorTimeseriesBucket];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetErrorTimeseriesBucket = {
-  hour: 'hour',
-  day: 'day',
-  week: 'week',
-  month: 'month',
+  hour: "hour",
+  day: "day",
+  week: "week",
+  month: "month",
 } as const;

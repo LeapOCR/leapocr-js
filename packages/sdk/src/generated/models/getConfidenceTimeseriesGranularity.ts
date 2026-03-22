@@ -6,13 +6,13 @@
  * OpenAPI spec version: v1
  */
 
-export type GetConfidenceTimeseriesGranularity = typeof GetConfidenceTimeseriesGranularity[keyof typeof GetConfidenceTimeseriesGranularity];
-
+export type GetConfidenceTimeseriesGranularity =
+  (typeof GetConfidenceTimeseriesGranularity)[keyof typeof GetConfidenceTimeseriesGranularity];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetConfidenceTimeseriesGranularity = {
-  hour: 'hour',
-  day: 'day',
-  week: 'week',
-  month: 'month',
+  hour: "hour",
+  day: "day",
+  week: "week",
+  month: "month",
 } as const;

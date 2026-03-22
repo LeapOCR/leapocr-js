@@ -5,9 +5,9 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { ActiveMeterResponse } from './activeMeterResponse';
-import type { ActiveSubscriptionResponse } from './activeSubscriptionResponse';
-import type { GrantedBenefitResponse } from './grantedBenefitResponse';
+import type { ActiveMeterResponse } from "./activeMeterResponse";
+import type { ActiveSubscriptionResponse } from "./activeSubscriptionResponse";
+import type { GrantedBenefitResponse } from "./grantedBenefitResponse";
 
 export interface CreditBalanceResponse {
   active_meters?: ActiveMeterResponse[];

@@ -6,18 +6,18 @@
  * OpenAPI spec version: v1
  */
 
-export type ResponseErrorCode = typeof ResponseErrorCode[keyof typeof ResponseErrorCode];
-
+export type ResponseErrorCode =
+  (typeof ResponseErrorCode)[keyof typeof ResponseErrorCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseErrorCode = {
-  ErrCodeValidation: 'VALIDATION_ERROR',
-  ErrCodeNotFound: 'NOT_FOUND',
-  ErrCodeUnauthorized: 'AUTHENTICATION_ERROR',
-  ErrCodeForbidden: 'FORBIDDEN',
-  ErrCodeInternal: 'SYSTEM_ERROR',
-  ErrCodeBadRequest: 'BAD_REQUEST',
-  ErrCodeConflict: 'CONFLICT',
-  ErrCodeTooManyReqs: 'TOO_MANY_REQUESTS',
-  ErrLessCredits: 'LESS_CREDITS',
+  ErrCodeValidation: "VALIDATION_ERROR",
+  ErrCodeNotFound: "NOT_FOUND",
+  ErrCodeUnauthorized: "AUTHENTICATION_ERROR",
+  ErrCodeForbidden: "FORBIDDEN",
+  ErrCodeInternal: "SYSTEM_ERROR",
+  ErrCodeBadRequest: "BAD_REQUEST",
+  ErrCodeConflict: "CONFLICT",
+  ErrCodeTooManyReqs: "TOO_MANY_REQUESTS",
+  ErrLessCredits: "LESS_CREDITS",
 } as const;

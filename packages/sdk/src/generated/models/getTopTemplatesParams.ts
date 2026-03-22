@@ -5,23 +5,23 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { GetTopTemplatesRange } from './getTopTemplatesRange';
+import type { GetTopTemplatesRange } from "./getTopTemplatesRange";
 
 export type GetTopTemplatesParams = {
-/**
- * Time range preset
- */
-range?: GetTopTemplatesRange;
-/**
- * Start date (RFC3339 or YYYY-MM-DD format)
- */
-start?: string;
-/**
- * End date (RFC3339 or YYYY-MM-DD format)
- */
-end?: string;
-/**
- * Maximum number of templates to return (default: 10, max: 100)
- */
-limit?: number;
+  /**
+   * Time range preset
+   */
+  range?: GetTopTemplatesRange;
+  /**
+   * Start date (RFC3339 or YYYY-MM-DD format)
+   */
+  start?: string;
+  /**
+   * End date (RFC3339 or YYYY-MM-DD format)
+   */
+  end?: string;
+  /**
+   * Maximum number of templates to return (default: 10, max: 100)
+   */
+  limit?: number;
 };

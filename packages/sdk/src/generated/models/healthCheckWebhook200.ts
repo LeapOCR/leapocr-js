@@ -6,4 +6,4 @@
  * OpenAPI spec version: v1
  */
 
-export type HealthCheckWebhook200 = {[key: string]: unknown};
+export type HealthCheckWebhook200 = { [key: string]: unknown };

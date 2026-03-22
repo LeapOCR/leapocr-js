@@ -6,12 +6,11 @@
  * OpenAPI spec version: v1
  */
 
-export type ListTemplatesCursorFormat = typeof ListTemplatesCursorFormat[keyof typeof ListTemplatesCursorFormat];
-
+export type ListTemplatesCursorFormat =
+  (typeof ListTemplatesCursorFormat)[keyof typeof ListTemplatesCursorFormat];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListTemplatesCursorFormat = {
-  json: 'json',
-  markdown: 'markdown',
-  xml: 'xml',
+  markdown: "markdown",
+  structured: "structured",
 } as const;

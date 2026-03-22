@@ -5,29 +5,29 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { GetCreditUsageRange } from './getCreditUsageRange';
-import type { GetCreditUsageBucket } from './getCreditUsageBucket';
-import type { GetCreditUsageGranularity } from './getCreditUsageGranularity';
+import type { GetCreditUsageRange } from "./getCreditUsageRange";
+import type { GetCreditUsageBucket } from "./getCreditUsageBucket";
+import type { GetCreditUsageGranularity } from "./getCreditUsageGranularity";
 
 export type GetCreditUsageParams = {
-/**
- * Time range preset
- */
-range?: GetCreditUsageRange;
-/**
- * Start date (RFC3339 or YYYY-MM-DD format)
- */
-start?: string;
-/**
- * End date (RFC3339 or YYYY-MM-DD format)
- */
-end?: string;
-/**
- * Time bucket granularity
- */
-bucket?: GetCreditUsageBucket;
-/**
- * Alias for bucket parameter
- */
-granularity?: GetCreditUsageGranularity;
+  /**
+   * Time range preset
+   */
+  range?: GetCreditUsageRange;
+  /**
+   * Start date (RFC3339 or YYYY-MM-DD format)
+   */
+  start?: string;
+  /**
+   * End date (RFC3339 or YYYY-MM-DD format)
+   */
+  end?: string;
+  /**
+   * Time bucket granularity
+   */
+  bucket?: GetCreditUsageBucket;
+  /**
+   * Alias for bucket parameter
+   */
+  granularity?: GetCreditUsageGranularity;
 };

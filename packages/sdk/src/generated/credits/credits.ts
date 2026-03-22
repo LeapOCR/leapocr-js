@@ -11,71 +11,105 @@ import type {
   CreditsOrgCreditTransactionsListCursorResponse,
   ListCreditTransactionsCursorParams,
   ListOrgCreditTransactionsCursorParams,
-  ProductCatalog
-} from '.././models';
+  ProductCatalog,
+} from ".././models";
 
-import { customInstance } from '../../lib/custom-instance';
-
+import { customInstance } from "../../lib/custom-instance";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-  export const getCredits = () => {
-/**
- * Retrieve list of all available products from Polar with caching
- * @summary Get Polar products catalog
- */
-const getPolarProductsCatalog = (
-    
- options?: SecondParameter<typeof customInstance<ProductCatalog>>,) => {
-      return customInstance<ProductCatalog>(
-      {url: `/credits/polar/products/catalog`, method: 'GET'
-    },
-      options);
-    }
+export const getCredits = () => {
   /**
- * Retrieve current credit balance, consumption, trial status, active subscriptions, granted benefits, and active meters for the authenticated user's organization from the JWT token.
- * @summary Get organization credits balance
- */
-const getOrganizationCreditsBalance = (
+   * Retrieve list of all available products from Polar with caching
+   * @summary Get Polar products catalog
+   */
+  const getPolarProductsCatalog = (
+    options?: SecondParameter<typeof customInstance<ProductCatalog>>,
+  ) => {
+    return customInstance<ProductCatalog>(
+      { url: `/credits/polar/products/catalog`, method: "GET" },
+      options,
+    );
+  };
+  /**
+   * Retrieve current credit balance, consumption, trial status, active subscriptions, granted benefits, and active meters for the authenticated user's organization from the JWT token.
+   * @summary Get organization credits balance
+   */
+  const getOrganizationCreditsBalance = (
     organizationId: string,
- options?: SecondParameter<typeof customInstance<CreditBalanceResponse>>,) => {
-      return customInstance<CreditBalanceResponse>(
-      {url: `/organizations/${organizationId}/credits/balance`, method: 'GET'
-    },
-      options);
-    }
+    options?: SecondParameter<typeof customInstance<CreditBalanceResponse>>,
+  ) => {
+    return customInstance<CreditBalanceResponse>(
+      {
+        url: `/organizations/${organizationId}/credits/balance`,
+        method: "GET",
+      },
+      options,
+    );
+  };
   /**
- * Retrieve a cursor-paginated list of credit transactions for an organization
- * @summary List organization credit transactions with cursor pagination
- */
-const listOrgCreditTransactionsCursor = (
+   * Retrieve a cursor-paginated list of credit transactions for an organization
+   * @summary List organization credit transactions with cursor pagination
+   */
+  const listOrgCreditTransactionsCursor = (
     organizationId: string,
     params?: ListOrgCreditTransactionsCursorParams,
- options?: SecondParameter<typeof customInstance<CreditsOrgCreditTransactionsListCursorResponse>>,) => {
-      return customInstance<CreditsOrgCreditTransactionsListCursorResponse>(
-      {url: `/organizations/${organizationId}/credits/transactions`, method: 'GET',
-        params
-    },
-      options);
-    }
+    options?: SecondParameter<
+      typeof customInstance<CreditsOrgCreditTransactionsListCursorResponse>
+    >,
+  ) => {
+    return customInstance<CreditsOrgCreditTransactionsListCursorResponse>(
+      {
+        url: `/organizations/${organizationId}/credits/transactions`,
+        method: "GET",
+        params,
+      },
+      options,
+    );
+  };
   /**
- * Retrieve a cursor-paginated list of credit transactions for a team
- * @summary List credit transactions with cursor pagination
- */
-const listCreditTransactionsCursor = (
+   * Retrieve a cursor-paginated list of credit transactions for a team
+   * @summary List credit transactions with cursor pagination
+   */
+  const listCreditTransactionsCursor = (
     organizationId: string,
     teamId: string,
     params?: ListCreditTransactionsCursorParams,
- options?: SecondParameter<typeof customInstance<CreditsCreditTransactionsListCursorResponse>>,) => {
-      return customInstance<CreditsCreditTransactionsListCursorResponse>(
-      {url: `/organizations/${organizationId}/teams/${teamId}/credits/transactions`, method: 'GET',
-        params
-    },
-      options);
-    }
-  return {getPolarProductsCatalog,getOrganizationCreditsBalance,listOrgCreditTransactionsCursor,listCreditTransactionsCursor}};
-export type GetPolarProductsCatalogResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['getPolarProductsCatalog']>>>
-export type GetOrganizationCreditsBalanceResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['getOrganizationCreditsBalance']>>>
-export type ListOrgCreditTransactionsCursorResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['listOrgCreditTransactionsCursor']>>>
-export type ListCreditTransactionsCursorResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCredits>['listCreditTransactionsCursor']>>>
+    options?: SecondParameter<
+      typeof customInstance<CreditsCreditTransactionsListCursorResponse>
+    >,
+  ) => {
+    return customInstance<CreditsCreditTransactionsListCursorResponse>(
+      {
+        url: `/organizations/${organizationId}/teams/${teamId}/credits/transactions`,
+        method: "GET",
+        params,
+      },
+      options,
+    );
+  };
+  return {
+    getPolarProductsCatalog,
+    getOrganizationCreditsBalance,
+    listOrgCreditTransactionsCursor,
+    listCreditTransactionsCursor,
+  };
+};
+export type GetPolarProductsCatalogResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getCredits>["getPolarProductsCatalog"]>>
+>;
+export type GetOrganizationCreditsBalanceResult = NonNullable<
+  Awaited<
+    ReturnType<ReturnType<typeof getCredits>["getOrganizationCreditsBalance"]>
+  >
+>;
+export type ListOrgCreditTransactionsCursorResult = NonNullable<
+  Awaited<
+    ReturnType<ReturnType<typeof getCredits>["listOrgCreditTransactionsCursor"]>
+  >
+>;
+export type ListCreditTransactionsCursorResult = NonNullable<
+  Awaited<
+    ReturnType<ReturnType<typeof getCredits>["listCreditTransactionsCursor"]>
+  >
+>;

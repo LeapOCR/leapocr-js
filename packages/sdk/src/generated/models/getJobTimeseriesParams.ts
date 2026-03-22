@@ -5,29 +5,29 @@
  * Advanced OCR API for processing PDF documents with AI-powered text extraction using Gemini LLM integration. Supports structured data extraction, template-based processing, and real-time job management.
  * OpenAPI spec version: v1
  */
-import type { GetJobTimeseriesRange } from './getJobTimeseriesRange';
-import type { GetJobTimeseriesBucket } from './getJobTimeseriesBucket';
-import type { GetJobTimeseriesGranularity } from './getJobTimeseriesGranularity';
+import type { GetJobTimeseriesRange } from "./getJobTimeseriesRange";
+import type { GetJobTimeseriesBucket } from "./getJobTimeseriesBucket";
+import type { GetJobTimeseriesGranularity } from "./getJobTimeseriesGranularity";
 
 export type GetJobTimeseriesParams = {
-/**
- * Time range preset
- */
-range?: GetJobTimeseriesRange;
-/**
- * Start date (RFC3339 or YYYY-MM-DD format)
- */
-start?: string;
-/**
- * End date (RFC3339 or YYYY-MM-DD format)
- */
-end?: string;
-/**
- * Time bucket granularity
- */
-bucket?: GetJobTimeseriesBucket;
-/**
- * Alias for bucket parameter
- */
-granularity?: GetJobTimeseriesGranularity;
+  /**
+   * Time range preset
+   */
+  range?: GetJobTimeseriesRange;
+  /**
+   * Start date (RFC3339 or YYYY-MM-DD format)
+   */
+  start?: string;
+  /**
+   * End date (RFC3339 or YYYY-MM-DD format)
+   */
+  end?: string;
+  /**
+   * Time bucket granularity
+   */
+  bucket?: GetJobTimeseriesBucket;
+  /**
+   * Alias for bucket parameter
+   */
+  granularity?: GetJobTimeseriesGranularity;
 };

@@ -50,3 +50,7 @@ export {
 // Utilities (for advanced use)
 export { validateBuffer, validateFile } from "./utils/validation.js";
 export type { ValidationResult } from "./utils/validation.js";
+export {
+  verifyWebhookSignature,
+  type WebhookPayload,
+} from "./utils/webhooks.js";

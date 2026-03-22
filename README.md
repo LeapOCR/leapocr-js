@@ -162,10 +162,10 @@ const job = await client.ocr.processFile("./medical-record.pdf", {
 
 ### Output Formats
 
-| Format                | Description        | Use Case                                       |
-| --------------------- | ------------------ | ---------------------------------------------- |
-| `structured`          | Single JSON object | Extract specific fields across entire document |
-| `markdown`            | Text per page      | Convert document to readable text              |
+| Format       | Description        | Use Case                                       |
+| ------------ | ------------------ | ---------------------------------------------- |
+| `structured` | Single JSON object | Extract specific fields across entire document |
+| `markdown`   | Text per page      | Convert document to readable text              |
 
 ### Monitoring Job Progress
 

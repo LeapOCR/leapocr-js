@@ -6,14 +6,14 @@
  * OpenAPI spec version: v1
  */
 
-export type CreditsCreditTransactionOrganizationResponseTransactionType = typeof CreditsCreditTransactionOrganizationResponseTransactionType[keyof typeof CreditsCreditTransactionOrganizationResponseTransactionType];
-
+export type CreditsCreditTransactionOrganizationResponseTransactionType =
+  (typeof CreditsCreditTransactionOrganizationResponseTransactionType)[keyof typeof CreditsCreditTransactionOrganizationResponseTransactionType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreditsCreditTransactionOrganizationResponseTransactionType = {
-  credit: 'credit',
-  consumed: 'consumed',
-  refunded: 'refunded',
-  adjustment: 'adjustment',
-  expiration: 'expiration',
+  credit: "credit",
+  consumed: "consumed",
+  refunded: "refunded",
+  adjustment: "adjustment",
+  expiration: "expiration",
 } as const;

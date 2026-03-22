@@ -12,6 +12,10 @@ import { AXIOS_INSTANCE } from "./lib/custom-instance.js";
 import { OCRService } from "./services/ocr.js";
 import type { ClientConfig } from "./types/config.js";
 import { SDK_VERSION } from "./utils/constants.js";
+import {
+  type WebhookPayload,
+  verifyWebhookSignature,
+} from "./utils/webhooks.js";
 
 const DEFAULT_BASE_URL = "https://api.leapocr.com/api/v1";
 const DEFAULT_TIMEOUT = 30000;
@@ -181,7 +185,7 @@ export class LeapOCR {
    * // Upload a file
    * const job = await client.ocr.uploadFile('./document.pdf', {
    *   format: 'markdown',
- *   model: 'standard-v2',
+   *   model: 'standard-v2',
    * });
    *
    * // Wait for completion
@@ -193,5 +197,17 @@ export class LeapOCR {
       this._ocr = new OCRService(this.config);
     }
     return this._ocr;
+  }
+
+  /**
+   * Verify a LeapOCR webhook signature against the raw request body.
+   */
+  static async verifyWebhookSignature(
+    payload: WebhookPayload,
+    signature: string,
+    timestamp: string,
+    secret: string,
+  ): Promise<boolean> {
+    return verifyWebhookSignature(payload, signature, timestamp, secret);
   }
 }

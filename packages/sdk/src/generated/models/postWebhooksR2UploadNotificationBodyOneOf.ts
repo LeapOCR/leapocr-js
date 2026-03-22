@@ -6,4 +6,6 @@
  * OpenAPI spec version: v1
  */
 
-export type PostWebhooksR2UploadNotificationBodyOneOf = { [key: string]: unknown };
+export type PostWebhooksR2UploadNotificationBodyOneOf = {
+  [key: string]: unknown;
+};

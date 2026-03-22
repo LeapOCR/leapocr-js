@@ -7,30 +7,30 @@
  */
 
 export type ListCreditTransactionsCursorParams = {
-/**
- * Cursor for pagination
- */
-cursor?: string;
-/**
- * Number of items per page
- * @minimum 1
- * @maximum 100
- */
-limit?: number;
-/**
- * Search by job ID or file name
- */
-search?: string;
-/**
- * Filter by OCR model
- */
-model?: string;
-/**
- * Filter by creation date (ISO 8601, inclusive)
- */
-created_from?: string;
-/**
- * Filter by creation date (ISO 8601, inclusive)
- */
-created_to?: string;
+  /**
+   * Cursor for pagination
+   */
+  cursor?: string;
+  /**
+   * Number of items per page
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number;
+  /**
+   * Search by job ID or file name
+   */
+  search?: string;
+  /**
+   * Filter by OCR model
+   */
+  model?: string;
+  /**
+   * Filter by creation date (ISO 8601, inclusive)
+   */
+  created_from?: string;
+  /**
+   * Filter by creation date (ISO 8601, inclusive)
+   */
+  created_to?: string;
 };
