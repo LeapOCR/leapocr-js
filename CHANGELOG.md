@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.1] - 2026-03-22
+
+- release: v2.0.1 (64ddf19)
+- docs: update CHANGELOG.md for v2.0.0 (30561c4)
+
+
 ## [2.0.0] - 2026-03-11
 
 - feat: prepare v2.0.0 release (4ca4cb9)
